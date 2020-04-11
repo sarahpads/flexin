@@ -1,24 +1,32 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { gql } from 'apollo-boost';
+import { useQuery } from 'react-apollo';
+
+const GET_USERS = gql`
+  {
+    users {
+      id,
+      email
+    }
+  }
+`
 
 function App() {
+  const { loading, error, data } = useQuery(GET_USERS);
+
+  if (error) {
+    return <div>{error}</div>
+  }
+
+  if (loading) {
+    return <div>Loading</div>
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      {data.users.map((user: any) => {
+        return <span key={user.id}>{user.email}</span>
+      })}
     </div>
   );
 }
