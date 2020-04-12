@@ -1,6 +1,8 @@
-import React from 'react';
-import { gql } from 'apollo-boost';
-import { useQuery } from 'react-apollo';
+import React, { useContext } from 'react';
+import ApolloClient, { gql } from 'apollo-boost';
+import { ApolloProvider, Query } from 'react-apollo';
+
+import { AuthContext } from './components/AuthProvider';
 
 const GET_USERS = gql`
   {
@@ -12,22 +14,47 @@ const GET_USERS = gql`
 `
 
 function App() {
-  const { loading, error, data } = useQuery(GET_USERS);
+  const auth = useContext(AuthContext)
 
-  if (error) {
-    return <div>{error}</div>
+  const client = new ApolloClient({
+    uri: 'http://localhost:4000/graphql',
+    request: (operation) => {
+      operation.setContext((context: any) => ({
+        headers: {
+          ...context.headers,
+          authorization: `Bearer ${auth.getIdToken()}`,
+        },
+      }));
+    }
+  });
+
+  if (window.location.href.includes('consume')) {
+    console.log(auth.consume());
   }
 
-  if (loading) {
-    return <div>Loading</div>
-  }
+  const user = auth.getUser()
 
   return (
-    <div>
-      {data.users.map((user: any) => {
-        return <span key={user.id}>{user.email}</span>
-      })}
-    </div>
+    <ApolloProvider client={client}>
+      {user.sub}
+      <button onClick={auth.login}>Login</button>
+
+      <Query query={GET_USERS}>
+        {({ loading, error, data }: any) => {
+          if (!data) {
+            return <span>Loading or something</span>
+          }
+
+          return (
+            <div>
+              {data.users.map((user: any) => {
+                return <span key={user.id}>{user.email}</span>
+              })}
+            </div>
+          );
+        }}
+      </Query>
+    </ApolloProvider>
   );
 }
 

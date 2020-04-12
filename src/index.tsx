@@ -6,16 +6,13 @@ import ApolloClient from 'apollo-boost';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-
-const client = new ApolloClient({
-  uri: 'http://localhost:4000/graphql'
-});
+import AuthProvider from './components/AuthProvider';
 
 ReactDOM.render(
   <React.StrictMode>
-    <ApolloProvider client={client}>
+    <AuthProvider>
       <App />
-    </ApolloProvider>
+    </AuthProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
