@@ -10,10 +10,12 @@ class AuthClient {
     this.config = config;
     this.authClient = new ClientOAuth2(config);
     this.tokens = this.getTokens();
+    // silent renew
   }
 
   login() {
-    var uri = this.authClient.code.getUri()
+    debugger;
+    const uri = this.authClient.code.getUri()
 
     window.location.assign(uri);
   }
@@ -21,8 +23,9 @@ class AuthClient {
   consume() {
     return this.authClient.code.getToken(window.location.href)
       .then((result) => {
-        const { access_token, id_token } = result.data;
-        const tokens = { access_token, id_token };
+        const { access_token, id_token, refresh_token } = result.data;
+        const tokens = { access_token, id_token, refresh_token };
+        console.log(result)
 
         this.storeTokens(tokens);
       })
@@ -30,13 +33,11 @@ class AuthClient {
 
   }
 
-  getUser() {
+  getSession() {
     if (!this.tokens.id_token) {
       return;
     }
 
-    // user.sub is id
-    // https://developers.google.com/identity/protocols/oauth2/openid-connect#an-id-tokens-payload
     return jwtDecode(this.tokens.id_token);
   }
 
@@ -46,6 +47,16 @@ class AuthClient {
 
   getIdToken() {
     return this.tokens?.id_token;
+  }
+
+  getRefreshToken() {
+    return this.tokens?.refresh_token;
+  }
+
+  isTokenValid() {
+    const session: any = this.getSession();
+
+    return session && Date.now() < session.exp * 1000;
   }
 
   private storeTokens(tokens: any) {

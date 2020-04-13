@@ -7,6 +7,9 @@ const config = {
   authorizationUri: 'https://accounts.google.com/o/oauth2/v2/auth',
   accessTokenUri: 'https://oauth2.googleapis.com/token',
   redirectUri: 'http://localhost:3000/consume',
+  // occassionally need to add prompt: 'consent'
+  // https://github.com/googleapis/google-api-python-client/issues/213#issuecomment-205886341
+  query: { access_type: 'offline' },
   scopes: ['openid', 'profile', 'email'],
 }
 
