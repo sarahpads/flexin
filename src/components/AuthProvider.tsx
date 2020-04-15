@@ -9,7 +9,7 @@ const config = {
   redirectUri: 'http://localhost:3000/consume',
   // occassionally need to add prompt: 'consent'
   // https://github.com/googleapis/google-api-python-client/issues/213#issuecomment-205886341
-  query: { access_type: 'offline' },
+  query: { access_type: 'offline', prompt: 'consent' },
   scopes: ['openid', 'profile', 'email'],
 }
 

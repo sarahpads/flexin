@@ -1,0 +1,40 @@
+import { WebSocketLink } from "@apollo/link-ws";
+import { ApolloClient, InMemoryCache, HttpLink, split } from "@apollo/client"
+import { getMainDefinition } from '@apollo/client/utilities';
+import { SubscriptionClient } from "subscriptions-transport-ws";
+
+export function getClient(auth: any) {
+  const httpLink = new HttpLink({
+    uri: 'http://localhost:4000/graphql',
+    headers: {
+      Authorization: `Bearer ${auth.getIdToken()}`,
+    }
+  });
+
+  const wsClient = new SubscriptionClient("ws://localhost:4000/subscriptions", {
+    reconnect: true
+  });
+
+  const wsLink = new WebSocketLink(wsClient);
+
+  const cache = new InMemoryCache();
+
+  // https://www.apollographql.com/docs/react/v3.0-beta/data/subscriptions/
+  const link = split(
+    // split based on operation type
+    ({ query }) => {
+      const definition = getMainDefinition(query);
+      return (
+        definition.kind === 'OperationDefinition' &&
+        definition.operation === 'subscription'
+      );
+    },
+    wsLink,
+    httpLink,
+  );
+
+  return new ApolloClient({
+    link,
+    cache
+  });
+}
