@@ -3,11 +3,11 @@ import { ApolloClient, InMemoryCache, HttpLink, split } from "@apollo/client"
 import { getMainDefinition } from '@apollo/client/utilities';
 import { SubscriptionClient } from "subscriptions-transport-ws";
 
-export function getClient(auth: any) {
+export function getClient(idToken: string) {
   const httpLink = new HttpLink({
     uri: 'http://localhost:4000/graphql',
     headers: {
-      Authorization: `Bearer ${auth.getIdToken()}`,
+      Authorization: `Bearer ${idToken}`,
     }
   });
 

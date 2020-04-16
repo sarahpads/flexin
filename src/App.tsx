@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useRef } from 'react';
 import { ApolloProvider } from '@apollo/client';
 import { Switch, Route } from 'react-router';
 
@@ -12,21 +12,17 @@ import Home from './containers/Home/Home';
 import Login from './containers/Login/Login';
 
 function App() {
-  const [ isAuthenticated, setIsAuthenticated ] = useState(false);
   const auth = useContext(AuthContext)
-  const client = getClient(auth);
-  console.log(auth.init())
+  let client = useRef(null as any)
+  console.log(client.current)
 
-  auth.init()
-    .then(() => setIsAuthenticated(true))
-    .catch(() => setIsAuthenticated(false));
-
-  if (!isAuthenticated) {
-    return <div>Loading</div>
+  if (!client.current) {
+    // TODO: find out why client.current is null for 2 renders
+    client.current = getClient(auth.getIdToken());
   }
 
   return (
-    <ApolloProvider client={client}>
+    <ApolloProvider client={client.current}>
       <Nav/>
 
       <Switch>

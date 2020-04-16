@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 import AuthClient from "../Auth";
 
 const config = {
@@ -13,13 +13,26 @@ const config = {
   scopes: ['openid', 'profile', 'email'],
 }
 
-const authClient = new AuthClient(config);
-
 export const AuthContext = React.createContext(undefined as any);
 
-function AuthProvider(props: any) {
+const AuthProvider: React.FC<any> = (props) => {
+  const [isInitialized, setIsInitialized] = useState(false);
+  const authClient = useRef(undefined as any);
+
+  if (!authClient.current) {
+    authClient.current = new AuthClient(config);
+
+    authClient.current.init()
+      .finally(() => setIsInitialized(true));
+  }
+
+  if (!isInitialized) {
+    return <div>Yo, I'm a spinner</div>
+  }
+
   return (
-    <AuthContext.Provider value={authClient}>
+    // TODO: let's not pass that ref all over the place...
+    <AuthContext.Provider value={authClient.current}>
       {props.children}
     </AuthContext.Provider>
   );

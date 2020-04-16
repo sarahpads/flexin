@@ -14,15 +14,14 @@ const AuthRoute: React.FC<AuthRouteProps> = ({
   exact = false
 }) => {
   const auth = useContext(AuthContext);
-  const session = auth.getSession();
-  console.log(session)
+  console.log(auth.isValid())
 
   return (
     <Route
       path={path}
       exact={exact}
       render={(props: RouteComponentProps) => {
-        if (!!session) {
+        if (auth.isValid()) {
           return <Component {...props}/>
         }
 

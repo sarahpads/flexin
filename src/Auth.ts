@@ -7,18 +7,29 @@ class AuthClient {
   public tokens: any;
   public session: any;
 
+  private KEY: string;
+
   constructor(config: ClientOAuth2.Options) {
     this.config = config;
     this.authClient = new ClientOAuth2(config);
+    this.KEY = `flexin-${this.config.clientId}`;
+
     this.tokens = this.getTokens();
-    this.session = jwtDecode(this.getIdToken());
+    this.session = this.tokens && jwtDecode(this.getIdToken());
   }
 
   init() {
+    // If it's a brand new session, reject right away
+    if (!this.tokens) {
+      return Promise.reject();
+    }
+
+    // if our tokens are still valid, let 'em through
     if (!this.isExpired()) {
       return Promise.resolve();
     }
 
+    // otherwise, let's try to refresh
     return this.refresh();
   }
 
@@ -56,11 +67,15 @@ class AuthClient {
     return this.tokens.expired();
   }
 
+  isValid() {
+    return !!this.tokens && !this.isExpired();
+  }
+
   private storeTokens(result: any) {
     this.tokens = new ClientOAuth2.Token(this.authClient, result.data)
 
     localStorage.setItem(
-      `flexin-${this.config.clientId}`,
+      this.KEY,
       JSON.stringify(result.data)
     )
 
@@ -68,7 +83,7 @@ class AuthClient {
   }
 
   private getTokens() {
-    const tokens = localStorage.getItem(`flexin-${this.config.clientId}`) || '';
+    const tokens = localStorage.getItem(this.KEY);
 
     if (!tokens) {
       return;
