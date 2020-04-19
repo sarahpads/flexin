@@ -40,14 +40,15 @@ class AuthClient {
   }
 
   consume() {
+    debugger;
     return this.authClient.code.getToken(window.location.href)
-      .then(this.storeTokens)
+      .then(this.storeTokens.bind(this))
       .catch((error: any) => console.log(error));
   }
 
   refresh() {
     return this.tokens.refresh()
-      .then(this.storeTokens)
+      .then(this.storeTokens.bind(this))
       .catch((error: any) => console.log(error));
   }
 
@@ -64,6 +65,8 @@ class AuthClient {
   }
 
   isExpired() {
+    console.log(this.tokens.expired())
+    debugger;
     return this.tokens.expired();
   }
 
@@ -72,11 +75,12 @@ class AuthClient {
   }
 
   private storeTokens(result: any) {
-    this.tokens = new ClientOAuth2.Token(this.authClient, result.data)
+    console.log('store', result)
+    this.tokens = result;
 
     localStorage.setItem(
       this.KEY,
-      JSON.stringify(result.data)
+      JSON.stringify(result)
     )
 
     return this.tokens;
@@ -84,6 +88,7 @@ class AuthClient {
 
   private getTokens() {
     const tokens = localStorage.getItem(this.KEY);
+    debugger;
 
     if (!tokens) {
       return;

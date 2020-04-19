@@ -1,58 +1,80 @@
-import React, { useContext } from "react";
-import { useSubscription, gql, useQuery } from "@apollo/client";
+import React, { useContext, useEffect } from "react";
+import { gql, useQuery } from "@apollo/client";
 
-import Challenge from "../../components/Challenge/Challenge";
 import { AuthContext } from "../../components/AuthProvider";
+import Challenge from "../../components/Challenge/Challenge";
+import { Link, Redirect } from "react-router-dom";
 
 interface HomeProps {}
 
-const GET_USER = gql`
-  query User($id: String!) {
-    user(id: $id) { name }
+const GET_DATA = gql`
+  query ($id: String!) {
+    user(id: $id) { name },
+    activeChallenge { id, exercise { title } }
   }
 `
 
 const NEW_CHALLENGE = gql`
   subscription {
     newChallenge {
-      id,
-      reps,
-      exercise { title },
-      user { name }
+      user { name, id },
+      exercise { title, id },
+      reps
     }
   }
 `
 
 const Home: React.FC<HomeProps> = () => {
   const auth = useContext(AuthContext)
-  const { loading: userLoading, error: userError, data: user } = useQuery(GET_USER, {
+  const { subscribeToMore, ...result} = useQuery(GET_DATA, {
     variables: { id: auth.session.sub }
   });
-  const { loading, data, error } = useSubscription(NEW_CHALLENGE)
 
-  if (userLoading) {
+  useEffect(() => {
+    subscribeToMore({
+      document: NEW_CHALLENGE,
+      updateQuery: (prev, { subscriptionData }) => {
+        // ALERT: what is returned from this function MUST match the exact data format
+        // returned by NEW_RESPONSE; otherwise Apollo will silently discard the update
+        if (!subscriptionData.data) {
+          return prev;
+        }
+
+        const { user: { name, id: userId }, exercise: { title, id: exerciseId }, reps } = subscriptionData.data.newChallenge;
+
+        const newChallenge = {
+          user: { name, id: userId },
+          exercise: { title, id: exerciseId },
+          reps
+        }
+
+        return newChallenge;
+      }
+    });
+  }, [subscribeToMore])
+
+  if (result.loading) {
     return <div>loading</div>
   }
 
-  if (userError) {
-    return <div>{JSON.stringify(userError)}</div>
+  // TODO: moake this not gross
+  // TODO: this is causing a memory leak
+  if (result.error && result.error.graphQLErrors[0]?.extensions?.exception.statusCode === 404) {
+    return <Redirect to="/create-profile"/>
+  } else if (result.error) {
+    console.log(result.error)
   }
 
-  // if the user doesn't have a profile, redirect to create-profile
-  return <div>{user.name}</div>
+  // TODO: need to filter out challenges created by the current user
+  // if they authored the challenge, let them snoop
 
-
-  if (loading) {
-    return <span>No data</span>
+  // if challenge, show prompt to respond
+  if (result.data && result.data.activeChallenge) {
+    return <Challenge challenge={result.data.activeChallenge}/>
   }
 
-  if (error) {
-    console.log(error)
-    return <span>Error</span>
-  }
-
-  return <Challenge challenge={data.newChallenge}/>
-  // <div>{JSON.stringify(data)}</div>
+  // otherwise, prompt to challenge
+  return <Link to="/create-challenge">Create Challenge</Link>
 }
 
 export default Home;
