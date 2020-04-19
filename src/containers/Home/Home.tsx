@@ -27,7 +27,7 @@ const NEW_CHALLENGE = gql`
 const Home: React.FC<HomeProps> = () => {
   const auth = useContext(AuthContext)
   const { subscribeToMore, ...result} = useQuery(GET_DATA, {
-    variables: { id: auth.session.sub }
+    variables: { id: auth.profile.sub }
   });
 
   useEffect(() => {
@@ -59,6 +59,7 @@ const Home: React.FC<HomeProps> = () => {
 
   // TODO: moake this not gross
   // TODO: this is causing a memory leak
+  // Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function.
   if (result.error && result.error.graphQLErrors[0]?.extensions?.exception.statusCode === 404) {
     return <Redirect to="/create-profile"/>
   } else if (result.error) {

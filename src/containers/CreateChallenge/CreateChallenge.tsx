@@ -27,7 +27,7 @@ const CreateChallenge: React.FC = () => {
     event.preventDefault();
 
     const { exercise, reps } = formState.values;
-    createChallenge({ variables: { data: { exercise, reps: parseInt(reps), user: auth.session.sub }}});
+    createChallenge({ variables: { data: { exercise, reps: parseInt(reps), user: auth.profile.sub }}});
     // TODO: redirect
   }
 

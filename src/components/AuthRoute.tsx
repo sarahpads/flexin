@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { AuthContext } from "./AuthProvider";
 import { Route, RouteComponentProps, Redirect } from "react-router";
 
@@ -13,18 +13,7 @@ const AuthRoute: React.FC<AuthRouteProps> = ({
   path,
   exact = false
 }) => {
-  const [isInitialized, setIsInitialized] = useState(false);
   const auth = useContext(AuthContext);
-
-  auth.init()
-    .then((response: any) => console.log("success", response, auth.isValid()))
-    .then((error: any) => console.log("error", error));
-  auth.init()
-    .finally(() => setIsInitialized(true));
-
-  if (!isInitialized) {
-    return <div>Yo, I'm a spinner</div>
-  }
 
   return (
     <Route

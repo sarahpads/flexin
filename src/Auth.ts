@@ -1,102 +1,67 @@
-import ClientOAuth2 from 'client-oauth2';
-import jwtDecode from 'jwt-decode';
+import { OAuth2Client } from "google-auth-library";
+import * as Url from "url";
 
-class AuthClient {
-  public config: ClientOAuth2.Options;
-  public authClient: ClientOAuth2;
-  public tokens: any;
-  public session: any;
+export default class AuthClient {
+  config: any;
+  authClient: any;
 
   private KEY: string;
 
-  constructor(config: ClientOAuth2.Options) {
+  constructor(config: any) {
     this.config = config;
-    this.authClient = new ClientOAuth2(config);
-    this.KEY = `flexin-${this.config.clientId}`;
+    this.authClient = new OAuth2Client(
+      this.config.clientId,
+      this.config.clientSecret,
+      this.config.redirectUri
+    );
 
-    this.tokens = this.getTokens();
-    this.session = this.tokens && jwtDecode(this.getIdToken());
+    this.KEY = `flexin-${this.config.clientId}`;
+    console.log(this.KEY, this.getTokens())
+    this.authClient.setCredentials(this.getTokens());
   }
 
   init() {
-    // If it's a brand new session, reject right away
-    if (!this.tokens) {
-      return Promise.reject();
-    }
-
-    // if our tokens are still valid, let 'em through
-    if (!this.isExpired()) {
-      return Promise.resolve();
-    }
-
-    // otherwise, let's try to refresh
-    return this.refresh();
-  }
-
-  login() {
-    const uri = this.authClient.code.getUri()
-
-    window.location.assign(uri);
-  }
-
-  consume() {
-    debugger;
-    return this.authClient.code.getToken(window.location.href)
-      .then(this.storeTokens.bind(this))
+    return this.authClient.getAccessToken()
+      .then((tokens: any) => this.authClient.getTokenInfo(tokens.token))
       .catch((error: any) => console.log(error));
-  }
-
-  refresh() {
-    return this.tokens.refresh()
-      .then(this.storeTokens.bind(this))
-      .catch((error: any) => console.log(error));
-  }
-
-  getAccessToken() {
-    return this.tokens?.accessToken;
   }
 
   getIdToken() {
-    return this.tokens?.data.id_token;
-  }
-
-  getRefreshToken() {
-    return this.tokens?.refreshToken;
-  }
-
-  isExpired() {
-    console.log(this.tokens.expired())
-    debugger;
-    return this.tokens.expired();
+    return this.authClient.credentials.id_token;
   }
 
   isValid() {
-    return !!this.tokens && !this.isExpired();
+    return !this.authClient.isTokenExpiring();
   }
 
-  private storeTokens(result: any) {
-    console.log('store', result)
-    this.tokens = result;
+  login() {
+    const url = this.authClient.generateAuthUrl({
+      access_type: this.config.accessType,
+      scope: this.config.scopes
+    });
 
-    localStorage.setItem(
-      this.KEY,
-      JSON.stringify(result)
-    )
-
-    return this.tokens;
+    window.location.assign(url);
   }
 
-  private getTokens() {
+  async consume() {
+    var url = Url.parse(window.location.href, true)
+
+    const { tokens } = await this.authClient.getToken(url.query.code)
+    this.authClient.setCredentials(tokens);
+    this.setTokens(tokens)
+  }
+
+  setTokens(tokens: any) {
+    localStorage.setItem(this.KEY, JSON.stringify(tokens));
+  }
+
+  getTokens() {
     const tokens = localStorage.getItem(this.KEY);
-    debugger;
 
     if (!tokens) {
-      return;
+      return {};
     }
 
-    const data = JSON.parse(tokens);
-    return new ClientOAuth2.Token(this.authClient, data)
+    return JSON.parse(tokens);
   }
 }
-
-export default AuthClient;
