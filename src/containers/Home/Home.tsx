@@ -57,7 +57,7 @@ const Home: React.FC<HomeProps> = () => {
     return <div>loading</div>
   }
 
-  // TODO: moake this not gross
+  // TODO: make this not gross
   // TODO: this is causing a memory leak
   // Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function.
   if (result.error && result.error.graphQLErrors[0]?.extensions?.exception.statusCode === 404) {

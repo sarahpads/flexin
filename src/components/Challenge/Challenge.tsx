@@ -36,7 +36,7 @@ const Challenge: React.FC<ChallengeProps> = ({
   challenge
 }) => {
   const [ hasResponded, setHasResponded ] = useState(false);
-  const { session } = useContext(AuthContext);
+  const { profile } = useContext(AuthContext);
 
   // TODO: throughout { ...result, subscribeToMore }
   const { subscribeToMore, ...result } = useQuery(GET_RESPONSES, {
@@ -45,11 +45,11 @@ const Challenge: React.FC<ChallengeProps> = ({
 
   useEffect(() => {
     const hasResponded = result.data && result.data.challengeResponses.some((response: any) => {
-      return response.user.id === session.sub;
+      return response.user.id === profile.sub;
     });
 
     setHasResponded(hasResponded);
-  }, [result.data, session.sub]);
+  }, [result.data, profile.sub]);
 
   useEffect(() => {
     subscribeToMore({

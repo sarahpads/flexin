@@ -13,17 +13,8 @@ const GET_EXERCISES = gql`
 `
 
 const CREATE_PROFILE = gql`
-  mutation CreateUser($data: CreateUserInput!) {
-    createUser(data: $data) { id, name, email}
-  }
-`
-
-const CREATE_USER_EXERCISE = gql`
-  mutation CreateUserExercise($data: CreateUserExerciseInput!) {
-    createUserExercise(data: $data) {
-      exercise { title },
-      reps
-    }
+  mutation CreateProfile($data: CreateUserInput!) {
+    createProfile(data: $data) { id, name, email}
   }
 `
 
@@ -31,8 +22,7 @@ const CreateProfile: React.FC = () => {
   const { session } = useContext(AuthContext)
   const [ shouldRedirect, setShoulRedirect ] = useState(false);
   const { data } = useQuery(GET_EXERCISES);
-  const [ createUser ] = useMutation(CREATE_PROFILE);
-  const [ createUserExercise ] = useMutation(CREATE_USER_EXERCISE);
+  const [ createProfile ] = useMutation(CREATE_PROFILE);
 
   const [formState, { number, text, label }] = useFormState({
     name: session.name,
@@ -42,12 +32,12 @@ const CreateProfile: React.FC = () => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const { name, email } = formState.values;
-    createUser({ variables: { data: { id: session.sub, name, email }}})
-
-    for (const exercise of data.exercises) {
+    const userExercises = data.exercises.map((exercise: any) => {
       const reps = parseInt(formState.values[exercise.id]);
-      createUserExercise({ variables: { data: { exercise: exercise.id, reps, user: session.sub }}});
-    }
+      return { data: { exercise: exercise.id, reps, user: session.sub }}
+    })
+
+    createProfile({ variables: { data: { id: session.sub, name, email, exercises: userExercises }}})
 
     setShoulRedirect(true);
   }
