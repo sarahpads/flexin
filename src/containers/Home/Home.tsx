@@ -27,7 +27,7 @@ const NEW_CHALLENGE = gql`
 const Home: React.FC<HomeProps> = () => {
   const auth = useContext(AuthContext)
   const { subscribeToMore, ...result} = useQuery(GET_DATA, {
-    variables: { id: auth.profile.sub }
+    variables: { id: auth.profile?.sub }
   });
 
   useEffect(() => {

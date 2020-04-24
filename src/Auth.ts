@@ -16,7 +16,6 @@ export default class AuthClient {
     );
 
     this.KEY = `flexin-${this.config.clientId}`;
-    console.log(this.KEY, this.getTokens())
     this.authClient.setCredentials(this.getTokens());
   }
 
@@ -52,6 +51,7 @@ export default class AuthClient {
   }
 
   setTokens(tokens: any) {
+    // TODO: don't overwrite existing refresh token
     localStorage.setItem(this.KEY, JSON.stringify(tokens));
   }
 
