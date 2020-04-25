@@ -1,44 +1,50 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
+import { v4 as uuid } from "uuid";
 
 import * as S from "./Background.styled";
-import { Transition } from "react-transition-group";
-import { useLocation } from "react-router-dom";
-import { useTransition, useSpring, config, useChain } from "react-spring";
+import { Transition, TransitionGroup } from "react-transition-group";
 
-const Background: React.FC = ({ color = "#5FA8C9" }: any) => {
-  // g.setAttributeNS(null, 'transform', 'translate(' + Number(ev.pageX - getOffset(el).left) + ', ' + Number(ev.pageY - getOffset(el).top) + ')');
-  // circle.setAttributeNS(null, 'r', Math.sqrt(Math.pow(el.offsetWidth,2) + Math.pow(el.offsetHeight,2)));
-  const [shit, setShit] = useState("");
+interface Circle {
+  color: string;
+  id: string;
+}
 
-  const transitions = useTransition(shit, null, {
-    immediate: false,
-    from: { transform: "scale(0,0)", fill: shit },
-    enter: { transform: "scale(1,1)" },
-    onRest: () => { console.log('restin', shit) },
-    onDestroyed: () => { console.log('destroyed', shit) }
-  });
+const Background: React.FC<{ color: string }> = ({ color = "transparent" }) => {
+  const [circles, setCircles] = useState<Circle[]>([]);
 
   useEffect(() => {
-    console.log(shit)
-  }, [shit])
+    const circle = {
+      color,
+      id: uuid()
+    };
 
+    setCircles([...circles, circle]);
+  }, [color])
+
+  function onEntered(circle: Circle) {
+    const index = circles.findIndex((c) => c.id === circle.id);
+    console.log(index)
+    // setCircles(circles.slice(0, index - 1));
+  }
+
+  // TODO: for routing animations, accept children and animate them in?
   return (
-    <div>
-    <button onClick={() => setShit("#8567AD")}>Purple</button>
-    <button onClick={() => setShit("#5FA8C9")}>Blue</button>
-    <button onClick={() => setShit("#D36962")}>Red</button>
-    <button onClick={() => setShit("#F4BF6A")}>Yellow</button>
-
     <S.Container>
       <S.Paint>
         <S.G>
-          {transitions.map(({ item, props }) => {
-            return item && <S.Circle key={item} style={props}></S.Circle>;
-          })}
+          <TransitionGroup appear={true} component={null}>
+            {circles.map((circle: Circle, index: number) => {
+              // TODO: include guid with color to allow two colors to animate at once
+              return <Transition appear={true} key={circle.id} timeout={800} onEntered={() => onEntered(circle)}>
+                {(state: any) => {
+                  return <S.Circle state={state} color={circle.color}></S.Circle>;
+                }}
+              </Transition>
+            })}
+          </TransitionGroup>
         </S.G>
       </S.Paint>
     </S.Container>
-    </div>
   )
 }
 

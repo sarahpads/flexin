@@ -1,11 +1,9 @@
-import styled from "styled-components";
-import { animated } from "react-spring";
+import styled, { css } from "styled-components";
 
-export const Container = styled(animated.div)`
+export const Container = styled.div`
 	overflow: hidden;
   position: relative;
   height: 50rem;
-  transition-delay: 800;
 `
 
 export const Paint = styled.svg`
@@ -20,15 +18,18 @@ export const Paint = styled.svg`
 // entering, transform to 1,1,1
 // entered, set background color and reset
 // don't worry about exit
-export const Circle = styled(animated.circle)<{}>`
-	/* fill-opacity: 0; */
-	/* transition: transform 0.8s, fill-opacity 0.4s; */
-	/* transition-timing-function: ease-out; */
-	fill-opacity: 1;
-  /* transform: ${(props: any) => props.state === "entering" ? "scale3d(1,1,1)" : "scale3d(0,0,1)"}; */
-  /* fill: ${(props: any) => props.color}; */
-  /* fill: #5FA8C9; */
+export const Circle = styled.circle<any>`
+	transition: transform 0.8s, fill-opacity 0.4s;
+	transition-timing-function: ease-out;
+  transform: scale3d(0,0,1);
+  fill: ${(props: any) => props.color};
   r: 150%;
+
+  ${(props: any) => {
+    if (props.state === "entering" || props.state === "entered") {
+      return css`transform: scale3d(1,1,1)`;
+    }
+  }}
 `
 
 // position at bottom left of screen

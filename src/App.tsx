@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useEffect } from 'react';
+import React, { useContext, useRef, useEffect, useState } from 'react';
 import { ApolloProvider } from '@apollo/client';
 import { Switch, Route, useLocation } from 'react-router';
 import { TransitionGroup, Transition } from "react-transition-group";
@@ -17,6 +17,7 @@ import Background from './components/Background/Background';
 import { Link } from 'react-router-dom';
 
 function App() {
+  const [color, setColor] = useState();
   const auth = useContext(AuthContext)
   let client = useRef(null as any)
 
@@ -32,7 +33,12 @@ function App() {
       <Link to="/test2">Test 2</Link>
       <Link to="/test3">Test 3</Link>
 
-      <Background></Background>
+      <button onClick={() => setColor("#8567AD")}>Purple</button>
+      <button onClick={() => setColor("#5FA8C9")}>Blue</button>
+      <button onClick={() => setColor("#D36962")}>Red</button>
+      <button onClick={() => setColor("#F4BF6A")}>Yellow</button>
+
+      <Background color={color}></Background>
 
       {/* TODO: routing transitions: https://reacttraining.com/react-router/web/example/animated-transitions */}
       <Switch>
