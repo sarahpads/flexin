@@ -1,7 +1,11 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
+
+import theme from "../../theme";
 
 export const Container = styled.div`
   position: absolute;
+  top: 0;
+  padding-top: ${(props) => theme.dimensions.navHeight};
   width: 100%;
 
   &.shit-enter-active,
@@ -18,7 +22,6 @@ export const Component = styled.div`
   opacity: 0;
   transform: translateY(10rem);
   transition: opacity 0.25s, transform 0.25s;
-  /* transition-delay: 800ms; */
 
   .shit-enter-done &,
   .shit-exit-active & {

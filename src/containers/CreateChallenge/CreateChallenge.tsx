@@ -3,6 +3,7 @@ import { useFormState } from "react-use-form-state";
 import gql from "graphql-tag";
 import { useQuery, useMutation } from "@apollo/client";
 import { AuthContext } from "../../components/AuthProvider";
+import WithBackground from "../../components/WithBackground/WithBackground";
 
 const GET_EXERCISES = gql`
   query {
@@ -49,4 +50,4 @@ const CreateChallenge: React.FC = () => {
   )
 }
 
-export default CreateChallenge;
+export default WithBackground(CreateChallenge);

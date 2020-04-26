@@ -1,9 +1,10 @@
 import React, { useContext, useEffect } from "react";
+import { Link, Redirect } from "react-router-dom";
 import { gql, useQuery } from "@apollo/client";
 
 import { AuthContext } from "../../components/AuthProvider";
 import Challenge from "../../components/Challenge/Challenge";
-import { Link, Redirect } from "react-router-dom";
+import WithBackground from "../../components/WithBackground/WithBackground";
 
 interface HomeProps {}
 
@@ -78,4 +79,4 @@ const Home: React.FC<HomeProps> = () => {
   return <Link to="/create-challenge">Create Challenge</Link>
 }
 
-export default Home;
+export default WithBackground(Home);

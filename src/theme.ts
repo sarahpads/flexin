@@ -1,3 +1,8 @@
+interface Palette {
+  dark: string;
+  neutral: string;
+}
+
 const palettePurple = {
   dark: "#755BA8",
   neutral: "#8567AD"
@@ -18,7 +23,7 @@ const paletteYellow = {
   neutral: "#F4BF6A"
 }
 
-const colors = {
+const colors: { [key: string]: Palette } = {
   palettePurple,
   paletteBlue,
   paletteRed,
@@ -26,7 +31,20 @@ const colors = {
 }
 
 const theme = {
-  colors
+  colors,
+  dimensions: {
+    navHeight: "5rem"
+  }
+}
+
+let currentTheme = "";
+
+export function getRandomTheme() {
+  const available = Object.keys(colors).filter((c) => c !== currentTheme);
+  const index: number = Math.floor(Math.random() * available.length);
+  currentTheme = available[index];
+
+  return available[index];
 }
 
 export default theme;
