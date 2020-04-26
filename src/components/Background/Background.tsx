@@ -1,51 +1,67 @@
 import React, { useState, useEffect } from "react";
-import { v4 as uuid } from "uuid";
 
 import * as S from "./Background.styled";
-import { Transition, TransitionGroup } from "react-transition-group";
+import theme from "../../theme";
+import { useLocation } from "react-router-dom";
 
 interface Circle {
   color: string;
   id: string;
 }
 
-const Background: React.FC<{ color: string }> = ({ color = "transparent" }) => {
-  const [circles, setCircles] = useState<Circle[]>([]);
+const Background = (Component: any) => {
+  function Wrapper() {
+    const location = useLocation();
+    const colors: string[] = [
+      theme.colors.palettePurple.neutral,
+      theme.colors.paletteBlue.neutral,
+      theme.colors.paletteRed.neutral,
+      theme.colors.paletteYellow.neutral
+    ];
 
-  useEffect(() => {
-    const circle = {
-      color,
-      id: uuid()
-    };
+    const [color, setColor] = useState("transparent");
 
-    setCircles([...circles, circle]);
-  }, [color])
+    useEffect(() => {
+      // const index: number = Math.floor(Math.random() * 3);
+      let background;
 
-  function onEntered(circle: Circle) {
-    const index = circles.findIndex((c) => c.id === circle.id);
-    console.log(index)
-    // setCircles(circles.slice(0, index - 1));
+      switch (location.pathname) {
+        case "/test1":
+          background = colors[0];
+          break;
+
+        case "/test2":
+          background = colors[1];
+          break;
+
+        case "/test3":
+          background = colors[2];
+          break;
+
+        case "/test4":
+          background = colors[3];
+          break;
+      }
+
+      setColor(background as string);
+    }, [])
+
+    return (
+      <S.Container>
+        <S.Component>
+          <Component/>
+        </S.Component>
+
+        <S.SVG>
+          <S.G>
+            <S.Circle color={color}></S.Circle>
+          </S.G>
+        </S.SVG>
+      </S.Container>
+    )
   }
 
-  // TODO: for routing animations, accept children and animate them in?
-  return (
-    <S.Container>
-      <S.Paint>
-        <S.G>
-          <TransitionGroup appear={true} component={null}>
-            {circles.map((circle: Circle, index: number) => {
-              // TODO: include guid with color to allow two colors to animate at once
-              return <Transition appear={true} key={circle.id} timeout={800} onEntered={() => onEntered(circle)}>
-                {(state: any) => {
-                  return <S.Circle state={state} color={circle.color}></S.Circle>;
-                }}
-              </Transition>
-            })}
-          </TransitionGroup>
-        </S.G>
-      </S.Paint>
-    </S.Container>
-  )
+  return Wrapper;
 }
 
 export default Background;

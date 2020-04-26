@@ -1,7 +1,7 @@
 import React, { useContext, useRef, useEffect, useState } from 'react';
 import { ApolloProvider } from '@apollo/client';
-import { Switch, Route, useLocation } from 'react-router';
-import { TransitionGroup, Transition } from "react-transition-group";
+import { Switch, Route, useLocation, useParams } from 'react-router';
+import { TransitionGroup, Transition, CSSTransition } from "react-transition-group";
 import { useTransition } from "react-spring";
 
 import { AuthContext } from './components/AuthProvider';
@@ -16,8 +16,11 @@ import CreateChallenge from './containers/CreateChallenge/CreateChallenge';
 import Background from './components/Background/Background';
 import { Link } from 'react-router-dom';
 
+import * as S from "./components/Background/Background.styled";
+
 function App() {
   const [color, setColor] = useState();
+  const location = useLocation();
   const auth = useContext(AuthContext)
   let client = useRef(null as any)
 
@@ -26,37 +29,44 @@ function App() {
     client.current = getClient(auth.getIdToken());
   }
 
+  const routes: any[] = [
+    { path: "/test1", component: Test, exact: true, color: "#8567AD" },
+    { path: "/test2", component: Test, exact: true, color: "#5FA8C9" },
+    { path: "/test3", component: Test, exact: true, color: "#D36962" },
+    { path: "/test4", component: Test, exact: true, color: "#F4BF6A" }
+  ]
+
   return (
     <ApolloProvider client={client.current}>
       <Nav/>
-      <Link to="/test1">Test 1</Link>
-      <Link to="/test2">Test 2</Link>
-      <Link to="/test3">Test 3</Link>
+      <Link to="/test1">Purple</Link>
+      <Link to="/test2">Blue</Link>
+      <Link to="/test3">Red</Link>
+      <Link to="/test4">Yellow</Link>
 
-      <button onClick={() => setColor("#8567AD")}>Purple</button>
-      <button onClick={() => setColor("#5FA8C9")}>Blue</button>
-      <button onClick={() => setColor("#D36962")}>Red</button>
-      <button onClick={() => setColor("#F4BF6A")}>Yellow</button>
+      <TransitionGroup>
+        <CSSTransition classNames="shit" key={location.key} appear={true} timeout={800} unmountOnExit>
+          <Switch location={location}>
+            <Route path="/test1" component={Test}/>
+            <Route path="/test2" component={Test}/>
+            <Route path="/test3" component={Test}/>
+            <Route path="/test4" component={Test}/>
+          </Switch>
+        </CSSTransition>
+      </TransitionGroup>
 
-      <Background color={color}></Background>
-
-      {/* TODO: routing transitions: https://reacttraining.com/react-router/web/example/animated-transitions */}
-      <Switch>
-        <Route exact path="/test1" component={Test}/>
-        <Route exact path="/test2" component={Test}/>
-        <Route exact path="/test3" component={Test}/>
-        <Route exact path="/login" component={Login}/>
-        <Route exact path="/consume" component={Consume}/>
-        <AuthRoute exact path="/create-profile" component={CreateProfile}/>
-        <AuthRoute exact path="/create-challenge" component={CreateChallenge}/>
-        <AuthRoute exact path="/" component={Home}/>
-      </Switch>
+      <Route exact path="/login" component={Login}/>
+      <Route exact path="/consume" component={Consume}/>
+      <AuthRoute exact path="/create-profile" component={CreateProfile}/>
+      <AuthRoute exact path="/create-challenge" component={CreateChallenge}/>
+      <AuthRoute exact path="/" component={Home}/>
     </ApolloProvider>
   );
 }
 
 export default App;
 
-function Test() {
-  return <div>Test</div>
-}
+const Test = Background(function() {
+  const location = useLocation()
+  return <div>Test, {location.key}</div>
+});

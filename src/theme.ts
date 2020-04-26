@@ -25,6 +25,8 @@ const colors = {
   paletteYellow
 }
 
-export const theme = {
+const theme = {
   colors
 }
+
+export default theme;
