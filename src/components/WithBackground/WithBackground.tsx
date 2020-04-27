@@ -1,26 +1,29 @@
 import React, { useState, useEffect } from "react";
 
 import * as S from "./WithBackground.styled";
-import theme, { getRandomTheme } from "../../theme";
+import theme, { getRandomPalette } from "../../theme";
+import ThemeContext from "../ThemeProvider";
 
 const WithBackground = (Component: any) => {
   function Wrapper() {
-    const [color, setColor] = useState("transparent");
+    const [palette, setPalette] = useState();
 
     useEffect(() => {
-      const palette: string = getRandomTheme();
-      setColor(theme.colors[palette].neutral);
+      const p: string = getRandomPalette();
+      setPalette(theme.colors[p]);
     }, [])
 
     return (
       <S.Container>
         <S.Component>
-          <Component/>
+          <ThemeContext.Provider value={palette}>
+            <Component/>
+          </ThemeContext.Provider>
         </S.Component>
 
         <S.SVG>
           <S.G>
-            <S.Circle color={color}></S.Circle>
+            <S.Circle color={palette?.neutral}></S.Circle>
           </S.G>
         </S.SVG>
       </S.Container>

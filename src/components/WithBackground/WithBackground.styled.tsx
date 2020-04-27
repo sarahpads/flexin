@@ -3,8 +3,10 @@ import styled from "styled-components";
 import theme from "../../theme";
 
 export const Container = styled.div`
+  display: flex;
   position: absolute;
   top: 0;
+  min-height: 100vh;
   padding-top: ${(props) => theme.dimensions.navHeight};
   width: 100%;
 
@@ -19,9 +21,12 @@ export const Container = styled.div`
 `
 
 export const Component = styled.div`
+  flex: 1;
   opacity: 0;
-  transform: translateY(10rem);
-  transition: opacity 0.25s, transform 0.25s;
+  transform: translateY(2rem);
+  transition: opacity 0.3s, transform 0.3s;
+  transition-timing-function: ease-out;
+  width: 100%;
 
   .shit-enter-done &,
   .shit-exit-active & {
@@ -56,5 +61,7 @@ export const Circle = styled.circle<any>`
 
 // position at bottom left of screen
 export const G = styled.g`
-  transform: translate(0, 100%)
+  display: block;
+  transform: translate(0, 100%);
+  width: 100%;
 `

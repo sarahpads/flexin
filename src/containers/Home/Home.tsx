@@ -2,9 +2,11 @@ import React, { useContext, useEffect } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { gql, useQuery } from "@apollo/client";
 
+import * as S from "./Home.styled";
 import { AuthContext } from "../../components/AuthProvider";
 import Challenge from "../../components/Challenge/Challenge";
 import WithBackground from "../../components/WithBackground/WithBackground";
+import ThemeContext from "../../components/ThemeProvider";
 
 interface HomeProps {}
 
@@ -26,6 +28,7 @@ const NEW_CHALLENGE = gql`
 `
 
 const Home: React.FC<HomeProps> = () => {
+  const palette = useContext(ThemeContext);
   const auth = useContext(AuthContext)
   const { subscribeToMore, ...result} = useQuery(GET_DATA, {
     variables: { id: auth.profile?.sub }
@@ -76,7 +79,11 @@ const Home: React.FC<HomeProps> = () => {
   }
 
   // otherwise, prompt to challenge
-  return <Link to="/create-challenge">Create Challenge</Link>
+  return (
+    <S.Button as={Link} color={palette?.neutral} to="/create-challenge">
+      Create Challenge
+    </S.Button>
+  );
 }
 
 export default WithBackground(Home);

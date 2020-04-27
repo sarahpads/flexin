@@ -23,15 +23,22 @@ const paletteYellow = {
   neutral: "#F4BF6A"
 }
 
+const paletteGrey = {
+  dark: "grey",
+  neutral: "grey"
+}
+
 const colors: { [key: string]: Palette } = {
   palettePurple,
   paletteBlue,
   paletteRed,
-  paletteYellow
+  paletteYellow,
+  paletteGrey
 }
 
 const theme = {
   colors,
+  defaultPalette: paletteGrey,
   dimensions: {
     navHeight: "5rem"
   }
@@ -39,7 +46,7 @@ const theme = {
 
 let currentTheme = "";
 
-export function getRandomTheme() {
+export function getRandomPalette() {
   const available = Object.keys(colors).filter((c) => c !== currentTheme);
   const index: number = Math.floor(Math.random() * available.length);
   currentTheme = available[index];

@@ -12,6 +12,7 @@ import CreateProfile from './containers/CreateProfile/CreateProfile';
 import Home from './containers/Home/Home';
 import Login from './containers/Login/Login';
 import CreateChallenge from './containers/CreateChallenge/CreateChallenge';
+import { ThemeContext } from 'styled-components';
 
 function App() {
   const location = useLocation();
@@ -27,7 +28,7 @@ function App() {
     <ApolloProvider client={client.current}>
       <Nav/>
 
-      <TransitionGroup>
+      <TransitionGroup component={null}>
         <CSSTransition classNames="shit" key={location.key} appear={true} timeout={800} unmountOnExit>
           <Switch location={location}>
             <Route exact path="/login" component={Login}/>
