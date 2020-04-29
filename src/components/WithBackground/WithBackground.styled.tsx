@@ -3,6 +3,7 @@ import styled from "styled-components";
 import theme from "../../theme";
 
 export const Container = styled.div`
+  box-sizing: border-box;
   display: flex;
   position: absolute;
   top: 0;

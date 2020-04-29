@@ -13,7 +13,6 @@ export const AuthContext = React.createContext(undefined as any);
 
 const AuthProvider: React.FC<any> = (props) => {
   const [isInitialized, setIsInitialized] = useState(false);
-  const [profile, setProfile] = useState();
   const [client, setClient] = useState();
   const authClient = useRef(undefined as any);
 
@@ -22,7 +21,6 @@ const AuthProvider: React.FC<any> = (props) => {
 
     authClient.current.init()
       .then((profile: any) => {
-        setProfile(profile)
         setClient({
           profile,
           init: authClient.current.init.bind(authClient.current),

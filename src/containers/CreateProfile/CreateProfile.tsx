@@ -20,14 +20,14 @@ const CREATE_PROFILE = gql`
 `
 
 const CreateProfile: React.FC = () => {
-  const { session } = useContext(AuthContext)
+  const { profile } = useContext(AuthContext)
   const [ shouldRedirect, setShoulRedirect ] = useState(false);
   const { data } = useQuery(GET_EXERCISES);
   const [ createProfile ] = useMutation(CREATE_PROFILE);
 
   const [formState, { number, text, label }] = useFormState({
-    name: session.name,
-    email: session.email
+    name: profile.name,
+    email: profile.email
   }, { withIds: true });
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -35,10 +35,10 @@ const CreateProfile: React.FC = () => {
     const { name, email } = formState.values;
     const userExercises = data.exercises.map((exercise: any) => {
       const reps = parseInt(formState.values[exercise.id]);
-      return { data: { exercise: exercise.id, reps, user: session.sub }}
+      return { data: { exercise: exercise.id, reps, user: profile.sub }}
     })
 
-    createProfile({ variables: { data: { id: session.sub, name, email, exercises: userExercises }}})
+    createProfile({ variables: { data: { id: profile.sub, name, email, exercises: userExercises }}})
 
     setShoulRedirect(true);
   }

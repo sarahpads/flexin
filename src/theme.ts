@@ -38,9 +38,13 @@ const colors: { [key: string]: Palette } = {
 
 const theme = {
   colors,
+  text: {
+    default: "white"
+  },
   defaultPalette: paletteGrey,
   dimensions: {
-    navHeight: "5rem"
+    navHeight: "5rem",
+    pageBuffer: "15vh"
   }
 }
 

@@ -3,10 +3,13 @@ import { gql, useQuery } from "@apollo/client";
 
 import ChallengeResponseForm from "../ChallengeResponseForm/ChallengeResponseForm";
 import { AuthContext } from "../AuthProvider";
+import Timer from "../Timer/Timer";
 
 interface ChallengeProps {
   challenge: {
     id: string,
+    expiresAt: string,
+    date: string,
     exercise: {
       title: string
     }
@@ -82,6 +85,7 @@ const Challenge: React.FC<ChallengeProps> = ({
 
   return (
     <React.Fragment>
+      <Timer expiresAt={challenge.expiresAt} date={challenge.date}></Timer>
       {challenge.id}: {challenge.exercise.title}
       {result.data && result.data.challengeResponses.map((response: any) => {
         return <p key={response.user.id}>{response.user.name} {response.reps}</p>

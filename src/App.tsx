@@ -33,9 +33,9 @@ function App() {
           <Switch location={location}>
             <Route exact path="/login" component={Login}/>
             <Route exact path="/consume" component={Consume}/>
-            <AuthRoute exact path="/create-profile" component={CreateProfile}/>
-            <AuthRoute exact path="/create-challenge" component={CreateChallenge}/>
-            <AuthRoute exact path="/" component={Home}/>
+            <Route exact path="/create-profile" component={CreateProfile}/>
+            <Route exact path="/create-challenge" component={CreateChallenge}/>
+            <Route exact path="/" component={Home}/>
           </Switch>
         </CSSTransition>
       </TransitionGroup>

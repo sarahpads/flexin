@@ -36,6 +36,7 @@ const ChallengeResponseForm: React.FC<ChallengeResponseFormProps> = ({
 
   return (
     <form noValidate onSubmit={handleSubmit}>
+      <p>You need to do X reps to beat so and so</p>
       <label {...label("reps")}>Reps</label>
       <input {...number("reps")} />
     </form>

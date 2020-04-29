@@ -7,13 +7,14 @@ import { AuthContext } from "../../components/AuthProvider";
 import Challenge from "../../components/Challenge/Challenge";
 import WithBackground from "../../components/WithBackground/WithBackground";
 import ThemeContext from "../../components/ThemeProvider";
+import Graphic from "../../components/Graphic/Graphic";
 
 interface HomeProps {}
 
 const GET_DATA = gql`
   query ($id: String!) {
     user(id: $id) { name },
-    activeChallenge { id, exercise { title } }
+    activeChallenge { id, date, expiresAt, exercise { title } }
   }
 `
 
@@ -65,7 +66,7 @@ const Home: React.FC<HomeProps> = () => {
   // TODO: this is causing a memory leak
   // Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function.
   if (result.error && result.error.graphQLErrors[0]?.extensions?.exception.statusCode === 404) {
-    return <Redirect to="/create-profile"/>
+    // return <Redirect to="/create-profile"/>
   } else if (result.error) {
     console.log(result.error)
   }
@@ -75,14 +76,23 @@ const Home: React.FC<HomeProps> = () => {
 
   // if challenge, show prompt to respond
   if (result.data && result.data.activeChallenge) {
-    return <Challenge challenge={result.data.activeChallenge}/>
+    return (
+      <S.Home>
+        <Challenge challenge={result.data.activeChallenge}/>
+      </S.Home>
+    )
   }
 
   // otherwise, prompt to challenge
   return (
-    <S.Button as={Link} color={palette?.neutral} to="/create-challenge">
-      Create Challenge
-    </S.Button>
+    <S.Home>
+      <Graphic/>
+      <S.H1>No Active Challenge</S.H1>
+      <S.P>Your friends are being wimps; show 'em how it's done!</S.P>
+      <S.Button as={Link} color={palette?.neutral} to="/create-challenge">
+        Create Challenge
+      </S.Button>
+    </S.Home>
   );
 }
 
