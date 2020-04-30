@@ -42,16 +42,16 @@ export const G = styled.g`
 
 interface CircleProps {
   background: string;
-  total: number;
-  complete: number;
+  progress: number; // percentage
 }
 
 export const Circle = styled.circle<CircleProps>`
   fill: ${(props) => props.background};
   r: calc(50% - 0.5rem);
   stroke: white;
-  stroke-dasharray: ${(props) => props.total};
-  stroke-dashoffset: ${(props) => props.complete};
+  stroke-dasharray: 764;
+  stroke-dashoffset: ${(props) => 764 * (1 - props.progress)};
   stroke-width: 0.5rem;
-  transform: rotate(-90deg)
+  transform: rotate(-90deg);
+  transition: stroke-dashoffset 1s linear;
 `

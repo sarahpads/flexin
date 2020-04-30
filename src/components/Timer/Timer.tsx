@@ -13,21 +13,13 @@ interface TimerProps {
 const Timer: React.FC<TimerProps> = ({ expiresAt, date }) => {
   const seconds = useCountdown(expiresAt)
   const palette = useContext(ThemeContext);
-  const [totalSeconds, setTotalSeconds] = useState();
-  const [complete, setComplete] = useState();
+  const [progress, setProgress] = useState();
 
   useEffect(() => {
     const createdAt = DateTime.fromISO(date);
-    const seconds = DateTime.fromISO(expiresAt).diff(createdAt).as("seconds");
+    const totalSeconds = DateTime.fromISO(expiresAt).diff(createdAt).as("seconds");
 
-    setTotalSeconds(seconds);
-  }, [expiresAt])
-
-  // TODO: use transition duration instead of setting
-  useEffect(() => {
-    const percent = seconds / totalSeconds;
-
-    setComplete(764 * (1 - percent));
+    setProgress(seconds/totalSeconds)
   }, [seconds])
 
   return (
@@ -39,7 +31,7 @@ const Timer: React.FC<TimerProps> = ({ expiresAt, date }) => {
 
       <S.SVG>
         <S.G>
-          <S.Circle background={palette?.dark} total={754} complete={complete}/>
+          <S.Circle background={palette?.dark} progress={progress}/>
         </S.G>
       </S.SVG>
     </S.Timer>

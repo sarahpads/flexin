@@ -19,32 +19,45 @@ export const Circle = styled.div<CircleProps>`
   background-color: ${(props) => props.background};
   border-radius: 50%;
   display: flex;
+  flex-direction: column;
   height: 25rem;
+  justify-content: center;
   margin: auto;
   margin-bottom: 5rem;
   width: 25rem;
 `
 
-export const Reps = styled.div`
-  align-items: flex-end;
-  display: flex;
-`
-
-export const RepsInput = styled.input`
-  background-color: transparent;
-  border: none;
-  color: white;
+export const Output = styled.span`
   font-family: "ManRope";
   font-size: 8rem;
   font-weight: 600;
-  height: 0.9em;
   letter-spacing: -0.5rem;
+`
+
+export const Benchmark = styled.span`
+  font-size: 1.4rem;
+`
+
+export const Reps = styled.div`
+  margin-top: 2rem;
+`
+
+// TODO: inherit this stuff from an Input element
+export const RepsInput = styled.input`
+  background-color: transparent;
+  border: 1px solid white;
+  border-radius: 20px;
+  color: white;
+  font-family: "ManRope";
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 4rem;
   margin-right: 1rem;
   min-width: 0;
   outline: none;
   padding: 0;
-  text-align: right;
-  width: 3ch;
+  text-align: center;
+  width: 6rem;
   -moz-appearance: textfield;
 
   &::-webkit-outer-spin-button,
@@ -52,11 +65,6 @@ export const RepsInput = styled.input`
     -webkit-appearance: none;
     margin: 0;
   }
-`
-
-export const RepsLabel = styled.label`
-  font-size: 2rem;
-  text-transform: uppercase;
 `
 
 export const Select = styled.div`
@@ -83,7 +91,7 @@ export const SelectInput = styled.select`
 `
 
 export const Button = styled(B)`
-  margin-top: 3rem;
+  margin-top: 4rem;
 `
 
 export const Cancel = styled.div`

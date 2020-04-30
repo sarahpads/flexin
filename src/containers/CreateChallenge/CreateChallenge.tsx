@@ -43,10 +43,8 @@ const CreateChallenge: React.FC = () => {
     <React.Fragment>
       <S.Form noValidate onSubmit={handleSubmit}>
         <S.Circle background={palette?.dark}>
-          <S.Reps>
-            <S.RepsInput {...number("reps")}/>
-            <S.RepsLabel>reps</S.RepsLabel>
-          </S.Reps>
+          <S.Output>100%</S.Output>
+          <S.Benchmark>This is your typical output</S.Benchmark>
         </S.Circle>
 
         <S.Label {...label("exercise")}>What are you kicking ass at?</S.Label>
@@ -58,6 +56,12 @@ const CreateChallenge: React.FC = () => {
             })}
           </S.SelectInput>
         </S.Select>
+
+        <S.Reps>
+          <S.Label {...label("reps")}>How many times?</S.Label>
+          <S.RepsInput {...number("reps")}/>
+          <span>reps</span>
+        </S.Reps>
 
         <S.Button color={palette?.neutral}>Challenge!</S.Button>
       </S.Form>
