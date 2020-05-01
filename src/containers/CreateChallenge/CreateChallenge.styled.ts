@@ -1,11 +1,11 @@
 import styled from "styled-components";
 
-import { Button as B } from "../../components/Typography.styled";
-export { Label, Input, Link } from "../../components/Typography.styled";
+import { Button as B, Input } from "../../components/Typography.styled";
+export { Label, Link, RepsInput } from "../../components/Typography.styled";
 
 export const Form = styled.form`
   margin: auto;
-  margin-top: 15vh;
+  /* margin-top: 15vh; */
   max-width: 100%;
   width: 25rem;
 `
@@ -42,40 +42,8 @@ export const Reps = styled.div`
   margin-top: 2rem;
 `
 
-// TODO: inherit this stuff from an Input element
-export const RepsInput = styled.input`
-  background-color: transparent;
-  border: 1px solid white;
-  border-radius: 20px;
-  color: white;
-  font-family: "ManRope";
-  font-size: 2rem;
-  font-weight: 800;
-  line-height: 4rem;
-  margin-right: 1rem;
-  min-width: 0;
-  outline: none;
-  padding: 0;
-  text-align: center;
-  width: 6rem;
-  -moz-appearance: textfield;
-
-  &::-webkit-outer-spin-button,
-  &::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-`
-
-export const Select = styled.div`
-  border: 1px solid white;
-  border-radius: 20px;
-  box-sizing: border-box;
-  color: white;
+export const Select = styled(Input)`
   display: flex;
-  font-weight: 800;
-  height: 4rem;
-  outline: none;
   padding: 0 1rem;
   width: 100%;
 `

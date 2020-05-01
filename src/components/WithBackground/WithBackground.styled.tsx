@@ -37,7 +37,7 @@ export const Component = styled.div`
 `
 
 export const SVG = styled.svg`
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   z-index: -1;

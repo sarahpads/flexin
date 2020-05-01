@@ -1,9 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
 import { gql, useQuery } from "@apollo/client";
 
+import * as S from "./Challenge.styled";
+
 import ChallengeResponseForm from "../ChallengeResponseForm/ChallengeResponseForm";
 import { AuthContext } from "../AuthProvider";
 import Timer from "../Timer/Timer";
+import Leaderboard from "../Leaderboard/Leaderboard";
 
 interface ChallengeProps {
   challenge: {
@@ -85,16 +88,24 @@ const Challenge: React.FC<ChallengeProps> = ({
 
   return (
     <React.Fragment>
-      <Timer expiresAt={challenge.expiresAt} date={challenge.date}></Timer>
-      {challenge.id}: {challenge.exercise.title}
-      {result.data && result.data.challengeResponses.map((response: any) => {
-        return <p key={response.user.id}>{response.user.name} {response.reps}</p>
-      })}
+      <S.Challenge>
+        <S.H1>Some dude is flexin' at you</S.H1>
+        <S.P>{challenge.id}: {challenge.exercise.title}</S.P>
 
-      {!hasResponded
-        ? <ChallengeResponseForm challenge={challenge}/>
-        : <span>Watch 'em roll</span>
-      }
+        <Timer expiresAt={challenge.expiresAt} date={challenge.date}></Timer>
+        {result.data && result.data.challengeResponses.map((response: any) => {
+          return <p key={response.user.id}>{response.user.name} {response.reps}</p>
+        })}
+
+        <S.Form>
+          {!hasResponded
+            ? <ChallengeResponseForm challenge={challenge}/>
+            : <span>Watch 'em roll</span>
+          }
+        </S.Form>
+      </S.Challenge>
+
+      <Leaderboard responses={challenge.responses}/>
     </React.Fragment>
   )
 }

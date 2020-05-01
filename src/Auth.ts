@@ -21,8 +21,8 @@ export default class AuthClient {
 
   init() {
     return this.authClient.getAccessToken()
-      .then((tokens: any) => this.authClient.getTokenInfo(tokens.token))
-      .catch((error: any) => console.log(error));
+      .then((tokens: any) => {console.log(tokens); return this.authClient.getTokenInfo(tokens.token)})
+      .catch((error: any) => console.log("auth init error", error));
   }
 
   getIdToken() {
@@ -51,8 +51,10 @@ export default class AuthClient {
   }
 
   setTokens(tokens: any) {
-    // TODO: don't overwrite existing refresh token
-    localStorage.setItem(this.KEY, JSON.stringify(tokens));
+    // TODO: don't overwrite existing refresh token; make sure this actually works
+    const updatedTokens = Object.assign(this.getTokens(), tokens);
+    console.log(updatedTokens)
+    localStorage.setItem(this.KEY, JSON.stringify(updatedTokens));
   }
 
   getTokens() {

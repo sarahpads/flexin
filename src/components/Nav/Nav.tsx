@@ -14,7 +14,7 @@ const Nav: React.FC = () => {
       <S.Button onClick={() => onClick()}>
         <MdSettings/>
       </S.Button>
-    </IconContext.Provider>
+  </IconContext.Provider>
   </S.Nav>
 }
 

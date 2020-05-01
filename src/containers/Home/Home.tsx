@@ -77,9 +77,7 @@ const Home: React.FC<HomeProps> = () => {
   // if challenge, show prompt to respond
   if (result.data && result.data.activeChallenge) {
     return (
-      <S.Home>
-        <Challenge challenge={result.data.activeChallenge}/>
-      </S.Home>
+      <Challenge challenge={result.data.activeChallenge}/>
     )
   }
 
@@ -87,7 +85,7 @@ const Home: React.FC<HomeProps> = () => {
   return (
     <S.Home>
       <Graphic/>
-      <S.H1>No Active Challenge</S.H1>
+      <S.H1>No one is flexin'</S.H1>
       <S.P>Your friends are being wimps; show 'em how it's done!</S.P>
       <S.Button as={Link} color={palette?.neutral} to="/create-challenge">
         Create Challenge

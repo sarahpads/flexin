@@ -27,11 +27,11 @@ const CreateChallenge: React.FC = () => {
   const { data } = useQuery(GET_EXERCISES);
   const [ createChallenge ] = useMutation(CREATE_CHALLENGE);
 
-  // TODO: ensure leading 0 when under 2 digits
-  const [formState, { number, label, select }] = useFormState({ reps: "04" })
+  const [formState, { number, label, select }] = useFormState({ reps: "4" })
 
   const handleSubmit = (event: any) => {
     event.preventDefault();
+    console.log(auth)
 
     const { exercise, reps } = formState.values;
     createChallenge({ variables: { data: { exercise, reps: parseInt(reps), user: auth.profile.sub }}});
@@ -48,7 +48,7 @@ const CreateChallenge: React.FC = () => {
         </S.Circle>
 
         <S.Label {...label("exercise")}>What are you kicking ass at?</S.Label>
-        <S.Select>
+        <S.Select as="div">
           <S.SelectInput {...select("exercise")}>
             <option>Choose an exercise</option>
             {data && data.exercises.map((exercise: any) => {
@@ -58,7 +58,6 @@ const CreateChallenge: React.FC = () => {
         </S.Select>
 
         <S.Reps>
-          <S.Label {...label("reps")}>How many times?</S.Label>
           <S.RepsInput {...number("reps")}/>
           <span>reps</span>
         </S.Reps>

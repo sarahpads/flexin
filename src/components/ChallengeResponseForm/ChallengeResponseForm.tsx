@@ -4,6 +4,9 @@ import gql from "graphql-tag";
 import { useMutation } from "@apollo/client";
 import { AuthContext } from "../AuthProvider";
 
+import * as S from "./ChallengeResponseForm.styled";
+import Button from "../Button/Button";
+
 interface ChallengeResponseFormProps {
   challenge: {
     id: string;
@@ -22,7 +25,7 @@ const CREATE_RESPONSE = gql`
 const ChallengeResponseForm: React.FC<ChallengeResponseFormProps> = ({
   challenge
 }) => {
-  const [formState, { number, label }] = useFormState();
+  const [formState, { number }] = useFormState({ reps: 4 });
   const [createResponse] = useMutation(CREATE_RESPONSE);
   const { session } = useContext(AuthContext);
 
@@ -37,8 +40,13 @@ const ChallengeResponseForm: React.FC<ChallengeResponseFormProps> = ({
   return (
     <form noValidate onSubmit={handleSubmit}>
       <p>You need to do X reps to beat so and so</p>
-      <label {...label("reps")}>Reps</label>
-      <input {...number("reps")} />
+
+      <div>
+        <S.RepsInput {...number("reps")}/>
+        <span>reps</span>
+      </div>
+
+      <Button>Challenge Accepted!</Button>
     </form>
   )
 }

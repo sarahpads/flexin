@@ -28,6 +28,7 @@ export const Button = styled.button<ButtonProps>`
 `
 
 export const H1 = styled.h1`
+  line-height: 1em;
   margin: 0;
 `
 
@@ -37,13 +38,37 @@ export const P = styled.p`
 `
 
 export const Input = styled.input`
-  color: ${() => theme.text.default};
   background-color: transparent;
   border: none;
-  border-bottom: 1px solid white;
+  border: 1px solid white;
+  border-radius: 20px;
+  box-sizing: border-box;
+  color: ${() => theme.text.default};
+  font-family: "ManRope";
+  font-size: 2rem;
+  font-weight: 800;
+  height: 4rem;
+  line-height: 4rem;
   margin-bottom: 1rem;
+  min-width: 0;
+  outline: none;
+  padding: 0;
   outline: none;
   width: 100%;
+
+  -moz-appearance: textfield;
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+`
+
+export const RepsInput = styled(Input)`
+  margin-right: 1rem;
+  text-align: center;
+  width: 6rem;
 `
 
 export const Label = styled.label`
