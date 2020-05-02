@@ -3,9 +3,21 @@ import React, { useState, useEffect } from "react";
 import * as S from "./WithBackground.styled";
 import theme, { getRandomPalette, Palette } from "../../theme";
 
-const WithBackground = (Component: any) => {
-  function Wrapper() {
-    const [palette, setPalette] = useState({} as Palette);
+type Origin = "top-right" | "bottom-left";
+
+interface WithBackgroundProps {
+  origin?: Origin;
+  animateOut?: boolean;
+  palette?: Palette;
+}
+
+const WithBackground = <T extends {}>(Component: React.ComponentType<T>, {
+  animateOut = false,
+  origin = "bottom-left",
+  palette: p = {} as Palette
+}: WithBackgroundProps = {}) => {
+  function Wrapper(props: T) {
+    const [palette, setPalette] = useState(p);
 
     useEffect(() => {
       const p: string = getRandomPalette();
@@ -14,13 +26,13 @@ const WithBackground = (Component: any) => {
 
     return (
       <S.Container palette={palette}>
-        <S.Component>
-          <Component/>
+        <S.Component animateOut={animateOut}>
+          <Component {...props}/>
         </S.Component>
 
         <S.SVG>
-          <S.G>
-            <S.Circle/>
+          <S.G origin={origin}>
+            <S.Circle animateOut={animateOut}/>
           </S.G>
         </S.SVG>
       </S.Container>

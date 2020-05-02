@@ -8,7 +8,7 @@ export const Nav = styled.div`
   height: ${theme.dimensions.navHeight};
   justify-content: flex-end;
   position: relative;
-  z-index: 2;
+  z-index: 10;
 `
 
 export const Button = styled.button`
@@ -18,4 +18,9 @@ export const Button = styled.button`
   margin: 1rem;
   outline: none;
   padding: 0;
+`
+
+export const Settings = styled.div`
+  position: relative;
+  z-index: 5;
 `

@@ -14,7 +14,7 @@ export const Container = styled.div<ContainerProps>`
   position: absolute;
   top: 0;
   min-height: 100vh;
-  padding-top: ${(props) => theme.dimensions.navHeight};
+  padding-top: ${theme.dimensions.navHeight};
   width: 100%;
 
   &.shit-enter-active,
@@ -27,7 +27,11 @@ export const Container = styled.div<ContainerProps>`
   }
 `
 
-export const Component = styled.div`
+interface ComponentProps {
+  animateOut: boolean;
+}
+
+export const Component = styled.div<ComponentProps>`
   flex: 1;
   opacity: 0;
   padding: ${theme.dimensions.pagePadding};
@@ -36,10 +40,17 @@ export const Component = styled.div`
   transition-timing-function: ease-out;
   width: 100%;
 
-  .shit-enter-done &,
-  .shit-exit-active & {
+  .shit-enter-done & {
     opacity: 1;
     transform: translateY(0);
+  }
+
+  .shit-exit-active & {
+    ${(props) => {
+      return props.animateOut
+        ? "transform: translateY(2rem); opacity: 1"
+        : "transform: translateY(0); opacity: 0"
+    }}
   }
 `
 
@@ -52,7 +63,11 @@ export const SVG = styled.svg`
   width: 100vw;
 `
 
-export const Circle = styled.circle`
+interface CircleProps {
+  animateOut: boolean;
+}
+
+export const Circle = styled.circle<CircleProps>`
 	transition: transform 0.8s, fill-opacity 0.4s;
 	transition-timing-function: ease-out;
   transform: scale3d(0,0,1);
@@ -61,15 +76,25 @@ export const Circle = styled.circle`
 
   .shit-appear-active &,
   .shit-enter-active &,
-  .shit-enter-done &,
-  .shit-exit-active & {
+  .shit-enter-done & {
     transform: scale3d(1,1,1);
+  }
+
+  .shit-exit-active & {
+    transform: ${(props) => {
+      return props.animateOut ? "scale3d(0,0,1)" : "scale3d(1,1,1)";
+    }}
   }
 `
 
-// position at bottom left of screen
-export const G = styled.g`
+interface GProps {
+  origin: string;
+}
+
+export const G = styled.g<GProps>`
   display: block;
-  transform: translate(0, 100%);
+  transform: ${(props) => {
+    return props.origin === "top-right" ? "translate(100%, 0)" : "translate(0, 100%)";
+  }};
   width: 100%;
 `
