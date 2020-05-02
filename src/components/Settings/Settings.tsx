@@ -13,4 +13,4 @@ const Settings: React.FC<SettingsProps> = ({ userExercises = [] }) => {
   )
 }
 
-export default WithBackground<SettingsProps>(Settings, { origin: "top-right", animateOut: true });
+export default WithBackground<SettingsProps>(Settings, { origin: "top right", animateOut: true, animation: "clip" });

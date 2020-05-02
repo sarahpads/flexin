@@ -85,7 +85,7 @@ const Home: React.FC<HomeProps> = () => {
 
   // if challenge, show prompt to respond
   if (challengeResult.data && challengeResult.data.activeChallenge) {
-    return <Challenge challenge={challengeResult.data.activeChallenge}/>
+    // return <Challenge challenge={challengeResult.data.activeChallenge}/>
   }
 
   // otherwise, prompt to challenge
