@@ -10,48 +10,58 @@ import Graphic from "../../components/Graphic/Graphic";
 
 interface HomeProps {}
 
-const GET_DATA = gql`
+const GET_USER = gql`
   query ($id: String!) {
-    user(id: $id) { name },
-    activeChallenge { id, date, expiresAt, exercise { title } }
+    user(id: $id) { name }
+  }
+`
+
+const GET_CHALLENGE = gql`
+  query {
+    activeChallenge {
+      id,
+      user { name, id },
+      exercise { title, id },
+      reps,
+      date,
+      expiresAt
+    }
   }
 `
 
 const NEW_CHALLENGE = gql`
   subscription {
     newChallenge {
+      id,
       user { name, id },
       exercise { title, id },
-      reps
+      reps,
+      date,
+      expiresAt
     }
   }
 `
 
 const Home: React.FC<HomeProps> = () => {
   const auth = useContext(AuthContext)
-  const { subscribeToMore, ...result} = useQuery(GET_DATA, {
+  const result = useQuery(GET_USER, {
     variables: { id: auth.profile?.sub }
   });
+
+  const { subscribeToMore, ...challengeResult } = useQuery(GET_CHALLENGE)
 
   useEffect(() => {
     subscribeToMore({
       document: NEW_CHALLENGE,
+      onError: (error) => console.log(error),
       updateQuery: (prev, { subscriptionData }) => {
         // ALERT: what is returned from this function MUST match the exact data format
-        // returned by NEW_RESPONSE; otherwise Apollo will silently discard the update
+        // returned by NEW_CHALLENGE; otherwise Apollo will silently discard the update
         if (!subscriptionData.data) {
           return prev;
         }
 
-        const { user: { name, id: userId }, exercise: { title, id: exerciseId }, reps } = subscriptionData.data.newChallenge;
-
-        const newChallenge = {
-          user: { name, id: userId },
-          exercise: { title, id: exerciseId },
-          reps
-        }
-
-        return newChallenge;
+        return { activeChallenge: subscriptionData.data.newChallenge };
       }
     });
   }, [subscribeToMore])
@@ -66,16 +76,16 @@ const Home: React.FC<HomeProps> = () => {
   if (result.error && result.error.graphQLErrors[0]?.extensions?.exception.statusCode === 404) {
     // return <Redirect to="/create-profile"/>
   } else if (result.error) {
-    console.log(result.error)
+    // console.log(result.error)
   }
 
   // TODO: need to filter out challenges created by the current user
   // if they authored the challenge, let them snoop
 
   // if challenge, show prompt to respond
-  if (result.data && result.data.activeChallenge) {
+  if (challengeResult.data && challengeResult.data.activeChallenge) {
     return (
-      <Challenge challenge={result.data.activeChallenge}/>
+      <Challenge challenge={challengeResult.data.activeChallenge}/>
     )
   }
 

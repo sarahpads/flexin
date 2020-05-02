@@ -10,7 +10,7 @@ export default function useCountdown(date: string) {
     const interval: any = setInterval(() => {
       const seconds = getSeconds(dateTime);
 
-      if (!seconds) {
+      if (seconds < 0) {
         return clearInterval(interval);
       }
 
