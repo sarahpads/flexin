@@ -7,6 +7,7 @@ import { AuthContext } from "../../components/AuthProvider";
 import Challenge from "../../components/Challenge/Challenge";
 import WithBackground from "../../components/WithBackground/WithBackground";
 import Graphic from "../../components/Graphic/Graphic";
+import WithAuth from "../../components/WithAuth";
 
 interface HomeProps {}
 
@@ -84,9 +85,7 @@ const Home: React.FC<HomeProps> = () => {
 
   // if challenge, show prompt to respond
   if (challengeResult.data && challengeResult.data.activeChallenge) {
-    return (
-      <Challenge challenge={challengeResult.data.activeChallenge}/>
-    )
+    // return <Challenge challenge={challengeResult.data.activeChallenge}/>
   }
 
   // otherwise, prompt to challenge
@@ -102,4 +101,4 @@ const Home: React.FC<HomeProps> = () => {
   );
 }
 
-export default WithBackground(Home);
+export default WithBackground(WithAuth(Home));

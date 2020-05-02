@@ -104,7 +104,7 @@ const Challenge: React.FC<ChallengeProps> = ({
         </S.Form>
       </S.Challenge>
 
-      <Leaderboard responses={challenge.responses}/>
+      <Leaderboard responses={result.data?.challengeResponses}/>
     </React.Fragment>
   )
 }

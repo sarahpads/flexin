@@ -6,6 +6,7 @@ import { useQuery, useMutation } from "@apollo/client";
 import * as S from "./CreateChallenge.styled";
 import { AuthContext } from "../../components/AuthProvider";
 import WithBackground from "../../components/WithBackground/WithBackground";
+import WithAuth from "../../components/WithAuth";
 
 const GET_EXERCISES = gql`
   query {
@@ -69,4 +70,4 @@ const CreateChallenge: React.FC = () => {
   )
 }
 
-export default WithBackground(CreateChallenge);
+export default WithBackground(WithAuth(CreateChallenge));

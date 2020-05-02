@@ -12,17 +12,16 @@ interface LeaderboardProps {
 
 const defaultHeight = 155;
 
-const Leaderboard: React.FC<LeaderboardProps> = () => {
+const Leaderboard: React.FC<LeaderboardProps> = ({ responses = [] }) => {
   const elRef = useRef() as React.MutableRefObject<HTMLInputElement>;
   const [elHeight, setElHeight] = useState();
   const [props, set]: any = useSpring(() => ({ height: defaultHeight }))
   // order by most achieved
-  const responses = [6, 10, 8, 5, 1];
 
   useEffect(() => {
     setElHeight(elRef.current?.offsetHeight);
     // TOOD: make this conditional on number of responses
-  }, [elRef]);
+  }, [elRef, responses]);
 
   const bind = useDrag(({
     memo = [props.height.getValue()],

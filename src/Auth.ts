@@ -30,7 +30,7 @@ export default class AuthClient {
   }
 
   isValid() {
-    return !this.authClient.isTokenExpiring();
+    return this.authClient.credentials.expiry_date && !this.authClient.isTokenExpiring();
   }
 
   login() {

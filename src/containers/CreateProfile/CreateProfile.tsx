@@ -6,6 +6,7 @@ import { useQuery, useMutation } from "@apollo/client";
 import { AuthContext } from "../../components/AuthProvider";
 import { Redirect } from "react-router";
 import WithBackground from "../../components/WithBackground/WithBackground";
+import WithAuth from "../../components/WithAuth";
 
 const GET_EXERCISES = gql`
   query Exercise {
@@ -69,4 +70,4 @@ const CreateProfile: React.FC = () => {
   );
 }
 
-export default WithBackground(CreateProfile);
+export default WithBackground(WithAuth(CreateProfile));
