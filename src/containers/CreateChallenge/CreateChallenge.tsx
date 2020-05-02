@@ -6,8 +6,6 @@ import { useQuery, useMutation } from "@apollo/client";
 import * as S from "./CreateChallenge.styled";
 import { AuthContext } from "../../components/AuthProvider";
 import WithBackground from "../../components/WithBackground/WithBackground";
-import Button from "../../components/Button/Button";
-import ThemeContext from "../../components/ThemeProvider";
 
 const GET_EXERCISES = gql`
   query {
@@ -23,7 +21,6 @@ const CREATE_CHALLENGE = gql`
 
 const CreateChallenge: React.FC = () => {
   const auth = useContext(AuthContext);
-  const palette = useContext(ThemeContext);
   const { data } = useQuery(GET_EXERCISES);
   const [ createChallenge ] = useMutation(CREATE_CHALLENGE);
 
@@ -42,7 +39,7 @@ const CreateChallenge: React.FC = () => {
   return (
     <React.Fragment>
       <S.Form noValidate onSubmit={handleSubmit}>
-        <S.Circle background={palette?.dark}>
+        <S.Circle>
           <S.Output>100%</S.Output>
           <S.Benchmark>This is your typical output</S.Benchmark>
         </S.Circle>
@@ -62,7 +59,7 @@ const CreateChallenge: React.FC = () => {
           <span>reps</span>
         </S.Reps>
 
-        <S.Button color={palette?.neutral}>Challenge!</S.Button>
+        <S.Button>Challenge!</S.Button>
       </S.Form>
 
       <S.Cancel>

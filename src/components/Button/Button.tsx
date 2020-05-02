@@ -1,7 +1,6 @@
-import React, { useContext } from "react";
+import React from "react";
 
 import * as S from "./Button.styled";
-import ThemeContext from "../ThemeProvider";
 
 interface ButtonProps {
   children: React.ElementRef<any>;
@@ -9,12 +8,8 @@ interface ButtonProps {
 }
 
 const Button: React.FC<ButtonProps> = ({ onClick = () => {}, children }) => {
-  const palette = useContext(ThemeContext);
-
   return (
-    <S.Button
-      onClick={() => onClick()}
-      color={palette?.neutral}>
+    <S.Button onClick={() => onClick()}>
       {children}
     </S.Button>
   )

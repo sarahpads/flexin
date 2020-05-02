@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 
 import * as S from "./WithBackground.styled";
-import theme, { getRandomPalette } from "../../theme";
-import ThemeContext from "../ThemeProvider";
+import theme, { getRandomPalette, Palette } from "../../theme";
 
 const WithBackground = (Component: any) => {
   function Wrapper() {
-    const [palette, setPalette] = useState();
+    const [palette, setPalette] = useState({} as Palette);
 
     useEffect(() => {
       const p: string = getRandomPalette();
@@ -14,16 +13,14 @@ const WithBackground = (Component: any) => {
     }, [])
 
     return (
-      <S.Container>
+      <S.Container palette={palette}>
         <S.Component>
-          <ThemeContext.Provider value={palette}>
-            <Component/>
-          </ThemeContext.Provider>
+          <Component/>
         </S.Component>
 
         <S.SVG>
           <S.G>
-            <S.Circle color={palette?.neutral}></S.Circle>
+            <S.Circle/>
           </S.G>
         </S.SVG>
       </S.Container>

@@ -1,4 +1,4 @@
-interface Palette {
+export interface Palette {
   dark: string;
   neutral: string;
 }
@@ -44,7 +44,7 @@ const theme = {
   defaultPalette: paletteGrey,
   dimensions: {
     navHeight: "5rem",
-    pageBuffer: "15vh"
+    circle: "25rem"
   }
 }
 

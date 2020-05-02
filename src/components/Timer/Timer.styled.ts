@@ -1,5 +1,7 @@
 import styled from "styled-components";
 
+import theme from "../../theme";
+
 export const Timer = styled.div`
   position: relative;
 `
@@ -9,7 +11,6 @@ export const Countdown = styled.div`
   position: absolute;
   top: 50%;
   transform: translate(-50%, -50%);
-  width: 25rem;
   z-index: 2;
 `
 
@@ -18,7 +19,6 @@ export const CountdownSeconds = styled.span`
   font-size: 8rem;
   font-weight: 600;
   letter-spacing: -0.5rem;
-  /* text-align: center; */
   width: 100%;
 `
 
@@ -29,9 +29,9 @@ export const CountdownLabel = styled.span`
 `
 
 export const SVG = styled.svg`
-  height: 25rem;
+  height: ${theme.dimensions.circle};
   position: relative;
-  width: 25rem;
+  width: ${theme.dimensions.circle};
   z-index: 1;
 `
 
@@ -41,12 +41,11 @@ export const G = styled.g`
 `
 
 interface CircleProps {
-  background: string;
-  progress: number; // percentage
+  progress: number;
 }
 
 export const Circle = styled.circle<CircleProps>`
-  fill: ${(props) => props.background};
+  fill: var(--palette-dark);
   r: calc(50% - 0.5rem);
   stroke: white;
   stroke-dasharray: 764;

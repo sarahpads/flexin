@@ -1,30 +1,20 @@
 import styled from "styled-components";
 
-import { Button as B, Input } from "../../components/Typography.styled";
+import { Button as B, Input, Circle as C } from "../../components/Typography.styled";
 export { Label, Link, RepsInput } from "../../components/Typography.styled";
 
 export const Form = styled.form`
   margin: auto;
-  /* margin-top: 15vh; */
   max-width: 100%;
   width: 25rem;
 `
 
-interface CircleProps {
-  background: string;
-}
-
-export const Circle = styled.div<CircleProps>`
+export const Circle = styled(C)`
   align-items: center;
-  background-color: ${(props) => props.background};
   border-radius: 50%;
   display: flex;
   flex-direction: column;
-  height: 25rem;
   justify-content: center;
-  margin: auto;
-  margin-bottom: 5rem;
-  width: 25rem;
 `
 
 export const Output = styled.span`

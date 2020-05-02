@@ -9,13 +9,9 @@ export const Leaderboard = styled.div`
   z-index: 3;
 `
 
-interface TitleProps {
-  color: string;
-}
-
-export const Title = styled.span<TitleProps>`
+export const Title = styled.span`
   border-bottom: 1px solid #EDEDED;
-  color: ${(props) => props.color};
+  color: var(--palette-neutral);
   display: block;
   font-weight: 600;
   padding-bottom: 1.5rem;

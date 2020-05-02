@@ -7,12 +7,10 @@ import { AuthContext } from './components/AuthProvider';
 import { getClient } from './Apollo';
 import Nav from './components/Nav/Nav';
 import Consume from './containers/Consume/Consume';
-import AuthRoute from './components/AuthRoute';
 import CreateProfile from './containers/CreateProfile/CreateProfile';
 import Home from './containers/Home/Home';
 import Login from './containers/Login/Login';
 import CreateChallenge from './containers/CreateChallenge/CreateChallenge';
-import { ThemeContext } from 'styled-components';
 
 function App() {
   const location = useLocation();

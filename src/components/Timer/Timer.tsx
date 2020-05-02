@@ -1,9 +1,8 @@
-import React, { useEffect, useState, useContext } from "react";
-import useCountdown from "../../hooks/use-countdown";
+import React, { useEffect, useState } from "react";
 import { DateTime } from "luxon";
 
 import * as S from "./Timer.styled";
-import ThemeContext from "../ThemeProvider";
+import useCountdown from "../../hooks/use-countdown";
 
 interface TimerProps {
   expiresAt: string;
@@ -12,7 +11,6 @@ interface TimerProps {
 
 const Timer: React.FC<TimerProps> = ({ expiresAt, date }) => {
   const seconds = useCountdown(expiresAt)
-  const palette = useContext(ThemeContext);
   const [progress, setProgress] = useState();
 
   useEffect(() => {
@@ -20,7 +18,7 @@ const Timer: React.FC<TimerProps> = ({ expiresAt, date }) => {
     const totalSeconds = DateTime.fromISO(expiresAt).diff(createdAt).as("seconds");
 
     setProgress(seconds/totalSeconds)
-  }, [seconds])
+  }, [seconds, date, expiresAt])
 
   return (
     <S.Timer>
@@ -31,7 +29,7 @@ const Timer: React.FC<TimerProps> = ({ expiresAt, date }) => {
 
       <S.SVG>
         <S.G>
-          <S.Circle background={palette?.dark} progress={progress}/>
+          <S.Circle progress={progress}/>
         </S.G>
       </S.SVG>
     </S.Timer>

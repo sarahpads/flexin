@@ -6,7 +6,6 @@ import * as S from "./Home.styled";
 import { AuthContext } from "../../components/AuthProvider";
 import Challenge from "../../components/Challenge/Challenge";
 import WithBackground from "../../components/WithBackground/WithBackground";
-import ThemeContext from "../../components/ThemeProvider";
 import Graphic from "../../components/Graphic/Graphic";
 
 interface HomeProps {}
@@ -29,7 +28,6 @@ const NEW_CHALLENGE = gql`
 `
 
 const Home: React.FC<HomeProps> = () => {
-  const palette = useContext(ThemeContext);
   const auth = useContext(AuthContext)
   const { subscribeToMore, ...result} = useQuery(GET_DATA, {
     variables: { id: auth.profile?.sub }
@@ -87,7 +85,7 @@ const Home: React.FC<HomeProps> = () => {
       <Graphic/>
       <S.H1>No one is flexin'</S.H1>
       <S.P>Your friends are being wimps; show 'em how it's done!</S.P>
-      <S.Button as={Link} color={palette?.neutral} to="/create-challenge">
+      <S.Button as={Link} to="/create-challenge">
         Create Challenge
       </S.Button>
     </S.Home>

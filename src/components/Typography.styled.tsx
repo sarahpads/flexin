@@ -3,15 +3,11 @@ import { Link as L } from "react-router-dom";
 
 import theme from "../theme";
 
-interface ButtonProps extends React.HTMLAttributes<HTMLElement> {
-  color: string;
-}
-
-export const Button = styled.button<ButtonProps>`
+export const Button = styled.button`
   background: white;
   border: none;
   border-radius: 20px;
-  color: ${(props) => props.color};
+  color: var(--palette-neutral);
   cursor: pointer;
   display: block;
   font-family: "ManRope";
@@ -43,7 +39,7 @@ export const Input = styled.input`
   border: 1px solid white;
   border-radius: 20px;
   box-sizing: border-box;
-  color: ${() => theme.text.default};
+  color: ${theme.text.default};
   font-family: "ManRope";
   font-size: 2rem;
   font-weight: 800;
@@ -79,6 +75,15 @@ export const Label = styled.label`
 `
 
 export const Link = styled(L)`
-  color: ${() => theme.text.default};
+  color: ${theme.text.default};
   text-decoration: underline;
+`
+
+export const Circle = styled.div`
+  background-color: var(--palette-dark);
+  border-radius: 50%;
+  height: ${theme.dimensions.circle};
+  margin: auto;
+  margin-bottom: 5rem;
+  width: ${theme.dimensions.circle};
 `

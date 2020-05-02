@@ -7,7 +7,7 @@ const Consume: React.FC = () => {
 
   useEffect(() => {
     auth.consume();
-  }, [])
+  }, [auth])
 
   return <div>Loading</div>;
 }

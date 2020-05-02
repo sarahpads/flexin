@@ -1,8 +1,14 @@
 import styled from "styled-components";
 
-import theme from "../../theme";
+import theme, { Palette } from "../../theme";
 
-export const Container = styled.div`
+interface ContainerProps {
+  palette: Palette;
+}
+
+export const Container = styled.div<ContainerProps>`
+  --palette-neutral: ${(props) => props.palette.neutral};
+  --palette-dark: ${(props) => props.palette.dark};
   box-sizing: border-box;
   display: flex;
   position: absolute;
@@ -45,11 +51,11 @@ export const SVG = styled.svg`
   width: 100vw;
 `
 
-export const Circle = styled.circle<any>`
+export const Circle = styled.circle`
 	transition: transform 0.8s, fill-opacity 0.4s;
 	transition-timing-function: ease-out;
   transform: scale3d(0,0,1);
-  fill: ${(props: any) => props.color};
+  fill: var(--palette-neutral);
   r: 150%;
 
   .shit-appear-active &,
