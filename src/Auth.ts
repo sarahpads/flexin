@@ -36,7 +36,8 @@ export default class AuthClient {
   login() {
     const url = this.authClient.generateAuthUrl({
       access_type: this.config.accessType,
-      scope: this.config.scopes
+      scope: this.config.scopes,
+      prompt: "consent"
     });
 
     window.location.assign(url);

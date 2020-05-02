@@ -1,16 +1,11 @@
 import styled from "styled-components";
 
 export const Leaderboard = styled.div`
-  background-color: white;
-  border-top-right-radius: 20px;
-  border-top-left-radius: 20px;
-  box-shadow: 0px 0px 5px -1px rgba(0,0,0,0.2);
   box-sizing: border-box;
   color: grey;
   flex: 1;
   margin: 0 auto;
-  padding: 2rem 2rem 4rem;
-  /* width: 100%; */
+  padding: 2rem;
   z-index: 3;
 `
 
