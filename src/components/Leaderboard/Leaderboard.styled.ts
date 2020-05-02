@@ -1,4 +1,20 @@
 import styled from "styled-components";
+import { animated } from "react-spring";
+
+import theme from "../../theme";
+
+export const AnimatedLeaderboard = styled(animated.div)`
+  bottom: 0;
+  background-color: white;
+  border-radius: 20px 20px 0 0;
+  box-shadow: 0px 0px 5px -1px rgba(0,0,0,0.2);
+  margin-left: -${theme.dimensions.pagePadding};
+  overflow: hidden;
+  position: absolute;
+  touch-action: none;
+  width: 100%;
+  z-index: 5;
+`
 
 export const Leaderboard = styled.div`
   box-sizing: border-box;

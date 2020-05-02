@@ -5,7 +5,6 @@ import { useMutation } from "@apollo/client";
 import { AuthContext } from "../AuthProvider";
 
 import * as S from "./ChallengeResponseForm.styled";
-import Button from "../Button/Button";
 
 interface ChallengeResponseFormProps {
   challenge: {
@@ -39,14 +38,14 @@ const ChallengeResponseForm: React.FC<ChallengeResponseFormProps> = ({
 
   return (
     <form noValidate onSubmit={handleSubmit}>
-      <p>You need to do X reps to beat so and so</p>
+      <S.P>You need to do X reps to beat so and so</S.P>
 
       <div>
         <S.RepsInput {...number("reps")}/>
         <span>reps</span>
       </div>
 
-      <Button>Challenge Accepted!</Button>
+      <S.Button>Flex Back!</S.Button>
     </form>
   )
 }

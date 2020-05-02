@@ -30,6 +30,7 @@ export const Container = styled.div<ContainerProps>`
 export const Component = styled.div`
   flex: 1;
   opacity: 0;
+  padding: ${theme.dimensions.pagePadding};
   transform: translateY(2rem);
   transition: opacity 0.3s, transform 0.3s;
   transition-timing-function: ease-out;

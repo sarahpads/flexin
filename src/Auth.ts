@@ -21,7 +21,7 @@ export default class AuthClient {
 
   init() {
     return this.authClient.getAccessToken()
-      .then((tokens: any) => {console.log(tokens); return this.authClient.getTokenInfo(tokens.token)})
+      .then((tokens: any) => this.authClient.getTokenInfo(tokens.token))
       .catch((error: any) => console.log("auth init error", error));
   }
 

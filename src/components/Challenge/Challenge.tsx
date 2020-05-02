@@ -89,8 +89,7 @@ const Challenge: React.FC<ChallengeProps> = ({
   return (
     <React.Fragment>
       <S.Challenge>
-        <S.H1>Some dude is flexin' at you</S.H1>
-        <S.P>{challenge.id}: {challenge.exercise.title}</S.P>
+        <S.H1>Some dude just flexin' at you</S.H1>
 
         <Timer expiresAt={challenge.expiresAt} date={challenge.date}></Timer>
         {result.data && result.data.challengeResponses.map((response: any) => {

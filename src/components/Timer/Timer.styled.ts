@@ -16,7 +16,7 @@ export const Countdown = styled.div`
 
 export const CountdownSeconds = styled.span`
   font-family: "ManRope";
-  font-size: 8rem;
+  font-size: ${theme.circle.fontSize};
   font-weight: 600;
   letter-spacing: -0.5rem;
   width: 100%;
@@ -29,9 +29,9 @@ export const CountdownLabel = styled.span`
 `
 
 export const SVG = styled.svg`
-  height: ${theme.dimensions.circle};
+  height: ${theme.circle.dimension};
   position: relative;
-  width: ${theme.dimensions.circle};
+  width: ${theme.circle.dimension};
   z-index: 1;
 `
 

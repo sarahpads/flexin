@@ -44,7 +44,11 @@ const theme = {
   defaultPalette: paletteGrey,
   dimensions: {
     navHeight: "5rem",
-    circle: "25rem"
+    pagePadding: "2rem"
+  },
+  circle: {
+    dimension: "22rem",
+    fontSize: "7rem"
   }
 }
 

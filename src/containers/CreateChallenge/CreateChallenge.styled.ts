@@ -1,5 +1,6 @@
 import styled from "styled-components";
 
+import theme from "../../theme"
 import { Button as B, Input, Circle as C } from "../../components/Typography.styled";
 export { Label, Link, RepsInput } from "../../components/Typography.styled";
 
@@ -19,7 +20,7 @@ export const Circle = styled(C)`
 
 export const Output = styled.span`
   font-family: "ManRope";
-  font-size: 8rem;
+  font-size: ${theme.circle.fontSize};
   font-weight: 600;
   letter-spacing: -0.5rem;
 `

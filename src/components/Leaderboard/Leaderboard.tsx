@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useSpring, animated, config } from "react-spring";
+import { useSpring, config } from "react-spring";
 import { useDrag } from "react-use-gesture";
 import clamp from "lodash.clamp";
 
@@ -20,7 +20,6 @@ const Leaderboard: React.FC<LeaderboardProps> = () => {
   const responses = [6, 10, 8, 5, 1];
 
   useEffect(() => {
-    console.log(elRef.current?.offsetHeight)
     setElHeight(elRef.current?.offsetHeight);
     // TOOD: make this conditional on number of responses
   }, [elRef]);
@@ -39,25 +38,16 @@ const Leaderboard: React.FC<LeaderboardProps> = () => {
   })
 
   const style = {
-    bottom: 0,
-    backgroundColor: "white",
-    borderRadius: "20px 20px 0 0",
-    boxShadow: "0px 0px 5px -1px rgba(0,0,0,0.2)",
-    overflow: "hidden",
-    position: "absolute",
-    touchAction: "none",
-    width: "100%",
-    zIndex: 5
   }
 
-  return <animated.div {...bind()} style={{ ...style, ...props}}>
+  return <S.AnimatedLeaderboard {...bind()} style={props}>
     <S.Leaderboard ref={elRef}>
       <S.Title>Leaderboard</S.Title>
       {responses.map((response: any, index: number) => {
         return <Standing key={index} response={response} rank={index}></Standing>
       })}
     </S.Leaderboard>
-  </animated.div>
+  </S.AnimatedLeaderboard>
 }
 
 export default Leaderboard;

@@ -1,6 +1,10 @@
 import styled from "styled-components";
 
-export { H1, P } from "../Typography.styled";
+import { H1 as h1 } from "../Typography.styled";
+
+export const H1 = styled(h1)`
+  margin-bottom: 2rem;
+`
 
 export const Challenge = styled.div`
   display: flex;

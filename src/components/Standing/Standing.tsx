@@ -37,7 +37,7 @@ const Standing: React.FC<StandingProps> = ({
       </S.Rank>
 
       <S.Avatar/>
-      <S.Name>Dude Roke</S.Name>
+      <S.Name>Dude Rock</S.Name>
       <S.Flex>150%</S.Flex>
     </S.Standing>
   )

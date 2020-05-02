@@ -21,7 +21,6 @@ const AuthProvider: React.FC<any> = (props) => {
 
     authClient.current.init()
       .then((profile: any) => {
-        console.log(profile)
         setClient({
           profile,
           init: authClient.current.init.bind(authClient.current),
