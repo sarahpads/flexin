@@ -7,31 +7,23 @@ import * as S from "./Nav.styled";
 import Settings from "../Settings/Settings";
 
 const Nav: React.FC = () => {
-  const [showMenu, setShowMenu] = useState(false);
-
-  useEffect(() => {
-    console.log(showMenu)
-  }, [showMenu])
-
-  function onClick() {
-    setShowMenu(!showMenu);
-  }
+  const [showMenu, setShowMenu] = useState(true);
 
   return (
     <React.Fragment>
+      <S.Settings>
+        <CSSTransition classNames="background" in={showMenu} timeout={800} unmountOnExit mountOnEnter>
+          <Settings userExercises={[]}/>
+        </CSSTransition>
+      </S.Settings>
+
       <S.Nav>
         <IconContext.Provider value={{ color: "white", size: "3rem" }}>
-          <S.Button onClick={() => onClick()}>
+          <S.Button onClick={() => setShowMenu(!showMenu)}>
             <MdSettings />
           </S.Button>
         </IconContext.Provider>
       </S.Nav>
-
-      <S.Settings>
-        <CSSTransition classNames="shit" in={showMenu} timeout={800} unmountOnExit mountOnEnter>
-          <Settings userExercises={[]}/>
-        </CSSTransition>
-      </S.Settings>
     </React.Fragment>
   )
 }

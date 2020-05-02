@@ -22,14 +22,14 @@ export const Container = styled.div<ContainerProps>`
   transition: clip-path .8s;
   width: 100%;
 
-  &.shit-appear-active,
-  &.shit-enter-active,
-  &.shit-enter-done {
+  &.background-appear-active,
+  &.background-enter-active,
+  &.background-enter-done {
     clip-path: ${(props) => "circle(150% at " + props.origin + ")"};
     z-index: 1;
   }
 
-  &.shit-exit-active {
+  &.background-exit-active {
     clip-path: ${(props) => {
       return props.animateOut
         ? "circle(0% at " + props.origin + ")"
@@ -57,8 +57,8 @@ export const Component = styled.div<ComponentProps>`
     }
   }}
 
-  .shit-enter-done &,
-  .shit-exit-active & {
+  .background-enter-done &,
+  .background-exit-active & {
     ${(props) => {
       if (props.animation === "fade") {
         return { opacity: 1, transform: "translateY(0)" }

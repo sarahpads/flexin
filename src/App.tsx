@@ -27,7 +27,7 @@ function App() {
       <Nav/>
 
       <TransitionGroup component={null}>
-        <CSSTransition classNames="shit" key={location.key} appear={true} timeout={600} unmountOnExit>
+        <CSSTransition classNames="background" key={location.key} appear={true} timeout={600} unmountOnExit>
           <Switch location={location}>
             <Route exact path="/login" component={Login}/>
             <Route exact path="/consume" component={Consume}/>
