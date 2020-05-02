@@ -44,12 +44,13 @@ interface CircleProps {
   progress: number;
 }
 
-export const Circle = styled.circle<CircleProps>`
+export const Circle = styled.circle.attrs<CircleProps>((props) => ({
+  strokeDashoffset: 764 * (1 - props.progress)
+}))<CircleProps>`
   fill: var(--palette-dark);
   r: calc(50% - 0.5rem);
   stroke: white;
   stroke-dasharray: 764;
-  stroke-dashoffset: ${(props) => 764 * (1 - props.progress)};
   stroke-width: 0.5rem;
   transform: rotate(-90deg);
   transition: stroke-dashoffset 1s linear;
