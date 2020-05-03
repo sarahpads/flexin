@@ -6,10 +6,10 @@ import useCountdown from "../../hooks/use-countdown";
 
 interface TimerProps {
   expiresAt: string;
-  date: string;
+  createdAt: string;
 }
 
-const Timer: React.FC<TimerProps> = ({ expiresAt, date }) => {
+const Timer: React.FC<TimerProps> = ({ expiresAt, createdAt }) => {
   const seconds = useCountdown(expiresAt)
   const [progress, setProgress] = useState();
 
@@ -18,11 +18,13 @@ const Timer: React.FC<TimerProps> = ({ expiresAt, date }) => {
       return;
     }
 
-    const createdAt = DateTime.fromISO(date);
-    const totalSeconds = DateTime.fromISO(expiresAt).diff(createdAt).as("seconds");
+    const totalSeconds = DateTime
+      .fromISO(expiresAt)
+      .diff(DateTime.fromISO(createdAt))
+      .as("seconds");
 
     setProgress(seconds/totalSeconds)
-  }, [seconds, date, expiresAt])
+  }, [seconds, createdAt, expiresAt])
 
   return (
     <S.Timer>

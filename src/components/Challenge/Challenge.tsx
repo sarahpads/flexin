@@ -12,7 +12,7 @@ interface ChallengeProps {
   challenge: {
     id: string,
     expiresAt: string,
-    date: string,
+    createdAt: string,
     exercise: {
       title: string
     }
@@ -91,7 +91,7 @@ const Challenge: React.FC<ChallengeProps> = ({
       <S.Challenge>
         <S.H1>Some dude just flexin' at you</S.H1>
 
-        <Timer expiresAt={challenge.expiresAt} date={challenge.date}></Timer>
+        <Timer expiresAt={challenge.expiresAt} createdAt={challenge.createdAt}></Timer>
         {result.data && result.data.challengeResponses.map((response: any) => {
           return <p key={response.user.id}>{response.user.name} {response.reps}</p>
         })}
