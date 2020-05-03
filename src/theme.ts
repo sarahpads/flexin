@@ -41,7 +41,6 @@ const theme = {
   text: {
     default: "white"
   },
-  defaultPalette: paletteGrey,
   dimensions: {
     navHeight: "5rem",
     pagePadding: "2rem"
@@ -50,16 +49,6 @@ const theme = {
     dimension: "22rem",
     fontSize: "7rem"
   }
-}
-
-let currentTheme = "";
-
-export function getRandomPalette() {
-  const available = Object.keys(colors).filter((c) => c !== currentTheme);
-  const index: number = Math.floor(Math.random() * available.length);
-  currentTheme = available[index];
-
-  return available[index];
 }
 
 export default theme;

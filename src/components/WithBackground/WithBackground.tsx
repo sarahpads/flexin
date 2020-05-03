@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 
 import * as S from "./WithBackground.styled";
-import theme, { getRandomPalette, Palette } from "../../theme";
+import { Palette } from "../../theme";
+import useRandomPalette from "../../hooks/use-random-palette";
 
 type Origin = "top right" | "bottom left";
 type Animation = "fade" | "clip";
@@ -20,12 +21,7 @@ const WithBackground = <T extends {}>(Component: React.ComponentType<T>, {
   palette: p = {} as Palette
 }: WithBackgroundProps = {}) => {
   function Wrapper(props: T) {
-    const [palette, setPalette] = useState(p);
-
-    useEffect(() => {
-      const p: string = getRandomPalette();
-      setPalette(theme.colors[p]);
-    }, [])
+    const palette = useRandomPalette();
 
     return (
       <S.Container palette={palette} animateOut={animateOut} origin={origin}>
