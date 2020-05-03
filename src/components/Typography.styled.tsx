@@ -31,6 +31,7 @@ export const Cancel = styled.div`
 export const H1 = styled.h1`
   line-height: 1em;
   margin: 0;
+  margin-bottom: 1rem;
 `
 
 export const P = styled.p`
@@ -81,8 +82,12 @@ export const Label = styled.label`
 `
 
 export const Link = styled(L)`
+  background-color: transparent;
+  border: none;
   color: ${theme.text.default};
+  cursor: pointer;
   font-size: 1.6rem;
+  outline: none;
   text-decoration: underline;
 `
 

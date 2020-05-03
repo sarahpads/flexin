@@ -3,10 +3,12 @@ import { useFormState } from 'react-use-form-state';
 import gql from "graphql-tag";
 import { useQuery, useMutation } from "@apollo/client";
 
+import * as S from "./CreateProfile.styled";
 import { AuthContext } from "../../components/AuthProvider";
 import { Redirect } from "react-router";
 import WithBackground from "../../components/WithBackground/WithBackground";
 import WithAuth from "../../components/WithAuth";
+import UserExercise from "../../components/UserExercise/UserExercise";
 
 const GET_EXERCISES = gql`
   query Exercise {
@@ -26,14 +28,11 @@ const CreateProfile: React.FC = () => {
   const { data } = useQuery(GET_EXERCISES);
   const [ createProfile ] = useMutation(CREATE_PROFILE);
 
-  const [formState, { number, text, label }] = useFormState({
-    name: profile.name,
-    email: profile.email
-  }, { withIds: true });
+  const [formState, { number, label }] = useFormState();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    const { name, email } = formState.values;
+    const { name, email } = profile;
     const userExercises = data.exercises.map((exercise: any) => {
       const reps = parseInt(formState.values[exercise.id]);
       return { data: { exercise: exercise.id, reps, user: profile.sub }}
@@ -49,24 +48,26 @@ const CreateProfile: React.FC = () => {
   }
 
   return (
-    <form noValidate onSubmit={handleSubmit}>
-      <label {...label("name")}>Name</label>
-      <input {...text("name")}/>
+    <div>
+      <S.H1>Hey there, {profile.given_name}</S.H1>
+      <S.P>
+        Before you get started, enter some benchmarks.
+        These values will be used to calculate how much you're flexin'.
+      </S.P>
 
-      <label {...label("email")}>email</label>
-      <input {...text("email")}/>
+      <form noValidate onSubmit={handleSubmit}>
+        {data && data.exercises.map((exercise: any) => {
+          return <UserExercise
+            key={exercise.id}
+            exercise={exercise}
+            formControl={number(exercise.id)}
+            label={label(exercise.id)}
+          />
+        })}
 
-      {data && data.exercises.map((exercise: any) => {
-        return (
-          <React.Fragment key={exercise.id}>
-            <label {...label(exercise.id)}>{exercise.title}</label>
-            <input {...number(exercise.id)}/>
-          </React.Fragment>
-        );
-      })}
-
-      <button type="submit">Submit</button>
-    </form>
+        <S.Button type="submit">Get Flexin'</S.Button>
+      </form>
+    </div>
   );
 }
 

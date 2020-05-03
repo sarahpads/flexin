@@ -47,6 +47,10 @@ const Settings: React.FC<SettingsProps> = ({
         return e.exercise.id === exercise.id;
       });
 
+      if (userExercise) {
+        formState.setField(exercise.id, userExercise.reps);
+      }
+
       return {
         exercise,
         reps: userExercise ? userExercise.reps : undefined
@@ -83,7 +87,6 @@ const Settings: React.FC<SettingsProps> = ({
           return <UserExercise
             key={test.exercise.id}
             exercise={test.exercise}
-            reps={test.reps}
             formControl={number(test.exercise.id)}
             label={label(test.exercise.id)}
           />;

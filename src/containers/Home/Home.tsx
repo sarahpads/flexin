@@ -9,8 +9,6 @@ import WithBackground from "../../components/WithBackground/WithBackground";
 import Graphic from "../../components/Graphic/Graphic";
 import WithAuth from "../../components/WithAuth";
 
-interface HomeProps {}
-
 const GET_USER = gql`
   query ($id: String!) {
     user(id: $id) { name }
@@ -43,7 +41,7 @@ const NEW_CHALLENGE = gql`
   }
 `
 
-const Home: React.FC<HomeProps> = () => {
+const Home: React.FC = () => {
   const auth = useContext(AuthContext)
   const result = useQuery(GET_USER, {
     variables: { id: auth.profile?.sub }

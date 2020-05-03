@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import AuthClient from "../Auth";
+import { TokenPayload } from "google-auth-library";
 
 const config = {
   clientId: '34199951333-m9g3hi7joeusp6me2j5e07u1foit0mhg.apps.googleusercontent.com', //(string): Your client application's identifier as registered with the OIDC provider.
@@ -20,7 +21,7 @@ const AuthProvider: React.FC<any> = (props) => {
     authClient.current = new AuthClient(config);
 
     authClient.current.init()
-      .then((profile: any) => {
+      .then((profile: TokenPayload) => {
         setClient({
           profile,
           init: authClient.current.init.bind(authClient.current),
