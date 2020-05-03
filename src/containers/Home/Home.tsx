@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { gql, useQuery } from "@apollo/client";
 
@@ -8,6 +8,8 @@ import Challenge from "../../components/Challenge/Challenge";
 import WithBackground from "../../components/WithBackground/WithBackground";
 import Graphic from "../../components/Graphic/Graphic";
 import WithAuth from "../../components/WithAuth";
+import { useSpring, animated } from "react-spring";
+import { CSSTransition } from "react-transition-group";
 
 const GET_USER = gql`
   query ($id: String!) {
@@ -46,6 +48,8 @@ const Home: React.FC = () => {
   const result = useQuery(GET_USER, {
     variables: { id: auth.profile?.sub }
   });
+  const [test, setTest] = useState(false);
+  const [test2, setTest2] = useState(false);
 
   const { subscribeToMore, ...challengeResult } = useQuery(GET_CHALLENGE)
 
@@ -82,19 +86,41 @@ const Home: React.FC = () => {
   // if they authored the challenge, let them snoop
 
   // if challenge, show prompt to respond
-  if (challengeResult.data && challengeResult.data.activeChallenge) {
-    return <Challenge challenge={challengeResult.data.activeChallenge}/>
+  function clicky() {
+    console.log(test)
+    // avoid double-click
+    if (test) return;
+
+    setTest(true);
+
+    setTimeout(() => {
+      setTest(false)
+      setTest2(true)
+    }, 3200)
   }
 
   // otherwise, prompt to challenge
   return (
     <S.Home>
-      <Graphic/>
-      <S.H1>No one is flexin'</S.H1>
-      <S.P>Your friends are being wimps; show 'em how it's done!</S.P>
-      <S.Button as={Link} to="/create-challenge">
-        Create Challenge
-      </S.Button>
+      {challengeResult.data && challengeResult.data.activeChallenge && test2 &&
+        <Challenge challenge={challengeResult.data.activeChallenge}/>
+      }
+
+      <CSSTransition in={test} classNames="challenge" timeout={1000}>
+        <S.Test onClick={() => clicky()}>
+          <S.Test2>A new foe has appeared!</S.Test2>
+        </S.Test>
+      </CSSTransition>
+
+      {!test2 && (
+        <React.Fragment>
+          <S.H1>No one is flexin'</S.H1>
+          <S.P>Your friends are being wimps; show 'em how it's done!</S.P>
+          <S.Button as={Link} to="/create-challenge">
+            Create Challenge
+          </S.Button>
+        </React.Fragment>
+      )}
     </S.Home>
   );
 }
