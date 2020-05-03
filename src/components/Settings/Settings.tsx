@@ -11,6 +11,29 @@ interface SettingsProps {
   onClose: Function;
 }
 
+interface Data {
+  exercises: [{
+    title: string;
+    id: string;
+  }],
+  user: {
+    exercises: [{
+      reps: number;
+      exercise: {
+        id: string;
+      }
+    }]
+  }
+}
+
+interface Exercise {
+  exercise: {
+    title: string;
+    id: string;
+  };
+  reps: number | undefined;
+}
+
 const GET_DATA = gql`
   query User($id: String!) {
     exercises { title, id }
@@ -31,19 +54,19 @@ const Settings: React.FC<SettingsProps> = ({
 }) => {
   const auth = useContext(AuthContext);
   const [formState, { number, label }] = useFormState()
-  const [ updateUserExercises ] = useMutation(UPDATE_USER_EXERCISES);
-  const data = useQuery(GET_DATA, {
+  const [updateUserExercises] = useMutation(UPDATE_USER_EXERCISES);
+  const result = useQuery<Data>(GET_DATA, {
     variables: { id: auth.profile?.sub }
   });
-  const [test, setTest] = useState();
+  const [exercises, setExercises] = useState([] as Exercise[]);
 
   useEffect(() => {
-    if(!data.data) {
+    if (!result.data) {
       return;
     }
 
-    const test = data.data.exercises.map((exercise: any) => {
-      const userExercise = data.data.user.exercises.find((e: any) => {
+    const exercises = result.data.exercises.map((exercise) => {
+      const userExercise = result.data?.user.exercises.find((e) => {
         return e.exercise.id === exercise.id;
       });
 
@@ -57,20 +80,19 @@ const Settings: React.FC<SettingsProps> = ({
       }
     });
 
-    setTest(test);
-  }, [data.data])
+    setExercises(exercises);
+  }, [result.data]);
 
   const handleSubmit = (event: any) => {
     event.preventDefault();
 
-    const userExercises = data.data.exercises.map((exercise: any) => {
+    const userExercises = exercises.map((exercise) => {
       return {
-        exercise: exercise.id,
-        reps: parseInt(formState.values[exercise.id])
+        exercise: exercise.exercise.id,
+        reps: parseInt(formState.values[exercise.exercise.id])
       }
     })
 
-    console.log(userExercises)
     updateUserExercises({ variables: { data: { user: auth.profile.sub, exercises: userExercises }}})
   }
 
@@ -83,7 +105,7 @@ const Settings: React.FC<SettingsProps> = ({
       </S.P>
 
       <form noValidate onSubmit={handleSubmit}>
-        {test?.map((test: any) => {
+        {exercises.map((test: any) => {
           return <UserExercise
             key={test.exercise.id}
             exercise={test.exercise}

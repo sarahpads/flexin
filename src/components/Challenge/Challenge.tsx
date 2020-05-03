@@ -13,10 +13,11 @@ interface ChallengeProps {
     id: string,
     expiresAt: string,
     createdAt: string,
+    reps: number,
     exercise: {
       title: string
-    }
-    responses: any[]
+    },
+    user: { id: string, name: string }
   }
 }
 
@@ -42,12 +43,23 @@ const Challenge: React.FC<ChallengeProps> = ({
   challenge
 }) => {
   const [ hasResponded, setHasResponded ] = useState(false);
+  const [ hasAuthored, setHasAuthored ] = useState(false);
+  const [ responses, setResponses ] = useState([] as any[]);
   const { profile } = useContext(AuthContext);
 
-  // TODO: throughout { ...result, subscribeToMore }
   const { subscribeToMore, ...result } = useQuery(GET_RESPONSES, {
     variables: { challengeId: challenge.id }
   });
+
+  useEffect(() => {
+    setHasAuthored(challenge.user.id === profile.sub);
+  }, [challenge]);
+
+  useEffect(() => {
+    setResponses([
+      { user: challenge.user, reps: challenge.reps }
+    ])
+  }, [result.data]);
 
   useEffect(() => {
     const hasResponded = result.data && result.data.challengeResponses.some((response: any) => {
@@ -89,22 +101,27 @@ const Challenge: React.FC<ChallengeProps> = ({
   return (
     <React.Fragment>
       <S.Challenge>
-        <S.H1>Some dude just flexin' at you</S.H1>
+        <S.H1>
+          {hasAuthored
+            ? "You flexed"
+            : "Some dude is flexin' at you"}
+        </S.H1>
 
         <Timer expiresAt={challenge.expiresAt} createdAt={challenge.createdAt}></Timer>
+
         {result.data && result.data.challengeResponses.map((response: any) => {
           return <p key={response.user.id}>{response.user.name} {response.reps}</p>
         })}
 
         <S.Form>
-          {!hasResponded
-            ? <ChallengeResponseForm challenge={challenge}/>
-            : <span>Watch 'em roll</span>
+          {hasResponded || hasAuthored
+            ? <span>Watch 'em roll</span>
+            : <ChallengeResponseForm challenge={challenge}/>
           }
         </S.Form>
       </S.Challenge>
 
-      <Leaderboard responses={result.data?.challengeResponses}/>
+      <Leaderboard responses={responses}/>
     </React.Fragment>
   )
 }
