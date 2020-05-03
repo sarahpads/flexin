@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
-import theme from "../../theme";
+import { Button as B } from "../Typography.styled";
+export { H1, P, Link, Cancel } from "../Typography.styled";
 
-export const Settings = styled.div`
-  padding-top: ${theme.dimensions.navHeight};
-  position: absolute
+export const Button = styled(B)`
+  margin-top: 3rem;
 `

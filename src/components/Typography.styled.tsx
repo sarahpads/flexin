@@ -23,12 +23,18 @@ export const Button = styled.button`
   width: 25rem;
 `
 
+export const Cancel = styled.div`
+  margin-top: 0.8rem;
+  text-align: center;
+`
+
 export const H1 = styled.h1`
   line-height: 1em;
   margin: 0;
 `
 
 export const P = styled.p`
+  font-size: 1.4rem;
   margin: 0;
   margin-bottom: 3rem;
 `
@@ -76,6 +82,7 @@ export const Label = styled.label`
 
 export const Link = styled(L)`
   color: ${theme.text.default};
+  font-size: 1.6rem;
   text-decoration: underline;
 `
 

@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 import theme from "../../theme"
 import { Button as B, Input, Circle as C } from "../../components/Typography.styled";
-export { Label, Link, RepsInput } from "../../components/Typography.styled";
+export { Label, Link, RepsInput, Cancel } from "../../components/Typography.styled";
 
 export const Form = styled.form`
   margin: auto;
@@ -51,9 +51,4 @@ export const SelectInput = styled.select`
 
 export const Button = styled(B)`
   margin-top: 4rem;
-`
-
-export const Cancel = styled.div`
-  margin-top: 0.8rem;
-  text-align: center;
 `

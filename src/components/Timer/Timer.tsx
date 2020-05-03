@@ -14,6 +14,10 @@ const Timer: React.FC<TimerProps> = ({ expiresAt, date }) => {
   const [progress, setProgress] = useState();
 
   useEffect(() => {
+    if (seconds === undefined) {
+      return;
+    }
+
     const createdAt = DateTime.fromISO(date);
     const totalSeconds = DateTime.fromISO(expiresAt).diff(createdAt).as("seconds");
 

@@ -7,13 +7,13 @@ import * as S from "./Nav.styled";
 import Settings from "../Settings/Settings";
 
 const Nav: React.FC = () => {
-  const [showMenu, setShowMenu] = useState(true);
+  const [showMenu, setShowMenu] = useState(false);
 
   return (
     <React.Fragment>
       <S.Settings>
         <CSSTransition classNames="background" in={showMenu} timeout={800} unmountOnExit mountOnEnter>
-          <Settings userExercises={[]}/>
+          <Settings onClose={() => setShowMenu(false)}/>
         </CSSTransition>
       </S.Settings>
 

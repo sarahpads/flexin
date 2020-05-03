@@ -16,9 +16,10 @@ export const Container = styled.div<ContainerProps>`
   clip-path: ${(props) => "circle(0% at " + props.origin + ")"};
   display: flex;
   position: absolute;
-  top: 0;
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
   padding-top: ${theme.dimensions.navHeight};
+  top: 0;
   transition: clip-path .8s;
   width: 100%;
 
@@ -27,6 +28,11 @@ export const Container = styled.div<ContainerProps>`
   &.background-enter-done {
     clip-path: ${(props) => "circle(150% at " + props.origin + ")"};
     z-index: 1;
+  }
+
+  &.background-enter-done {
+    height: auto;
+    min-height: 100vh;
   }
 
   &.background-exit-active {
@@ -45,6 +51,7 @@ interface ComponentProps {
 }
 
 export const Component = styled.div<ComponentProps>`
+  box-sizing: border-box;
   flex: 1;
   padding: ${theme.dimensions.pagePadding};
   transition: opacity 0.3s, transform 0.3s;
