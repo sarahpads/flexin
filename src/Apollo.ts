@@ -3,15 +3,17 @@ import { ApolloClient, InMemoryCache, HttpLink, split } from "@apollo/client"
 import { getMainDefinition } from '@apollo/client/utilities';
 import { SubscriptionClient } from "subscriptions-transport-ws";
 
+const { REACT_APP_GRAPHQL, REACT_APP_SUBSCRIPTION } = process.env;
+
 export function getClient(idToken: string) {
   const httpLink = new HttpLink({
-    uri: 'http://localhost:4000/graphql',
+    uri: REACT_APP_GRAPHQL,
     headers: {
       Authorization: `Bearer ${idToken}`,
     }
   });
 
-  const wsClient = new SubscriptionClient("ws://localhost:4000/subscriptions", {
+  const wsClient = new SubscriptionClient(REACT_APP_SUBSCRIPTION as string, {
     reconnect: true
   });
 

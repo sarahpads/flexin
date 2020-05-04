@@ -1,11 +1,18 @@
 import React, { useState, useRef } from "react";
-import AuthClient from "../Auth";
 import { TokenPayload } from "google-auth-library";
 
+import AuthClient from "../Auth";
+
+const {
+  REACT_APP_CLIENT_ID,
+  REACT_APP_CLIENT_SECRET,
+  REACT_APP_REDIRECT
+} = process.env
+
 const config = {
-  clientId: '34199951333-m9g3hi7joeusp6me2j5e07u1foit0mhg.apps.googleusercontent.com', //(string): Your client application's identifier as registered with the OIDC provider.
-  clientSecret: 'FbNAH1Basr4lCykvikoZW_Y1',
-  redirectUri: 'http://localhost:3000/consume',
+  clientId: REACT_APP_CLIENT_ID,
+  clientSecret: REACT_APP_CLIENT_SECRET,
+  redirectUri: REACT_APP_REDIRECT,
   accessType: "offline",
   scopes: ['openid', 'profile', 'email'],
 }
