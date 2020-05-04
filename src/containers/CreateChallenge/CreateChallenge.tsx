@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useFormState } from "react-use-form-state";
 import gql from "graphql-tag";
 import { useQuery, useMutation } from "@apollo/client";
@@ -8,9 +8,12 @@ import { AuthContext } from "../../components/AuthProvider";
 import WithBackground from "../../components/WithBackground/WithBackground";
 import WithAuth from "../../components/WithAuth";
 
-const GET_EXERCISES = gql`
-  query {
-    exercises { title, id }
+const GET_DATA = gql`
+  query Data($userId: String!) {
+    exercises { title, id },
+    user (id: $userId) {
+      exercises { reps, exercise { id } }
+    }
   }
 `
 
@@ -22,41 +25,92 @@ const CREATE_CHALLENGE = gql`
 
 const CreateChallenge: React.FC = () => {
   const auth = useContext(AuthContext);
-  const { data } = useQuery(GET_EXERCISES);
-  const [ createChallenge ] = useMutation(CREATE_CHALLENGE);
+  const [createChallenge] = useMutation(CREATE_CHALLENGE);
+  const result = useQuery(GET_DATA, {
+    variables: { userId: auth.profile.sub }
+  });
+  // https://github.com/wsmd/react-use-form-state/issues/75
+  // can't use the built-in "onChange" events because they cache the closures
+  // meaning we won't have access to the current values from apollo
+  const [formState, { number, label, select }] = useFormState()
+  const [flex, setFlex] = useState(0);
+  const [message, setMessage] = useState();
 
-  const [formState, { number, label, select }] = useFormState({ reps: "4" })
+  useEffect(() => {
+    const { exercise, reps } = formState.values;
+    if (!result.data || !exercise || !reps) {
+      return;
+    }
+
+    const userExercise = result.data.user.exercises.find((userExercise: any) => {
+      return userExercise.exercise.id === exercise;
+    })
+
+    if (!userExercise) {
+      return;
+    }
+
+    const flex = Math.ceil((reps / userExercise.reps) * 100);
+
+    setFlex(flex);
+    setMessage(getMessage(flex));
+  }, [formState.values])
+
+  const getMessage = (flex: number): string => {
+    switch(true) {
+      case flex < 50:
+        return "That's pathetic"
+
+      case flex > 50 && flex < 90:
+        return "We both know you can do better than that"
+
+      case flex < 100:
+        return "That's your typical output";
+
+      default:
+        return "Now you're flexin'!"
+    }
+  }
 
   const handleSubmit = (event: any) => {
     event.preventDefault();
-    console.log(auth)
-
+    // the library only validates inputs on blur/touch, so we
+    // need to check for the presense of these fields directly
     const { exercise, reps } = formState.values;
+
+    if (Object.keys(formState.errors).length || !exercise || !reps) {
+      return;
+    }
+
     createChallenge({ variables: { data: { exercise, reps: parseInt(reps), user: auth.profile.sub }}});
     // TODO: redirect
   }
 
-  // TODO: figure out validation
   return (
     <React.Fragment>
       <S.Form noValidate onSubmit={handleSubmit}>
         <S.Circle>
-          <S.Output>100%</S.Output>
-          <S.Benchmark>This is your typical output</S.Benchmark>
+          <S.Output>{flex}%</S.Output>
+          <S.Benchmark>
+            {!flex
+              ? "Fill in the form, dummy"
+              : message
+            }
+          </S.Benchmark>
         </S.Circle>
 
         <S.Label {...label("exercise")}>What are you kicking ass at?</S.Label>
         <S.Select as="div">
-          <S.SelectInput {...select("exercise")}>
+          <S.SelectInput {...select("exercise")} required>
             <option>Choose an exercise</option>
-            {data && data.exercises.map((exercise: any) => {
+            {result.data && result.data.exercises.map((exercise: any) => {
               return <option key={exercise.id} value={exercise.id}>{exercise.title}</option>
             })}
           </S.SelectInput>
         </S.Select>
 
         <S.Reps>
-          <S.RepsInput {...number("reps")}/>
+          <S.RepsInput {...number("reps")} min="0" max="999" required/>
           <span>reps</span>
         </S.Reps>
 

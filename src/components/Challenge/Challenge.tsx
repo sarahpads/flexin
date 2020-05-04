@@ -13,9 +13,11 @@ interface ChallengeProps {
     id: string,
     expiresAt: string,
     createdAt: string,
+    flex: number,
     reps: number,
     exercise: {
-      title: string
+      title: string;
+      id: string;
     },
     user: { id: string, name: string }
   }
@@ -25,6 +27,7 @@ const GET_RESPONSES = gql`
   query ChallengeResponse($challengeId: String!) {
     challengeResponses(challengeId: $challengeId) {
       user { name, id },
+      flex,
       reps
     }
   }
@@ -56,9 +59,16 @@ const Challenge: React.FC<ChallengeProps> = ({
   }, [challenge]);
 
   useEffect(() => {
-    setResponses([
-      { user: challenge.user, reps: challenge.reps }
-    ])
+    if (!result.data) {
+      return;
+    }
+
+    const responses = [
+      ...result.data.challengeResponses,
+      { user: challenge.user, flex: challenge.flex, reps: challenge.reps }
+    ].sort((a, b) => a.flex < b.flex ? 1 : -1);
+
+    setResponses(responses);
   }, [result.data]);
 
   useEffect(() => {
@@ -104,7 +114,7 @@ const Challenge: React.FC<ChallengeProps> = ({
         <S.H1>
           {hasAuthored
             ? "You flexed"
-            : "Some dude is flexin' at you"}
+            : `${challenge.user.name} is flexin' at you`}
         </S.H1>
 
         <Timer expiresAt={challenge.expiresAt} createdAt={challenge.createdAt}></Timer>
@@ -114,7 +124,8 @@ const Challenge: React.FC<ChallengeProps> = ({
         })}
 
         <S.Form>
-          {hasResponded || hasAuthored
+          {/* {hasResponded || hasAuthored */}
+          {hasResponded
             ? <span>Watch 'em roll</span>
             : <ChallengeResponseForm challenge={challenge}/>
           }

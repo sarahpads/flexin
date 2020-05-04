@@ -1,7 +1,7 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useFormState } from "react-use-form-state";
 import gql from "graphql-tag";
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { AuthContext } from "../AuthProvider";
 
 import * as S from "./ChallengeResponseForm.styled";
@@ -9,11 +9,24 @@ import * as S from "./ChallengeResponseForm.styled";
 interface ChallengeResponseFormProps {
   challenge: {
     id: string;
+    flex: number;
+    user: {
+      name: string;
+    }
     exercise: {
+      id: string;
       title: string;
     }
   }
 }
+
+const GET_USER_EXERCISE = gql`
+  query UserExercise($userId: String!, $exerciseId: String!) {
+    userExercise(userId: $userId, exerciseId: $exerciseId) {
+      reps
+    }
+  }
+`
 
 const CREATE_RESPONSE = gql`
   mutation CreateResponse($data: CreateResponseInput!) {
@@ -24,24 +37,42 @@ const CREATE_RESPONSE = gql`
 const ChallengeResponseForm: React.FC<ChallengeResponseFormProps> = ({
   challenge
 }) => {
-  const [formState, { number }] = useFormState({ reps: 4 });
+  const { profile } = useContext(AuthContext);
+  const [formState, { number }] = useFormState();
   const [createResponse] = useMutation(CREATE_RESPONSE);
-  const { session } = useContext(AuthContext);
+  const result = useQuery(GET_USER_EXERCISE, {
+    variables: { userId: profile.sub, exerciseId: challenge.exercise.id}
+  });
+  const [requiredReps, setRequiredReps] = useState();
+
+  useEffect(() => {
+    if (!result.data) {
+      return;
+    }
+
+    formState.setField("reps", result.data.userExercise.reps);
+
+    setRequiredReps(Math.ceil(result.data.userExercise.reps * challenge.flex));
+  }, [result.data])
 
   // TODO: redirect
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const { reps } = formState.values;
 
-    createResponse({ variables: { data: { challenge: challenge.id, user: session.sub, reps: parseInt(reps) } } });
+    if (Object.keys(formState.errors).length || !reps) {
+      return;
+    }
+
+    createResponse({ variables: { data: { challenge: challenge.id, user: profile.sub, reps: parseInt(reps) } } });
   }
 
   return (
     <form noValidate onSubmit={handleSubmit}>
-      <S.P>You need to do X reps to beat so and so</S.P>
+      <S.P>You need to do {requiredReps} reps to beat {challenge.user.name}</S.P>
 
       <div>
-        <S.RepsInput {...number("reps")}/>
+        <S.RepsInput {...number("reps")} min="0" max="999" required/>
         <span>reps</span>
       </div>
 

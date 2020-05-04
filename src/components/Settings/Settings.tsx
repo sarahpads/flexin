@@ -86,6 +86,14 @@ const Settings: React.FC<SettingsProps> = ({
   const handleSubmit = (event: any) => {
     event.preventDefault();
 
+    const isMissingValues = exercises.some((exercise) => {
+      return !formState.values[exercise.exercise.id];
+    });
+
+    if (Object.keys(formState.errors).length || isMissingValues) {
+      return;
+    }
+
     const userExercises = exercises.map((exercise) => {
       return {
         exercise: exercise.exercise.id,

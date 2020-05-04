@@ -16,7 +16,7 @@ const UserExercise: React.FC<UserExerciseProps> = ({
   return (
     <S.UserExercise>
       <S.Label {...label}>{exercise.title}</S.Label>
-      <S.Input {...formControl}/>
+      <S.Input {...formControl} min="0" max="999" required/>
       <span>reps</span>
     </S.UserExercise>
   )

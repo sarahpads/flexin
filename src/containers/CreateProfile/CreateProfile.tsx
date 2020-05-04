@@ -33,6 +33,15 @@ const CreateProfile: React.FC = () => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const { name, email } = profile;
+
+    const isMissingValues = data.exercises.some((exercise: any) => {
+      return !formState.values[exercise.id];
+    });
+
+    if (Object.keys(formState.errors).length || isMissingValues) {
+      return;
+    }
+
     const userExercises = data.exercises.map((exercise: any) => {
       const reps = parseInt(formState.values[exercise.id]);
       return { data: { exercise: exercise.id, reps, user: profile.sub }}

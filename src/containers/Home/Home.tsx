@@ -21,6 +21,7 @@ const GET_CHALLENGE = gql`
       id,
       user { name, id },
       exercise { title, id },
+      flex,
       reps,
       createdAt,
       expiresAt
@@ -34,6 +35,7 @@ const NEW_CHALLENGE = gql`
       id,
       user { name, id },
       exercise { title, id },
+      flex,
       reps,
       createdAt,
       expiresAt

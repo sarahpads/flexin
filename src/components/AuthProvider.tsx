@@ -12,7 +12,7 @@ const config = {
 
 export const AuthContext = React.createContext(undefined as any);
 
-const AuthProvider: React.FC<any> = (props) => {
+const AuthProvider: React.FC = (props) => {
   const [isInitialized, setIsInitialized] = useState(false);
   const [client, setClient] = useState();
   const authClient = useRef(undefined as any);

@@ -27,6 +27,8 @@ export const Output = styled.span`
 
 export const Benchmark = styled.span`
   font-size: 1.4rem;
+  padding: 0 1rem;
+  text-align: center;
 `
 
 export const Reps = styled.div`

@@ -20,6 +20,15 @@ const Standing: React.FC<StandingProps> = ({
   rank
 }) => {
   const [medal, setMedal] = useState();
+  const [flex, setFlex] = useState();
+
+  useEffect(() => {
+    if (!response) {
+      return;
+    }
+
+    setFlex(`${response.flex * 100}%`);
+  }, [response]);
 
   useEffect(() => {
     setMedal(Medals[rank]);
@@ -37,8 +46,8 @@ const Standing: React.FC<StandingProps> = ({
       </S.Rank>
 
       <S.Avatar/>
-      <S.Name>Dude Rock</S.Name>
-      <S.Flex>150%</S.Flex>
+      <S.Name>{response.user.name}</S.Name>
+      <S.Flex>{flex}</S.Flex>
     </S.Standing>
   )
 }
