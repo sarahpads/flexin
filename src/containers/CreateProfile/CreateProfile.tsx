@@ -17,7 +17,7 @@ const GET_EXERCISES = gql`
 `
 
 const CREATE_PROFILE = gql`
-  mutation CreateProfile($data: CreateUserInput!) {
+  mutation CreateProfile($data: CreateProfileInput!) {
     createProfile(data: $data) { id, name, email}
   }
 `
@@ -44,10 +44,10 @@ const CreateProfile: React.FC = () => {
 
     const userExercises = data.exercises.map((exercise: any) => {
       const reps = parseInt(formState.values[exercise.id]);
-      return { data: { exercise: exercise.id, reps, user: profile.sub }}
+      return { exercise: exercise.id, reps, user: profile.sub }
     })
 
-    createProfile({ variables: { data: { id: profile.sub, name, email, exercises: userExercises }}})
+    createProfile({ variables: { data: { user: { id: profile.sub, name, email }, exercises: userExercises }}})
 
     setShoulRedirect(true);
   }
