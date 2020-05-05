@@ -55,7 +55,6 @@ const ChallengeResponseForm: React.FC<ChallengeResponseFormProps> = ({
     setRequiredReps(Math.ceil(result.data.userExercise.reps * challenge.flex));
   }, [result.data])
 
-  // TODO: redirect
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const { reps } = formState.values;

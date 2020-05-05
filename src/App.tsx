@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { ApolloProvider } from '@apollo/client';
 import { Switch, Route, useLocation } from 'react-router';
 import { TransitionGroup, CSSTransition } from "react-transition-group";
@@ -15,15 +15,18 @@ import CreateChallenge from './containers/CreateChallenge/CreateChallenge';
 function App() {
   const location = useLocation();
   const auth = useContext(AuthContext)
-  let client = useRef(null as any)
+  const [client, setClient] = useState();
 
-  if (!client.current) {
-    // TODO: find out why client.current is null for 2 renders
-    client.current = getClient(auth.getIdToken());
+  useEffect(() =>{
+    setClient(getClient(auth.getIdToken()));
+  }, [auth])
+
+  if (!client) {
+    return <div>loading</div>
   }
 
   return (
-    <ApolloProvider client={client.current}>
+    <ApolloProvider client={client}>
       <Nav/>
 
       <TransitionGroup component={null}>

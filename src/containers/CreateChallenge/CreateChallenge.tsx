@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useFormState } from "react-use-form-state";
+import { Redirect } from "react-router-dom";
 import gql from "graphql-tag";
 import { useQuery, useMutation } from "@apollo/client";
 
@@ -35,6 +36,7 @@ const CreateChallenge: React.FC = () => {
   const [formState, { number, label, select }] = useFormState()
   const [flex, setFlex] = useState(0);
   const [message, setMessage] = useState();
+  const [shouldRedirect, setShouldRedirect] = useState();
 
   useEffect(() => {
     const { exercise, reps } = formState.values;
@@ -83,7 +85,12 @@ const CreateChallenge: React.FC = () => {
     }
 
     createChallenge({ variables: { data: { exercise, reps: parseInt(reps), user: auth.profile.sub }}});
-    // TODO: redirect
+
+    setShouldRedirect(true);
+  }
+
+  if (shouldRedirect) {
+    return <Redirect to="/"/>
   }
 
   return (

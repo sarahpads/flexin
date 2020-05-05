@@ -64,9 +64,7 @@ export default class AuthClient {
   }
 
   setTokens(tokens: any) {
-    // TODO: don't overwrite existing refresh token; make sure this actually works
     const updatedTokens = Object.assign(this.getTokens(), tokens);
-    console.log(updatedTokens)
     localStorage.setItem(this.KEY, JSON.stringify(updatedTokens));
   }
 

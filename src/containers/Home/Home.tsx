@@ -75,13 +75,8 @@ const Home: React.FC = () => {
   // TODO: this is causing a memory leak
   // Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function.
   if (result.error && result.error.graphQLErrors[0]?.extensions?.exception.statusCode === 404) {
-    // return <Redirect to="/create-profile"/>
-  } else if (result.error) {
-    // console.log(result.error)
+    return <Redirect to="/create-profile"/>
   }
-
-  // TODO: need to filter out challenges created by the current user
-  // if they authored the challenge, let them snoop
 
   // if challenge, show prompt to respond
   if (challengeResult.data && challengeResult.data.activeChallenge) {

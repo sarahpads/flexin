@@ -15,14 +15,12 @@ const defaultHeight = 155;
 const Leaderboard: React.FC<LeaderboardProps> = ({ responses = [] }) => {
   const elRef = useRef() as React.MutableRefObject<HTMLInputElement>;
   const [elHeight, setElHeight] = useState();
-  // const [props, set]: any = useSpring(() => ({ height: defaultHeight }))
   const [props, set]: any = useSpring(() => ({ height: 0 }))
-  // TODO: order by most achieved
 
   useEffect(() => {
-    // Give state animations enough time to finish before animating in
+    // Give state route transitions enough time to finish before animating in
     setTimeout(() => set({ height: defaultHeight, config: config.wobbly }), 900);
-  }, [])
+  }, [set])
 
   useEffect(() => {
     setElHeight(elRef.current?.offsetHeight);

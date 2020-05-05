@@ -56,7 +56,7 @@ const Challenge: React.FC<ChallengeProps> = ({
 
   useEffect(() => {
     setHasAuthored(challenge.user.id === profile.sub);
-  }, [challenge]);
+  }, [challenge, profile.sub]);
 
   useEffect(() => {
     if (!result.data) {
