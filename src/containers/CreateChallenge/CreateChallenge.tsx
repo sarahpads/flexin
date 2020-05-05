@@ -9,6 +9,13 @@ import { AuthContext } from "../../components/AuthProvider";
 import WithBackground from "../../components/WithBackground/WithBackground";
 import WithAuth from "../../components/WithAuth";
 
+interface Result {
+  exercises: { title: string; id: string}[];
+  user: {
+    exercises: { reps: number, exercise: { id: string } }[]
+  }
+}
+
 const GET_DATA = gql`
   query Data($userId: String!) {
     exercises { title, id },
@@ -27,7 +34,7 @@ const CREATE_CHALLENGE = gql`
 const CreateChallenge: React.FC = () => {
   const auth = useContext(AuthContext);
   const [createChallenge] = useMutation(CREATE_CHALLENGE);
-  const result = useQuery(GET_DATA, {
+  const result = useQuery<Result>(GET_DATA, {
     variables: { userId: auth.profile.sub }
   });
   // https://github.com/wsmd/react-use-form-state/issues/75
@@ -44,7 +51,7 @@ const CreateChallenge: React.FC = () => {
       return;
     }
 
-    const userExercise = result.data.user.exercises.find((userExercise: any) => {
+    const userExercise = result.data.user.exercises.find((userExercise) => {
       return userExercise.exercise.id === exercise;
     })
 

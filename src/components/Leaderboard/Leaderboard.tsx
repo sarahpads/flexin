@@ -7,15 +7,23 @@ import * as S from "./Leaderboard.styled";
 import Standing from "../Standing/Standing";
 
 interface LeaderboardProps {
-  responses: any[]
+  responses: {
+    user: {
+      name: string;
+      id: string;
+    };
+    reps: number;
+    flex: number;
+  }[]
 }
 
 const defaultHeight = 155;
+const defaultArrayProp: any = [];
 
-const Leaderboard: React.FC<LeaderboardProps> = ({ responses = [] }) => {
+const Leaderboard: React.FC<LeaderboardProps> = ({ responses = defaultArrayProp }) => {
   const elRef = useRef() as React.MutableRefObject<HTMLInputElement>;
   const [elHeight, setElHeight] = useState();
-  const [props, set]: any = useSpring(() => ({ height: 0 }))
+  const [props, set] = useSpring(() => ({ height: 0 }))
 
   useEffect(() => {
     // Give state route transitions enough time to finish before animating in

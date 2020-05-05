@@ -4,34 +4,30 @@ import { gql, useQuery, useMutation } from "@apollo/client";
 import * as S from "./Settings.styled";
 import WithBackground from "../WithBackground/WithBackground";
 import { AuthContext } from "../AuthProvider";
-import UserExercise from "../UserExercise/UserExercise";
-import { useFormState } from "react-use-form-state";
+import ProfileForm, { ProfileData } from "../ProfileForm/ProfileForm";
 
 interface SettingsProps {
   onClose: Function;
 }
 
-interface Data {
-  exercises: [{
+interface Result {
+  exercises: {
     title: string;
     id: string;
-  }],
+  }[],
   user: {
-    exercises: [{
+    exercises: {
       reps: number;
       exercise: {
         id: string;
       }
-    }]
+    }[]
   }
 }
 
-interface Exercise {
-  exercise: {
-    title: string;
-    id: string;
-  };
-  reps: number | undefined;
+interface Data {
+  exercises: { title: string, id: string }[];
+  userExercises: { reps: number, exerciseId: string }[];
 }
 
 const GET_DATA = gql`
@@ -53,55 +49,32 @@ const Settings: React.FC<SettingsProps> = ({
   onClose
 }) => {
   const auth = useContext(AuthContext);
-  const [formState, { number, label }] = useFormState()
   const [updateUserExercises] = useMutation(UPDATE_USER_EXERCISES);
-  const result = useQuery<Data>(GET_DATA, {
+  const [data, setData] = useState<Data>();
+  const result = useQuery<Result>(GET_DATA, {
     variables: { id: auth.profile?.sub }
   });
-  const [exercises, setExercises] = useState([] as Exercise[]);
 
   useEffect(() => {
     if (!result.data) {
       return;
     }
 
-    const exercises = result.data.exercises.map((exercise) => {
-      const userExercise = result.data?.user.exercises.find((e) => {
-        return e.exercise.id === exercise.id;
-      });
+    const data = {
+      exercises: result.data.exercises,
+      userExercises: result.data.user.exercises.map((userExercise) => {
+        return { reps: userExercise.reps, exerciseId: userExercise.exercise.id };
+      })
+    };
 
-      if (userExercise) {
-        formState.setField(exercise.id, userExercise.reps);
-      }
-
-      return {
-        exercise,
-        reps: userExercise ? userExercise.reps : undefined
-      }
-    });
-
-    setExercises(exercises);
+    setData(data);
   }, [result.data]);
 
-  const handleSubmit = (event: any) => {
-    event.preventDefault();
-
-    const isMissingValues = exercises.some((exercise) => {
-      return !formState.values[exercise.exercise.id];
-    });
-
-    if (Object.keys(formState.errors).length || isMissingValues) {
-      return;
-    }
-
-    const userExercises = exercises.map((exercise) => {
-      return {
-        exercise: exercise.exercise.id,
-        reps: parseInt(formState.values[exercise.exercise.id])
-      }
-    })
-
-    updateUserExercises({ variables: { data: { user: auth.profile.sub, exercises: userExercises }}})
+  const handleSubmit = (profileData: ProfileData) => {
+    updateUserExercises({ variables: { data: {
+      user: auth.profile.sub,
+      exercises: profileData
+    }}});
   }
 
   return (
@@ -112,18 +85,11 @@ const Settings: React.FC<SettingsProps> = ({
         These values are used to calculate how much you're flexin'.
       </S.P>
 
-      <form noValidate onSubmit={handleSubmit}>
-        {exercises.map((test: any) => {
-          return <UserExercise
-            key={test.exercise.id}
-            exercise={test.exercise}
-            formControl={number(test.exercise.id)}
-            label={label(test.exercise.id)}
-          />;
-        })}
-
-        <S.Button type="submit">Save</S.Button>
-      </form>
+      {data && <ProfileForm
+        onSubmit={(event: any) => handleSubmit(event)}
+        exercises={data.exercises}
+        userExercises={data.userExercises}
+      />}
 
       <S.Cancel>
         <S.Link as="button" onClick={() => onClose()}>Cancel</S.Link>

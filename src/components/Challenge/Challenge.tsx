@@ -23,6 +23,19 @@ interface ChallengeProps {
   }
 }
 
+interface Result {
+  challengeResponses: ChallengeResponse[]
+}
+
+interface ChallengeResponse {
+  user: {
+    name: string;
+    id: string;
+  },
+  reps: number,
+  flex: number
+}
+
 const GET_RESPONSES = gql`
   query ChallengeResponse($challengeId: String!) {
     challengeResponses(challengeId: $challengeId) {
@@ -47,16 +60,27 @@ const Challenge: React.FC<ChallengeProps> = ({
 }) => {
   const [ hasResponded, setHasResponded ] = useState(false);
   const [ hasAuthored, setHasAuthored ] = useState(false);
-  const [ responses, setResponses ] = useState([] as any[]);
+  const [ responses, setResponses ] = useState([] as ChallengeResponse[]);
   const { profile } = useContext(AuthContext);
-
-  const { subscribeToMore, ...result } = useQuery(GET_RESPONSES, {
+  const { subscribeToMore, ...result } = useQuery<Result>(GET_RESPONSES, {
     variables: { challengeId: challenge.id }
   });
 
   useEffect(() => {
     setHasAuthored(challenge.user.id === profile.sub);
   }, [challenge, profile.sub]);
+
+  useEffect(() => {
+    if (!result.data) {
+      return;
+    }
+
+    const hasResponded = result.data.challengeResponses.some((response) => {
+      return response.user.id === profile.sub;
+    });
+
+    setHasResponded(hasResponded);
+  }, [result.data, profile.sub]);
 
   useEffect(() => {
     if (!result.data) {
@@ -71,14 +95,7 @@ const Challenge: React.FC<ChallengeProps> = ({
     setResponses(responses);
   }, [result.data]);
 
-  useEffect(() => {
-    const hasResponded = result.data && result.data.challengeResponses.some((response: any) => {
-      return response.user.id === profile.sub;
-    });
-
-    setHasResponded(hasResponded);
-  }, [result.data, profile.sub]);
-
+  // TODO: move this to a "use-more-responses" hook?
   useEffect(() => {
     subscribeToMore({
       document: NEW_RESPONSE,
@@ -90,11 +107,15 @@ const Challenge: React.FC<ChallengeProps> = ({
           return prev;
         }
 
-        const { user: { name, id }, reps } = subscriptionData.data.newResponse;
+        // @ts-ignore
+        // subscribeToMore typings assume the subscriptionData has the same keyname
+        // as the query; which we don't
+        const { user: { name, id }, reps, flex } = subscriptionData.data.newResponse;
 
         const newResponse = {
           user: { name, id },
-          reps
+          reps,
+          flex
         }
 
         return {
@@ -117,12 +138,9 @@ const Challenge: React.FC<ChallengeProps> = ({
             : `${challenge.user.name} is flexin' at you`}
         </S.H1>
 
-        <Timer expiresAt={challenge.expiresAt} createdAt={challenge.createdAt}></Timer>
+        <Timer expiresAt={challenge.expiresAt} createdAt={challenge.createdAt}/>
 
-        {result.data && result.data.challengeResponses.map((response: any) => {
-          return <p key={response.user.id}>{response.user.name} {response.reps}</p>
-        })}
-
+        {/* TODO: make this elegant */}
         <S.Form>
           {/* {hasResponded || hasAuthored */}
           {hasResponded

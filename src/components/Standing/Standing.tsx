@@ -5,7 +5,14 @@ import * as S from "./Standing.styled";
 import { IconContext } from "react-icons";
 
 interface StandingProps {
-  response: any;
+  response: {
+    user: {
+      name: string;
+      id: string;
+    }
+    reps: number;
+    flex: number;
+  };
   rank: number;
 }
 
@@ -23,10 +30,6 @@ const Standing: React.FC<StandingProps> = ({
   const [flex, setFlex] = useState();
 
   useEffect(() => {
-    if (!response) {
-      return;
-    }
-
     setFlex(`${response.flex * 100}%`);
   }, [response]);
 

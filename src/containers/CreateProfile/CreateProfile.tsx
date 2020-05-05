@@ -1,5 +1,4 @@
 import React, { useContext, useState } from "react";
-import { useFormState } from 'react-use-form-state';
 import gql from "graphql-tag";
 import { useQuery, useMutation } from "@apollo/client";
 
@@ -8,7 +7,11 @@ import { AuthContext } from "../../components/AuthProvider";
 import { Redirect } from "react-router";
 import WithBackground from "../../components/WithBackground/WithBackground";
 import WithAuth from "../../components/WithAuth";
-import UserExercise from "../../components/UserExercise/UserExercise";
+import ProfileForm, { ProfileData } from "../../components/ProfileForm/ProfileForm";
+
+interface Result {
+  exercises: { title: string, id: string }[];
+}
 
 const GET_EXERCISES = gql`
   query Exercise {
@@ -24,30 +27,20 @@ const CREATE_PROFILE = gql`
 
 const CreateProfile: React.FC = () => {
   const { profile } = useContext(AuthContext)
-  const [ shouldRedirect, setShoulRedirect ] = useState(false);
-  const { data } = useQuery(GET_EXERCISES);
+  const [shouldRedirect, setShoulRedirect] = useState(false);
+  const result = useQuery<Result>(GET_EXERCISES);
   const [ createProfile ] = useMutation(CREATE_PROFILE);
 
-  const [formState, { number, label }] = useFormState();
+  const handleSubmit = (profileData: ProfileData) => {
+    // TODO: sometimes name isn't available on profile; how to resolve?
+    const { name, email, sub: id } = profile;
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    const { name, email } = profile;
-
-    const isMissingValues = data.exercises.some((exercise: any) => {
-      return !formState.values[exercise.id];
-    });
-
-    if (Object.keys(formState.errors).length || isMissingValues) {
-      return;
-    }
-
-    const userExercises = data.exercises.map((exercise: any) => {
-      const reps = parseInt(formState.values[exercise.id]);
-      return { exercise: exercise.id, reps, user: profile.sub }
-    })
-
-    createProfile({ variables: { data: { user: { id: profile.sub, name, email }, exercises: userExercises }}})
+    createProfile({ variables: { data: {
+      user: { id, name, email },
+      exercises: profileData.map((data) => {
+        return {...data, user: id }
+      })
+    }}})
 
     setShoulRedirect(true);
   }
@@ -64,18 +57,11 @@ const CreateProfile: React.FC = () => {
         These values will be used to calculate how much you're flexin'.
       </S.P>
 
-      <form noValidate onSubmit={handleSubmit}>
-        {data && data.exercises.map((exercise: any) => {
-          return <UserExercise
-            key={exercise.id}
-            exercise={exercise}
-            formControl={number(exercise.id)}
-            label={label(exercise.id)}
-          />
-        })}
-
-        <S.Button type="submit">Get Flexin'</S.Button>
-      </form>
+      {result.data && <ProfileForm
+        onSubmit={(event: any) => handleSubmit(event)}
+        exercises={result.data.exercises}
+      />}
+        {/* <S.Button type="submit">Get Flexin'</S.Button> */}
     </div>
   );
 }

@@ -20,6 +20,12 @@ interface ChallengeResponseFormProps {
   }
 }
 
+interface Result {
+  userExercise: {
+    reps: number;
+  }
+}
+
 const GET_USER_EXERCISE = gql`
   query UserExercise($userId: String!, $exerciseId: String!) {
     userExercise(userId: $userId, exerciseId: $exerciseId) {
@@ -40,7 +46,7 @@ const ChallengeResponseForm: React.FC<ChallengeResponseFormProps> = ({
   const { profile } = useContext(AuthContext);
   const [formState, { number }] = useFormState();
   const [createResponse] = useMutation(CREATE_RESPONSE);
-  const result = useQuery(GET_USER_EXERCISE, {
+  const result = useQuery<Result>(GET_USER_EXERCISE, {
     variables: { userId: profile.sub, exerciseId: challenge.exercise.id}
   });
   const [requiredReps, setRequiredReps] = useState();
@@ -63,7 +69,11 @@ const ChallengeResponseForm: React.FC<ChallengeResponseFormProps> = ({
       return;
     }
 
-    createResponse({ variables: { data: { challenge: challenge.id, user: profile.sub, reps: parseInt(reps) } } });
+    createResponse({ variables: { data: {
+      challenge: challenge.id,
+      user: profile.sub,
+      reps: parseInt(reps)
+    }}});
   }
 
   return (

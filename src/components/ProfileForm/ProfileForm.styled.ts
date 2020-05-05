@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { RepsInput } from "../Typography.styled";
+import { Button as B, RepsInput } from "../Typography.styled";
 
 export const UserExercise = styled.div`
   align-items: center;
@@ -21,4 +21,8 @@ export const Label = styled.label`
 export const Input = styled(RepsInput)`
   margin-left: auto;
   margin-bottom: 0;
+`
+
+export const Button = styled(B)`
+  margin-top: 3rem;
 `
