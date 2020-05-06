@@ -10,6 +10,7 @@ import ChallengeResponseForm from "../ChallengeResponseForm/ChallengeResponseFor
 import ChallengeAuthored from "../ChallengeAuthored/ChallengeAuthored";
 import ChallengeResponded from "../ChallengeResponded/ChallengeResponded";
 import { Challenge, Response } from "../challenge.types";
+import Error from "../../Layout/Error/Error";
 
 interface ActiveChallengeProps {
   challenge: Challenge
@@ -117,6 +118,8 @@ const ActiveChallenge: React.FC<ActiveChallengeProps> = ({
 
         {getStatus()}
       </S.Challenge>
+
+      {result.error && <Error error={result.error}/>}
 
       <Leaderboard responses={responses}/>
     </React.Fragment>

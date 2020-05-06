@@ -1,5 +1,6 @@
 import { WebSocketLink } from "@apollo/link-ws";
 import { ApolloClient, InMemoryCache, HttpLink, split } from "@apollo/client"
+import { onError } from "apollo-link-error";
 import { getMainDefinition } from '@apollo/client/utilities';
 import { SubscriptionClient } from "subscriptions-transport-ws";
 
@@ -32,7 +33,7 @@ export function getClient(idToken: string) {
       );
     },
     wsLink,
-    httpLink,
+    httpLink
   );
 
   return new ApolloClient({

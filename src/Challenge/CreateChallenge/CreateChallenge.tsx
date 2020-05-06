@@ -8,6 +8,7 @@ import * as S from "./CreateChallenge.styled";
 import { AuthContext } from "../../Auth/AuthProvider";
 import WithBackground from "../../Layout/WithBackground/WithBackground";
 import WithAuth from "../../Auth/WithAuth";
+import Error from "../../Layout/Error/Error";
 
 interface Result {
   exercises: { title: string; id: string}[];
@@ -32,8 +33,11 @@ const CREATE_CHALLENGE = gql`
 `
 
 const CreateChallenge: React.FC = () => {
+  const [error, setError] = useState();
   const auth = useContext(AuthContext);
-  const [createChallenge] = useMutation(CREATE_CHALLENGE);
+  const [createChallenge] = useMutation(CREATE_CHALLENGE, {
+    onError: (error) => setError(error)
+  });
   const result = useQuery<Result>(GET_DATA, {
     variables: { userId: auth.profile.sub }
   });
@@ -99,6 +103,10 @@ const CreateChallenge: React.FC = () => {
 
   if (shouldRedirect) {
     return <Redirect to="/"/>
+  }
+
+  if (result.error || error) {
+    return <Error error={result.error || error}/>
   }
 
   return (

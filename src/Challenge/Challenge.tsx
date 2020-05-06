@@ -6,6 +6,7 @@ import ActiveChallenge from "./ActiveChallenge/ActiveChallenge";
 import CompletedChallenge from "./CompletedChallenge/CompletedChallenge";
 import Spinner from "../Layout/Spinner/Spinner";
 import { Challenge as C } from "./challenge.types";
+import Error from "../Layout/Error/Error";
 
 // TDOO: not C
 interface Result {
@@ -75,7 +76,11 @@ const Challenge: React.FC = () => {
     return () => unsubscribe();
   }, [subscribeToMore])
 
-  if (!result.data) {
+  if (result.error) {
+    return <Error error={result.error}/>
+  }
+
+  if (result.loading || !result.data) {
     return <Spinner/>
   }
 

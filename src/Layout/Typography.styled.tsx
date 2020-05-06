@@ -14,7 +14,7 @@ export const Button = styled.button`
   font-size: 1.5rem;
   font-weight: 800;
   line-height: 4rem;
-  margin: auto;
+  margin: 0 auto;
   max-width: 100%;
   outline: none;
   text-align: center;
