@@ -3,15 +3,15 @@ import { ApolloProvider } from '@apollo/client';
 import { Switch, Route, useLocation } from 'react-router';
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 
-import { AuthContext } from './components/AuthProvider';
+import { AuthContext } from './Auth/AuthProvider';
 import { getClient } from './Apollo';
-import Nav from './components/Nav/Nav';
-import Consume from './containers/Consume/Consume';
-import CreateProfile from './containers/CreateProfile/CreateProfile';
-import Home from './containers/Home/Home';
-import Login from './containers/Login/Login';
-import CreateChallenge from './containers/CreateChallenge/CreateChallenge';
-import Spinner from './components/Spinner/Spinner';
+import Nav from './Layout/Nav/Nav';
+import Consume from './Auth/Consume/Consume';
+import CreateProfile from './Auth/CreateProfile/CreateProfile';
+import Home from './Home/Home';
+import Login from './Auth/Login/Login';
+import CreateChallenge from './Challenge/CreateChallenge/CreateChallenge';
+import Spinner from './Layout/Spinner/Spinner';
 
 function App() {
   const location = useLocation();

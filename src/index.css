@@ -3,7 +3,7 @@
   font-family: 'ManRope';
   font-style: normal;
   font-weight: 200 700;
-  src: url('./fonts/Manrope.ttf') format('truetype');
+  src: url('./assets/fonts/Manrope.ttf') format('truetype');
 }
 
 html {
