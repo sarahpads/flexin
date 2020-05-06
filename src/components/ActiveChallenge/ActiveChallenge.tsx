@@ -6,7 +6,9 @@ import * as S from "./ActiveChallenge.styled";
 import { AuthContext } from "../AuthProvider";
 import Timer from "../Timer/Timer";
 import Leaderboard from "../Leaderboard/Leaderboard";
-import ChallengeStatus from "../ChallengeStatus/ChallengeStatus";
+import ChallengeResponseForm from "../ChallengeResponseForm/ChallengeResponseForm";
+import ChallengeAuthored from "../ChallengeAuthored/ChallengeAuthored";
+import ChallengeResponded from "../ChallengeResponded/ChallengeResponded";
 
 interface ActiveChallengeProps {
   challenge: {
@@ -20,6 +22,14 @@ interface ActiveChallengeProps {
       id: string;
     },
     user: { id: string, name: string }
+    responses: {
+      user: {
+        name: string;
+        id: string;
+      };
+      reps: number;
+      flex: number;
+    }[]
   }
 }
 
@@ -59,7 +69,10 @@ const NEW_RESPONSE = gql`
 const ActiveChallenge: React.FC<ActiveChallengeProps> = ({
   challenge
 }) => {
+  const { profile } = useContext(AuthContext);
   const [ responses, setResponses ] = useState([] as ChallengeResponse[]);
+  const [ hasResponded, setHasResponded ] = useState(false);
+  const [isAuthor, setIsAuthor] = useState(false)
   const { subscribeToMore, ...result } = useQuery<Result>(GET_RESPONSES, {
     variables: { challengeId: challenge.id }
   });
@@ -76,6 +89,18 @@ const ActiveChallenge: React.FC<ActiveChallengeProps> = ({
 
     setResponses(responses);
   }, [result.data]);
+
+  useEffect(() => {
+    setIsAuthor(challenge.user.id === profile.sub);
+  }, [challenge, profile.sub])
+
+  useEffect(() => {
+    const hasResponded = responses.some((response) => {
+      return response.user.id === profile.sub;
+    });
+
+    setHasResponded(hasResponded);
+  }, [responses, profile.sub]);
 
   useEffect(() => {
     const unsubscribe = subscribeToMore({
@@ -99,12 +124,25 @@ const ActiveChallenge: React.FC<ActiveChallengeProps> = ({
     return () => unsubscribe();
   }, [challenge.id, subscribeToMore]);
 
+  function getStatus() {
+    switch(true) {
+      case isAuthor:
+        return <ChallengeAuthored challenge={challenge}/>
+
+      case hasResponded:
+        return <ChallengeResponded challenge={challenge}/>
+
+      default:
+        return <ChallengeResponseForm challenge={challenge}/>
+    }
+  }
+
   return (
     <React.Fragment>
       <S.Challenge>
         <Timer expiresAt={challenge.expiresAt} createdAt={challenge.createdAt}/>
 
-        <ChallengeStatus challenge={challenge} responses={responses}/>
+        {getStatus()}
       </S.Challenge>
 
       <Leaderboard responses={responses}/>

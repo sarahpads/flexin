@@ -1,10 +1,33 @@
 import React, { useEffect, useState } from "react";
 import { gql, useQuery } from "@apollo/client";
+import { DateTime } from "luxon";
 
 import ActiveChallenge from "../../components/ActiveChallenge/ActiveChallenge";
 import CompletedChallenge from "../CompletedChallenge/CompletedChallenge";
-import { DateTime } from "luxon";
 import Spinner from "../Spinner/Spinner";
+
+interface Result {
+  latestChallenge: {
+    id: string,
+    expiresAt: string,
+    createdAt: string,
+    flex: number,
+    reps: number,
+    exercise: {
+      title: string;
+      id: string;
+    },
+    user: { id: string, name: string }
+    responses: {
+      user: {
+        name: string;
+        id: string;
+      };
+      reps: number;
+      flex: number;
+    }[]
+  }
+}
 
 const GET_CHALLENGE = gql`
   query {
@@ -15,7 +38,8 @@ const GET_CHALLENGE = gql`
       flex,
       reps,
       createdAt,
-      expiresAt
+      expiresAt,
+      responses { user { name, id }, reps, flex }
     }
   }
 `
@@ -29,14 +53,15 @@ const NEW_CHALLENGE = gql`
       flex,
       reps,
       createdAt,
-      expiresAt
+      expiresAt,
+      responses { user { name, id }, reps, flex }
     }
   }
 `
 
 const Challenge: React.FC = () => {
   const [isActive, setIsActive] = useState(false);
-  const { subscribeToMore, ...result } = useQuery(GET_CHALLENGE)
+  const { subscribeToMore, ...result } = useQuery<Result>(GET_CHALLENGE)
 
   useEffect(() => {
     if (!result.data) {
@@ -59,6 +84,7 @@ const Challenge: React.FC = () => {
           return prev;
         }
 
+        // @ts-ignore
         return { latestChallenge: subscriptionData.data.newChallenge };
       }
     });
@@ -71,8 +97,8 @@ const Challenge: React.FC = () => {
   }
 
   return isActive
-    ? <ActiveChallenge challenge={result.data.latestChallenge}/>
-    : <CompletedChallenge challenge={result.data.latestChallenge}/>
+    ? <ActiveChallenge challenge={result.data.latestChallenge} />
+    : <CompletedChallenge challenge={result.data.latestChallenge} />
 }
 
 export default Challenge;

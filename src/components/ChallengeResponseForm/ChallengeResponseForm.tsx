@@ -17,6 +17,14 @@ interface ChallengeResponseFormProps {
       id: string;
       title: string;
     }
+    responses: {
+      user: {
+        name: string;
+        id: string;
+      };
+      reps: number;
+      flex: number;
+    }[]
   }
 }
 
