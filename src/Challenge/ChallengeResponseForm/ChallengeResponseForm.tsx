@@ -5,27 +5,10 @@ import { useMutation, useQuery } from "@apollo/client";
 
 import * as S from "./ChallengeResponseForm.styled";
 import { AuthContext } from "../../Auth/AuthProvider";
+import { Challenge } from "../challenge.types";
 
 interface ChallengeResponseFormProps {
-  challenge: {
-    id: string;
-    flex: number;
-    user: {
-      name: string;
-    }
-    exercise: {
-      id: string;
-      title: string;
-    }
-    responses: {
-      user: {
-        name: string;
-        id: string;
-      };
-      reps: number;
-      flex: number;
-    }[]
-  }
+  challenge: Challenge;
 }
 
 interface Result {

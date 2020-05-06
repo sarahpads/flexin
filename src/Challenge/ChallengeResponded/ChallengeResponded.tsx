@@ -1,26 +1,9 @@
 import React from "react";
 
+import { Challenge } from "../challenge.types";
+
 interface ChallengeRespondedProps {
-  challenge: {
-    id: string,
-    expiresAt: string,
-    createdAt: string,
-    flex: number,
-    reps: number,
-    exercise: {
-      title: string;
-      id: string;
-    },
-    user: { id: string, name: string }
-    responses: {
-      user: {
-        name: string;
-        id: string;
-      };
-      reps: number;
-      flex: number;
-    }[]
-  }
+  challenge: Challenge;
 }
 
 const ChallengeResponded: React.FC<ChallengeRespondedProps> = ({

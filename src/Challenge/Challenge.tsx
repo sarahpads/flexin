@@ -5,28 +5,11 @@ import { DateTime } from "luxon";
 import ActiveChallenge from "./ActiveChallenge/ActiveChallenge";
 import CompletedChallenge from "./CompletedChallenge/CompletedChallenge";
 import Spinner from "../Layout/Spinner/Spinner";
+import { Challenge as C } from "./challenge.types";
 
+// TDOO: not C
 interface Result {
-  latestChallenge: {
-    id: string,
-    expiresAt: string,
-    createdAt: string,
-    flex: number,
-    reps: number,
-    exercise: {
-      title: string;
-      id: string;
-    },
-    user: { id: string, name: string }
-    responses: {
-      user: {
-        name: string;
-        id: string;
-      };
-      reps: number;
-      flex: number;
-    }[]
-  }
+  latestChallenge: C;
 }
 
 const GET_CHALLENGE = gql`

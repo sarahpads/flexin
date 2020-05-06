@@ -9,41 +9,14 @@ import Leaderboard from "../Leaderboard/Leaderboard";
 import ChallengeResponseForm from "../ChallengeResponseForm/ChallengeResponseForm";
 import ChallengeAuthored from "../ChallengeAuthored/ChallengeAuthored";
 import ChallengeResponded from "../ChallengeResponded/ChallengeResponded";
+import { Challenge, Response } from "../challenge.types";
 
 interface ActiveChallengeProps {
-  challenge: {
-    id: string,
-    expiresAt: string,
-    createdAt: string,
-    flex: number,
-    reps: number,
-    exercise: {
-      title: string;
-      id: string;
-    },
-    user: { id: string, name: string }
-    responses: {
-      user: {
-        name: string;
-        id: string;
-      };
-      reps: number;
-      flex: number;
-    }[]
-  }
+  challenge: Challenge
 }
 
 interface Result {
-  challengeResponses: ChallengeResponse[]
-}
-
-interface ChallengeResponse {
-  user: {
-    name: string;
-    id: string;
-  },
-  reps: number,
-  flex: number
+  challengeResponses: Response[]
 }
 
 const GET_RESPONSES = gql`
@@ -70,7 +43,7 @@ const ActiveChallenge: React.FC<ActiveChallengeProps> = ({
   challenge
 }) => {
   const { profile } = useContext(AuthContext);
-  const [ responses, setResponses ] = useState([] as ChallengeResponse[]);
+  const [ responses, setResponses ] = useState([] as Response[]);
   const [ hasResponded, setHasResponded ] = useState(false);
   const [isAuthor, setIsAuthor] = useState(false)
   const { subscribeToMore, ...result } = useQuery<Result>(GET_RESPONSES, {

@@ -3,16 +3,10 @@ import { FaMedal } from "react-icons/fa";
 
 import * as S from "./Standing.styled";
 import { IconContext } from "react-icons";
+import { Response } from "../challenge.types";
 
 interface StandingProps {
-  response: {
-    user: {
-      name: string;
-      id: string;
-    }
-    reps: number;
-    flex: number;
-  };
+  response: Response;
   rank: number;
 }
 

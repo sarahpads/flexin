@@ -5,16 +5,10 @@ import clamp from "lodash.clamp";
 
 import * as S from "./Leaderboard.styled";
 import Standing from "../Standing/Standing";
+import { Response } from "../challenge.types";
 
 interface LeaderboardProps {
-  responses: {
-    user: {
-      name: string;
-      id: string;
-    };
-    reps: number;
-    flex: number;
-  }[]
+  responses: Response[];
 }
 
 const defaultHeight = 155;
