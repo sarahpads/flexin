@@ -4,6 +4,7 @@ import { gql, useQuery } from "@apollo/client";
 import ActiveChallenge from "../../components/ActiveChallenge/ActiveChallenge";
 import CompletedChallenge from "../CompletedChallenge/CompletedChallenge";
 import { DateTime } from "luxon";
+import Spinner from "../Spinner/Spinner";
 
 const GET_CHALLENGE = gql`
   query {
@@ -66,7 +67,7 @@ const Challenge: React.FC = () => {
   }, [subscribeToMore])
 
   if (!result.data) {
-    return <div>loading</div>
+    return <Spinner/>
   }
 
   return isActive

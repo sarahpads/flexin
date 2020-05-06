@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import { TokenPayload } from "google-auth-library";
 
 import AuthClient from "../Auth";
+import Spinner from "./Spinner/Spinner";
 
 const {
   REACT_APP_CLIENT_ID,
@@ -42,7 +43,7 @@ const AuthProvider: React.FC = (props) => {
   }
 
   if (!isInitialized) {
-    return <div>Yo, I'm a spinner</div>
+    return <Spinner/>
   }
 
   return (

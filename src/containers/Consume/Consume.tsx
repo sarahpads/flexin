@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Redirect } from "react-router-dom";
 
 import { AuthContext } from "../../components/AuthProvider";
+import Spinner from "../../components/Spinner/Spinner";
 
 const Consume: React.FC = () => {
   const auth = useContext(AuthContext)
@@ -16,7 +17,7 @@ const Consume: React.FC = () => {
     return <Redirect to="/"/>
   }
 
-  return <div>Loading</div>;
+  return <Spinner/>;
 }
 
 export default Consume;

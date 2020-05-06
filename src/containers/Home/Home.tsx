@@ -6,6 +6,7 @@ import { AuthContext } from "../../components/AuthProvider";
 import WithBackground from "../../components/WithBackground/WithBackground";
 import WithAuth from "../../components/WithAuth";
 import Challenge from "../../components/Challenge/Challenge";
+import Spinner from "../../components/Spinner/Spinner";
 
 const GET_USER = gql`
   query ($id: String!) {
@@ -20,7 +21,7 @@ const Home: React.FC = () => {
   });
 
   if (result.loading) {
-    return <div>loading</div>
+    return <Spinner/>
   }
 
   // TODO: make this not gross

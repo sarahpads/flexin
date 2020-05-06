@@ -11,6 +11,7 @@ import CreateProfile from './containers/CreateProfile/CreateProfile';
 import Home from './containers/Home/Home';
 import Login from './containers/Login/Login';
 import CreateChallenge from './containers/CreateChallenge/CreateChallenge';
+import Spinner from './components/Spinner/Spinner';
 
 function App() {
   const location = useLocation();
@@ -22,7 +23,7 @@ function App() {
   }, [auth])
 
   if (!client) {
-    return <div>loading</div>
+    return <Spinner/>
   }
 
   return (
