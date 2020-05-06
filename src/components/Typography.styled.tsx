@@ -93,7 +93,7 @@ export const Link = styled(L)`
 
 export const Circle = styled.div`
   background-color: var(--palette-dark);
-  border-radius: 50%;
+  clip-path: circle(50%);
   height: ${theme.circle.dimension};
   margin: auto;
   margin-bottom: 5rem;

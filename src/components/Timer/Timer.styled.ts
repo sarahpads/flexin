@@ -3,6 +3,7 @@ import styled from "styled-components";
 import theme from "../../theme";
 
 export const Timer = styled.div`
+  margin-bottom: 5rem;
   position: relative;
 `
 
@@ -44,9 +45,15 @@ interface CircleProps {
   progress: number;
 }
 
-export const Circle = styled.circle.attrs<CircleProps>((props) => ({
-  strokeDashoffset: 764 * (1 - props.progress)
-}))<CircleProps>`
+export const Circle = styled.circle.attrs<CircleProps>((props) => {
+  if (!props.progress) {
+    return;
+  }
+
+  return {
+    strokeDashoffset: 764 * (1 - props.progress)
+  }
+})<CircleProps>`
   fill: var(--palette-dark);
   r: calc(50% - 0.5rem);
   stroke: white;

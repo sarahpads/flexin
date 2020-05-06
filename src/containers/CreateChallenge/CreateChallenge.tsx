@@ -40,13 +40,14 @@ const CreateChallenge: React.FC = () => {
   // https://github.com/wsmd/react-use-form-state/issues/75
   // can't use the built-in "onChange" events because they cache the closures
   // meaning we won't have access to the current values from apollo
-  const [formState, { number, label, select }] = useFormState()
+  const [formState, { number, label, select }] = useFormState({ reps: 0 })
   const [flex, setFlex] = useState(0);
   const [message, setMessage] = useState();
   const [shouldRedirect, setShouldRedirect] = useState();
 
   useEffect(() => {
     const { exercise, reps } = formState.values;
+
     if (!result.data || !exercise || !reps) {
       return;
     }

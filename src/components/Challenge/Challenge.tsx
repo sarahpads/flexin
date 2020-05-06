@@ -1,158 +1,77 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import { gql, useQuery } from "@apollo/client";
 
-import * as S from "./Challenge.styled";
+import ActiveChallenge from "../../components/ActiveChallenge/ActiveChallenge";
+import CompletedChallenge from "../CompletedChallenge/CompletedChallenge";
+import { DateTime } from "luxon";
 
-import ChallengeResponseForm from "../ChallengeResponseForm/ChallengeResponseForm";
-import { AuthContext } from "../AuthProvider";
-import Timer from "../Timer/Timer";
-import Leaderboard from "../Leaderboard/Leaderboard";
-
-interface ChallengeProps {
-  challenge: {
-    id: string,
-    expiresAt: string,
-    createdAt: string,
-    flex: number,
-    reps: number,
-    exercise: {
-      title: string;
-      id: string;
-    },
-    user: { id: string, name: string }
-  }
-}
-
-interface Result {
-  challengeResponses: ChallengeResponse[]
-}
-
-interface ChallengeResponse {
-  user: {
-    name: string;
-    id: string;
-  },
-  reps: number,
-  flex: number
-}
-
-const GET_RESPONSES = gql`
-  query ChallengeResponse($challengeId: String!) {
-    challengeResponses(challengeId: $challengeId) {
+const GET_CHALLENGE = gql`
+  query {
+    latestChallenge {
+      id,
       user { name, id },
+      exercise { title, id },
       flex,
-      reps
+      reps,
+      createdAt,
+      expiresAt
     }
   }
 `
 
-const NEW_RESPONSE = gql`
-  subscription($challengeId: String!) {
-    newResponse(challengeId: $challengeId) {
+const NEW_CHALLENGE = gql`
+  subscription {
+    newChallenge {
+      id,
       user { name, id },
-      reps
+      exercise { title, id },
+      flex,
+      reps,
+      createdAt,
+      expiresAt
     }
   }
 `
 
-const Challenge: React.FC<ChallengeProps> = ({
-  challenge
-}) => {
-  const [ hasResponded, setHasResponded ] = useState(false);
-  const [ hasAuthored, setHasAuthored ] = useState(false);
-  const [ responses, setResponses ] = useState([] as ChallengeResponse[]);
-  const { profile } = useContext(AuthContext);
-  const { subscribeToMore, ...result } = useQuery<Result>(GET_RESPONSES, {
-    variables: { challengeId: challenge.id }
-  });
-
-  useEffect(() => {
-    setHasAuthored(challenge.user.id === profile.sub);
-  }, [challenge, profile.sub]);
+const Challenge: React.FC = () => {
+  const [isActive, setIsActive] = useState(false);
+  const { subscribeToMore, ...result } = useQuery(GET_CHALLENGE)
 
   useEffect(() => {
     if (!result.data) {
       return;
     }
 
-    const hasResponded = result.data.challengeResponses.some((response) => {
-      return response.user.id === profile.sub;
-    });
+    const now = DateTime.fromISO(result.data.latestChallenge.expiresAt);
 
-    setHasResponded(hasResponded);
-  }, [result.data, profile.sub]);
+    setIsActive(now.diffNow().as("seconds") > 0)
+  }, [result.data])
 
   useEffect(() => {
-    if (!result.data) {
-      return;
-    }
-
-    const responses = [
-      ...result.data.challengeResponses,
-      { user: challenge.user, flex: challenge.flex, reps: challenge.reps }
-    ].sort((a, b) => a.flex < b.flex ? 1 : -1);
-
-    setResponses(responses);
-  }, [result.data]);
-
-  // TODO: move this to a "use-more-responses" hook?
-  useEffect(() => {
-    subscribeToMore({
-      document: NEW_RESPONSE,
-      variables: { challengeId: challenge.id },
+    const unsubscribe = subscribeToMore({
+      document: NEW_CHALLENGE,
+      onError: (error) => console.log(error),
       updateQuery: (prev, { subscriptionData }) => {
         // ALERT: what is returned from this function MUST match the exact data format
-        // returned by NEW_RESPONSE; otherwise Apollo will silently discard the update
+        // returned by NEW_CHALLENGE; otherwise Apollo will silently discard the update
         if (!subscriptionData.data) {
           return prev;
         }
 
-        // @ts-ignore
-        // subscribeToMore typings assume the subscriptionData has the same keyname
-        // as the query; which we don't
-        const { user: { name, id }, reps, flex } = subscriptionData.data.newResponse;
-
-        const newResponse = {
-          user: { name, id },
-          reps,
-          flex
-        }
-
-        return {
-          challengeResponses: [...prev.challengeResponses, newResponse]
-        };
+        return { latestChallenge: subscriptionData.data.newChallenge };
       }
     });
-  }, [challenge.id, subscribeToMore]);
 
-  if (result.error) {
-    return <data>{JSON.stringify(result.error)}</data>
+    return () => unsubscribe();
+  }, [subscribeToMore])
+
+  if (!result.data) {
+    return <div>loading</div>
   }
 
-  return (
-    <React.Fragment>
-      <S.Challenge>
-        <S.H1>
-          {hasAuthored
-            ? "You flexed"
-            : `${challenge.user.name} is flexin' at you`}
-        </S.H1>
-
-        <Timer expiresAt={challenge.expiresAt} createdAt={challenge.createdAt}/>
-
-        {/* TODO: make this elegant */}
-        <S.Form>
-          {/* {hasResponded || hasAuthored */}
-          {hasResponded
-            ? <span>Watch 'em roll</span>
-            : <ChallengeResponseForm challenge={challenge}/>
-          }
-        </S.Form>
-      </S.Challenge>
-
-      <Leaderboard responses={responses}/>
-    </React.Fragment>
-  )
+  return isActive
+    ? <ActiveChallenge challenge={result.data.latestChallenge}/>
+    : <CompletedChallenge challenge={result.data.latestChallenge}/>
 }
 
 export default Challenge;

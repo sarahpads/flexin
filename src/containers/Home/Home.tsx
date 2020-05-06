@@ -1,45 +1,15 @@
 import React, { useContext, useEffect } from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import { gql, useQuery } from "@apollo/client";
 
-import * as S from "./Home.styled";
 import { AuthContext } from "../../components/AuthProvider";
-import Challenge from "../../components/Challenge/Challenge";
 import WithBackground from "../../components/WithBackground/WithBackground";
-import Graphic from "../../components/Graphic/Graphic";
 import WithAuth from "../../components/WithAuth";
+import Challenge from "../../components/Challenge/Challenge";
 
 const GET_USER = gql`
   query ($id: String!) {
     user(id: $id) { name }
-  }
-`
-
-const GET_CHALLENGE = gql`
-  query {
-    activeChallenge {
-      id,
-      user { name, id },
-      exercise { title, id },
-      flex,
-      reps,
-      createdAt,
-      expiresAt
-    }
-  }
-`
-
-const NEW_CHALLENGE = gql`
-  subscription {
-    newChallenge {
-      id,
-      user { name, id },
-      exercise { title, id },
-      flex,
-      reps,
-      createdAt,
-      expiresAt
-    }
   }
 `
 
@@ -48,24 +18,6 @@ const Home: React.FC = () => {
   const result = useQuery(GET_USER, {
     variables: { id: auth.profile?.sub }
   });
-
-  const { subscribeToMore, ...challengeResult } = useQuery(GET_CHALLENGE)
-
-  useEffect(() => {
-    subscribeToMore({
-      document: NEW_CHALLENGE,
-      onError: (error) => console.log(error),
-      updateQuery: (prev, { subscriptionData }) => {
-        // ALERT: what is returned from this function MUST match the exact data format
-        // returned by NEW_CHALLENGE; otherwise Apollo will silently discard the update
-        if (!subscriptionData.data) {
-          return prev;
-        }
-
-        return { activeChallenge: subscriptionData.data.newChallenge };
-      }
-    });
-  }, [subscribeToMore])
 
   if (result.loading) {
     return <div>loading</div>
@@ -78,22 +30,7 @@ const Home: React.FC = () => {
     return <Redirect to="/create-profile"/>
   }
 
-  // if challenge, show prompt to respond
-  if (challengeResult.data && challengeResult.data.activeChallenge) {
-    return <Challenge challenge={challengeResult.data.activeChallenge}/>
-  }
-
-  // otherwise, prompt to challenge
-  return (
-    <S.Home>
-      <Graphic/>
-      <S.H1>No one is flexin'</S.H1>
-      <S.P>Your friends are being wimps; show 'em how it's done!</S.P>
-      <S.Button as={Link} to="/create-challenge">
-        Create Challenge
-      </S.Button>
-    </S.Home>
-  );
+  return <Challenge/>;
 }
 
 export default WithBackground(WithAuth(Home));
