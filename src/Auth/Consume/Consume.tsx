@@ -10,7 +10,11 @@ const Consume: React.FC = () => {
 
   useEffect(() => {
     auth.consume()
-      .then(() => setShouldRedirect(true));
+      .then(() => {
+        console.log('consumed')
+        debugger;
+        setShouldRedirect(true)
+      });
   }, [auth])
 
   if (shouldRedirect) {

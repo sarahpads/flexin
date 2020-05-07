@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useEffect } from "react";
 import { gql, useQuery } from "@apollo/client";
 
 import * as S from "./ActiveChallenge.styled";
 
-import { AuthContext } from "../../Auth/AuthProvider";
 import Timer from "../../Layout/Timer/Timer";
 import Leaderboard from "../Leaderboard/Leaderboard";
 import ChallengeResponseForm from "../ChallengeResponseForm/ChallengeResponseForm";
@@ -11,6 +10,9 @@ import ChallengeAuthored from "../ChallengeAuthored/ChallengeAuthored";
 import ChallengeResponded from "../ChallengeResponded/ChallengeResponded";
 import { Challenge, Response } from "../challenge.types";
 import Error from "../../Layout/Error/Error";
+import useIsAuthor from "../use-is-author";
+import useHasResponded from "../use-has-responded";
+import useSortedResponses from "../use-sorted-responses";
 
 interface ActiveChallengeProps {
   challenge: Challenge
@@ -43,38 +45,12 @@ const NEW_RESPONSE = gql`
 const ActiveChallenge: React.FC<ActiveChallengeProps> = ({
   challenge
 }) => {
-  const { profile } = useContext(AuthContext);
-  const [ responses, setResponses ] = useState([] as Response[]);
-  const [ hasResponded, setHasResponded ] = useState(false);
-  const [isAuthor, setIsAuthor] = useState(false)
   const { subscribeToMore, ...result } = useQuery<Result>(GET_RESPONSES, {
     variables: { challengeId: challenge.id }
   });
-
-  useEffect(() => {
-    if (!result.data) {
-      return;
-    }
-
-    const responses = [
-      ...result.data.challengeResponses,
-      { user: challenge.user, flex: challenge.flex, reps: challenge.reps }
-    ].sort((a, b) => a.flex < b.flex ? 1 : -1);
-
-    setResponses(responses);
-  }, [result.data]);
-
-  useEffect(() => {
-    setIsAuthor(challenge.user.id === profile.sub);
-  }, [challenge, profile.sub])
-
-  useEffect(() => {
-    const hasResponded = responses.some((response) => {
-      return response.user.id === profile.sub;
-    });
-
-    setHasResponded(hasResponded);
-  }, [responses, profile.sub]);
+  const isAuthor = useIsAuthor(challenge);
+  const responses = useSortedResponses(challenge, result.data?.challengeResponses)
+  const hasResponded = useHasResponded(responses);
 
   useEffect(() => {
     const unsubscribe = subscribeToMore({
@@ -96,7 +72,7 @@ const ActiveChallenge: React.FC<ActiveChallengeProps> = ({
     });
 
     return () => unsubscribe();
-  }, [challenge.id, subscribeToMore]);
+  }, [challenge.id]);
 
   function getStatus() {
     switch(true) {

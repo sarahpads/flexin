@@ -1,7 +1,6 @@
 import React from "react";
 import { MdFitnessCenter } from "react-icons/md";
 import { IconContext } from "react-icons";
-import { IoIosFitness } from "react-icons/io";
 
 import * as S from "./Spinner.styled";
 import useRandomPalette from "../use-random-palette";
@@ -14,7 +13,6 @@ const Spinner: React.FC = () => {
 
       <S.Icon>
         <IconContext.Provider value={{ color: palette.dark, size: "5rem" }}>
-          {/* <IoIosFitness/> */}
           <MdFitnessCenter/>
         </IconContext.Provider>
       </S.Icon>

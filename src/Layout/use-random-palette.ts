@@ -11,7 +11,8 @@ export default function useRandomPalette() {
     theme.colors.palettePurple,
     theme.colors.paletteBlue,
     theme.colors.paletteRed,
-    theme.colors.paletteYellow
+    theme.colors.paletteYellow,
+    theme.colors.paletteGreen
   ];
 
   useEffect(() => {

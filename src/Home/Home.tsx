@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { Redirect } from "react-router-dom";
 import { gql, useQuery } from "@apollo/client";
 
@@ -9,15 +9,19 @@ import Challenge from "../Challenge/Challenge";
 import Spinner from "../Layout/Spinner/Spinner";
 import Error from "../Layout/Error/Error";
 
-const GET_USER = gql`
+interface Result {
+  hasAccount: boolean;
+}
+
+const GET_USER_EXISTS = gql`
   query ($id: String!) {
-    user(id: $id) { name }
+    hasAccount(id: $id)
   }
 `
 
 const Home: React.FC = () => {
   const auth = useContext(AuthContext)
-  const result = useQuery(GET_USER, {
+  const result = useQuery<Result>(GET_USER_EXISTS, {
     variables: { id: auth.profile?.sub }
   });
 
@@ -29,12 +33,9 @@ const Home: React.FC = () => {
     return <Error error={result.error}/>
   }
 
-  // TODO: make this not gross
-  // TODO: this is causing a memory leak
-  // Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function.
-  // if (result.error && result.error.graphQLErrors[0]?.extensions?.exception.statusCode === 404) {
-    // return <Redirect to="/create-profile"/>
-  // }
+  if (!result.data?.hasAccount) {
+    return <Redirect to="/create-profile"/>
+  }
 
   return <Challenge/>;
 }

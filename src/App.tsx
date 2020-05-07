@@ -18,9 +18,10 @@ function App() {
   const auth = useContext(AuthContext)
   const [client, setClient] = useState();
 
-  useEffect(() =>{
+  // TODO: on consume, this is invoked before the consume process is done
+  useEffect(() => {
     setClient(getClient(auth.getIdToken()));
-  }, [auth])
+  }, [])
 
   if (!client) {
     return <Spinner/>

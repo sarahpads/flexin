@@ -1,41 +1,28 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Confetti from "react-confetti";
 import { IconContext } from "react-icons";
 import { GiTrophy } from "react-icons/gi";
 
 import * as S from "./CompletedChallenge.styled";
-import { AuthContext } from "../../Auth/AuthProvider";
 import { Challenge } from "../challenge.types";
+import useIsAuthor from "../use-is-author";
+import useSortedResponses from "../use-sorted-responses";
 
 interface CompletedChallengeProps {
   challenge: Challenge;
 }
 
-// TODO: need access to responses
 const CompletedChallenge: React.FC<CompletedChallengeProps> = ({ challenge }) => {
-  const { profile } = useContext(AuthContext);
   const [winner, setWinner] = useState();
-  const [isAuthor, setIsAuthor] = useState(false)
+  const isAuthor = useIsAuthor(challenge);
+  const responses = useSortedResponses(challenge, challenge.responses);
 
   useEffect(() => {
-    const winner = [
-      ...challenge.responses,
-      { user: challenge.user, flex: challenge.flex, reps: challenge.reps }
-    ]
-    .sort((a, b) => a.flex < b.flex ? 1 : -1)
-    .shift();
+    const winner = responses?.shift();
 
     setWinner(winner);
   }, [challenge]);
-
-  useEffect(() => {
-    if (!winner) {
-      return;
-    }
-
-    setIsAuthor(winner.id === profile.sub);
-  }, [winner])
 
   return (
     <S.CompletedChallenge>
