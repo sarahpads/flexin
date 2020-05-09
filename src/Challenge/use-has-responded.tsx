@@ -1,7 +1,8 @@
 import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../Auth/AuthProvider";
+import { Response } from "./challenge.types";
 
-export default function useHasResponded(responses: any) {
+export default function useHasResponded(responses: Response[]) {
   const { profile } = useContext(AuthContext);
   const [ hasResponded, setHasResponded ] = useState(false);
 

@@ -1,7 +1,8 @@
 import { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../Auth/AuthProvider";
+import { Challenge } from "./challenge.types";
 
-export default function useIsAuthor(challenge: any) {
+export default function useIsAuthor(challenge: Challenge) {
   const { profile } = useContext(AuthContext);
   const [isAuthor, setIsAuthor] = useState(false);
 

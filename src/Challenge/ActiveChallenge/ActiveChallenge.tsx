@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { gql, useQuery } from "@apollo/client";
+import React, { useEffect, useState } from "react";
+import { gql, useQuery, useSubscription } from "@apollo/client";
 
 import * as S from "./ActiveChallenge.styled";
 
@@ -15,26 +15,17 @@ import useHasResponded from "../use-has-responded";
 import useSortedResponses from "../use-sorted-responses";
 
 interface ActiveChallengeProps {
-  challenge: Challenge
+  challenge: Challenge;
+  onComplete: Function;
 }
 
 interface Result {
-  challengeResponses: Response[]
+  newResponse: Response
 }
 
-const GET_RESPONSES = gql`
-  query ChallengeResponse($challengeId: String!) {
-    challengeResponses(challengeId: $challengeId) {
-      user { name, id },
-      flex,
-      reps
-    }
-  }
-`
-
 const NEW_RESPONSE = gql`
-  subscription($challengeId: String!) {
-    newResponse(challengeId: $challengeId) {
+  subscription {
+    newResponse {
       user { name, id },
       reps,
       flex
@@ -43,36 +34,27 @@ const NEW_RESPONSE = gql`
 `
 
 const ActiveChallenge: React.FC<ActiveChallengeProps> = ({
-  challenge
+  challenge: c,
+  onComplete
 }) => {
-  const { subscribeToMore, ...result } = useQuery<Result>(GET_RESPONSES, {
-    variables: { challengeId: challenge.id }
-  });
-  const isAuthor = useIsAuthor(challenge);
-  const responses = useSortedResponses(challenge, result.data?.challengeResponses)
-  const hasResponded = useHasResponded(responses);
+  const [challenge, setChallenge] = useState(c);
+  // const { subscribeToMore, ...result } = useQuery<Result>(GET_RESPONSES)
+  const result = useSubscription<Result>(NEW_RESPONSE);
+  const isAuthor = useIsAuthor(c);
+  const responses = useSortedResponses(challenge)
+  const hasResponded = useHasResponded(challenge.responses);
 
   useEffect(() => {
-    const unsubscribe = subscribeToMore({
-      document: NEW_RESPONSE,
-      variables: { challengeId: challenge.id },
-      updateQuery: (prev, { subscriptionData }) => {
-        // ALERT: what is returned from this function MUST match the exact data format
-        // returned by NEW_RESPONSE; otherwise Apollo will silently discard the update
-        if (!subscriptionData.data) {
-          return prev;
-        }
+    if (!result.data) {
+      return;
+    }
 
-        return {
-          // @ts-ignore
-          // subscribeToMore typings assume the subscriptionData has the same keyname
-          challengeResponses: [...prev.challengeResponses, subscriptionData.data.newResponse]
-        };
-      }
+    debugger;
+    setChallenge({
+      ...challenge,
+      responses: [...challenge.responses, result.data.newResponse]
     });
-
-    return () => unsubscribe();
-  }, [challenge.id]);
+  }, [c, result.data]);
 
   function getStatus() {
     switch(true) {
@@ -90,7 +72,7 @@ const ActiveChallenge: React.FC<ActiveChallengeProps> = ({
   return (
     <React.Fragment>
       <S.Challenge>
-        <Timer expiresAt={challenge.expiresAt} createdAt={challenge.createdAt}/>
+        <Timer expiresAt={challenge.expiresAt} createdAt={challenge.createdAt} onComplete={onComplete}/>
 
         {getStatus()}
       </S.Challenge>

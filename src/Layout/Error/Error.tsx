@@ -13,14 +13,13 @@ const Error: React.FC<ErrorProps> = ({
   const [show, setShow] = useState(true);
   const [message, setMessage] = useState()
   const [errors, setErrors] = useState();
-  debugger;
 
   useEffect(() => {
     const message = error.networkError
       ? error.networkError.message
       : error.message;
 
-    const errors = error.networkError
+    const errors = error.networkError && error.networkError.result
       ? error.networkError.result.errors
       : error.graphQLErrors;
 

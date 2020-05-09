@@ -19,8 +19,6 @@ const GET_CHALLENGE = gql`
       id,
       user { name, id },
       exercise { title, id },
-      flex,
-      reps,
       createdAt,
       expiresAt,
       responses { user { name, id }, reps, flex }
@@ -34,8 +32,6 @@ const NEW_CHALLENGE = gql`
       id,
       user { name, id },
       exercise { title, id },
-      flex,
-      reps,
       createdAt,
       expiresAt,
       responses { user { name, id }, reps, flex }
@@ -47,6 +43,7 @@ const Challenge: React.FC = () => {
   const [isActive, setIsActive] = useState(false);
   const { subscribeToMore, ...result } = useQuery<Result>(GET_CHALLENGE)
 
+  // TODO: need to setIsActive to false after expirey
   useEffect(() => {
     if (!result.data) {
       return;
@@ -60,7 +57,6 @@ const Challenge: React.FC = () => {
   useEffect(() => {
     const unsubscribe = subscribeToMore({
       document: NEW_CHALLENGE,
-      onError: (error) => console.log(error),
       updateQuery: (prev, { subscriptionData }) => {
         // ALERT: what is returned from this function MUST match the exact data format
         // returned by NEW_CHALLENGE; otherwise Apollo will silently discard the update
@@ -76,6 +72,10 @@ const Challenge: React.FC = () => {
     return () => unsubscribe();
   }, [subscribeToMore])
 
+  function onComplete() {
+    setIsActive(false);
+  }
+
   if (result.error) {
     return <Error error={result.error}/>
   }
@@ -85,7 +85,7 @@ const Challenge: React.FC = () => {
   }
 
   return isActive
-    ? <ActiveChallenge challenge={result.data.latestChallenge} />
+    ? <ActiveChallenge challenge={result.data.latestChallenge} onComplete={onComplete}/>
     : <CompletedChallenge challenge={result.data.latestChallenge} />
 }
 

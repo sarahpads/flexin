@@ -49,7 +49,8 @@ const ChallengeResponseForm: React.FC<ChallengeResponseFormProps> = ({
 
     formState.setField("reps", result.data.userExercise.reps);
 
-    setRequiredReps(Math.ceil(result.data.userExercise.reps * challenge.flex));
+    // TODO: get flex of challenger
+    setRequiredReps(Math.ceil(result.data.userExercise.reps * 0.4));
   }, [result.data])
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {

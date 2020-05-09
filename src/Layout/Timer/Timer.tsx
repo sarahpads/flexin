@@ -7,9 +7,14 @@ import useCountdown from "../use-countdown";
 interface TimerProps {
   expiresAt: string;
   createdAt: string;
+  onComplete: Function;
 }
 
-const Timer: React.FC<TimerProps> = ({ expiresAt, createdAt }) => {
+const Timer: React.FC<TimerProps> = ({
+  expiresAt,
+  createdAt,
+  onComplete
+}) => {
   const seconds = useCountdown(expiresAt)
   const [progress, setProgress] = useState();
 
@@ -22,6 +27,10 @@ const Timer: React.FC<TimerProps> = ({ expiresAt, createdAt }) => {
       .fromISO(expiresAt)
       .diff(DateTime.fromISO(createdAt))
       .as("seconds");
+
+    if (!seconds) {
+      onComplete();
+    }
 
     setProgress(seconds/totalSeconds)
   }, [seconds, createdAt, expiresAt])

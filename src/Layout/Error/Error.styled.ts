@@ -15,6 +15,7 @@ export const Error = styled.div`
   top: -${theme.dimensions.navHeight};
   transition: clip-path .8s;
   width: 100vw;
+  z-index: 10;
 
   &.error-appear-active,
   &.error-enter-active,

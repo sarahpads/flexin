@@ -7,7 +7,7 @@ export default function useWinner(challenge: Challenge, responses: Response[]) {
   const { profile } = useContext(AuthContext);
   const [winner, setWinner] = useState();
   const [isWinner, setIsWinner] = useState(false);
-  const sortedResponses = useSortedResponses(challenge, challenge.responses);
+  const sortedResponses = useSortedResponses(challenge);
 
   useEffect(() => {
     const winner = responses ? responses[0] : undefined;

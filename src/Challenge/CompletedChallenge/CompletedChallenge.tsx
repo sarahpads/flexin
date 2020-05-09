@@ -6,8 +6,6 @@ import { GiTrophy } from "react-icons/gi";
 
 import * as S from "./CompletedChallenge.styled";
 import { Challenge } from "../challenge.types";
-import useIsAuthor from "../use-is-author";
-import useSortedResponses from "../use-sorted-responses";
 import useWinner from "../use-winner";
 import useHasResponded from "../use-has-responded";
 import ChallengeWimp from "./ChallengeWimp/ChallengeWimp";
@@ -19,7 +17,6 @@ interface CompletedChallengeProps {
 }
 
 const CompletedChallenge: React.FC<CompletedChallengeProps> = ({ challenge }) => {
-  // TODO: this won't include challenge response itself
   const hasResponded = useHasResponded(challenge.responses);
   const [winner, isWinner] = useWinner(challenge, challenge.responses);
 

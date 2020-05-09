@@ -2,11 +2,11 @@ import { useContext, useEffect, useState } from "react";
 
 import { AuthContext } from "../Auth/AuthProvider";
 import useSortedResponses from "./use-sorted-responses";
-import { Challenge, Response } from "./challenge.types";
+import { Challenge } from "./challenge.types";
 
-export default function useRank(challenge: Challenge, responses: Response[]) {
+export default function useRank(challenge: Challenge) {
   const { profile } = useContext(AuthContext);
-  const sortedResponses = useSortedResponses(challenge, responses);
+  const sortedResponses = useSortedResponses(challenge);
   const [rank, setRank] = useState();
 
   useEffect(() => {

@@ -2,8 +2,6 @@ export interface Challenge {
   id: string,
   expiresAt: string,
   createdAt: string,
-  flex: number,
-  reps: number,
   exercise: {
     title: string;
     id: string;
