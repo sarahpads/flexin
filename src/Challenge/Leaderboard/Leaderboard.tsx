@@ -8,7 +8,7 @@ import Standing from "../Standing/Standing";
 import { Response } from "../challenge.types";
 
 interface LeaderboardProps {
-  responses: Response[];
+  responses?: Response[];
 }
 
 const defaultHeight = 155;

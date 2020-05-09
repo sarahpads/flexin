@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Challenge } from "../challenge.types";
+import { Challenge } from "../../challenge.types";
 
 interface ChallengeAuthoredProps {
   challenge: Challenge;

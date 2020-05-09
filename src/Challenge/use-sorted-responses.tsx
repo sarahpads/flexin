@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Response, Challenge } from "./challenge.types";
 
 export default function useSortedResponses(challenge: Challenge, responses: Response[] =[]) {
-  const [sortedReponses, setSortedResponses] = useState();
+  const [sortedResponses, setSortedResponses] = useState<Response[]>();
 
   useEffect(() => {
     const sortedResponses = [
@@ -13,5 +13,5 @@ export default function useSortedResponses(challenge: Challenge, responses: Resp
     setSortedResponses(sortedResponses)
   }, [challenge, responses])
 
-  return sortedReponses;
+  return sortedResponses;
 }

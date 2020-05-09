@@ -8,21 +8,33 @@ import * as S from "./CompletedChallenge.styled";
 import { Challenge } from "../challenge.types";
 import useIsAuthor from "../use-is-author";
 import useSortedResponses from "../use-sorted-responses";
+import useWinner from "../use-winner";
+import useHasResponded from "../use-has-responded";
+import ChallengeWimp from "./ChallengeWimp/ChallengeWimp";
+import ChallengeWinner from "./ChallengeWinner/ChallengeWinner";
+import ChallengeLoser from "./ChallengeLoser/ChallengeLoser";
 
 interface CompletedChallengeProps {
   challenge: Challenge;
 }
 
 const CompletedChallenge: React.FC<CompletedChallengeProps> = ({ challenge }) => {
-  const [winner, setWinner] = useState();
-  const isAuthor = useIsAuthor(challenge);
-  const responses = useSortedResponses(challenge, challenge.responses);
+  // TODO: this won't include challenge response itself
+  const hasResponded = useHasResponded(challenge.responses);
+  const [winner, isWinner] = useWinner(challenge, challenge.responses);
 
-  useEffect(() => {
-    const winner = responses?.shift();
+  function getStatus() {
+    switch(true) {
+      case (!hasResponded):
+        return <ChallengeWimp/>
 
-    setWinner(winner);
-  }, [challenge]);
+      case (isWinner):
+        return <ChallengeWinner/>
+
+      default:
+          return <ChallengeLoser/>
+    }
+  }
 
   return (
     <S.CompletedChallenge>
@@ -38,16 +50,7 @@ const CompletedChallenge: React.FC<CompletedChallengeProps> = ({ challenge }) =>
         </S.WinningUser>
       </S.Winner>
 
-      {isAuthor
-        ? (<>
-            <S.H1>You got your ass beat!</S.H1>
-            <S.P>Tired of having their glory rubbed in your face? You better rematch.</S.P>
-          </>)
-        : (<>
-          <S.H1>You kicked everyone's ass!</S.H1>
-          <S.P>Congratulations! Keep flexin' your foes into submission!</S.P>
-        </>)
-      }
+      {getStatus()}
 
       <S.Button as={Link} to="/create-challenge">
         Create Challenge

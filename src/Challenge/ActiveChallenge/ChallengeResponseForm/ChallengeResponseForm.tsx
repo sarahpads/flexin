@@ -4,8 +4,8 @@ import gql from "graphql-tag";
 import { useMutation, useQuery } from "@apollo/client";
 
 import * as S from "./ChallengeResponseForm.styled";
-import { AuthContext } from "../../Auth/AuthProvider";
-import { Challenge } from "../challenge.types";
+import { AuthContext } from "../../../Auth/AuthProvider";
+import { Challenge } from "../../challenge.types";
 
 interface ChallengeResponseFormProps {
   challenge: Challenge;

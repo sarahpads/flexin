@@ -5,9 +5,9 @@ import * as S from "./ActiveChallenge.styled";
 
 import Timer from "../../Layout/Timer/Timer";
 import Leaderboard from "../Leaderboard/Leaderboard";
-import ChallengeResponseForm from "../ChallengeResponseForm/ChallengeResponseForm";
-import ChallengeAuthored from "../ChallengeAuthored/ChallengeAuthored";
-import ChallengeResponded from "../ChallengeResponded/ChallengeResponded";
+import ChallengeResponseForm from "./ChallengeResponseForm/ChallengeResponseForm";
+import ChallengeAuthored from "./ChallengeAuthored/ChallengeAuthored";
+import ChallengeResponded from "./ChallengeResponded/ChallengeResponded";
 import { Challenge, Response } from "../challenge.types";
 import Error from "../../Layout/Error/Error";
 import useIsAuthor from "../use-is-author";
