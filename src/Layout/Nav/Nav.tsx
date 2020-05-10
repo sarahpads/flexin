@@ -13,6 +13,10 @@ const Nav: React.FC = () => {
   const prompt = useHomeScreen();
   const [showMenu, setShowMenu] = useState(false);
 
+  function addToHome() {
+    prompt();
+  }
+
   return (
     <React.Fragment>
       <S.Settings>
@@ -20,6 +24,8 @@ const Nav: React.FC = () => {
           <Settings onClose={() => setShowMenu(false)}/>
         </CSSTransition>
       </S.Settings>
+
+      {prompt && <button onClick={() => addToHome()}>Add to Home</button>}
 
       <S.Nav>
         <IconContext.Provider value={{ color: "white", size: "3rem" }}>
