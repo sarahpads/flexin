@@ -6,7 +6,6 @@ import { TransitionGroup, CSSTransition } from "react-transition-group";
 import { AuthContext } from './Auth/AuthProvider';
 import { getApolloClient } from './Apollo';
 import Nav from './Layout/Nav/Nav';
-import Consume from './Auth/Consume/Consume';
 import CreateProfile from './Auth/CreateProfile/CreateProfile';
 import Home from './Home/Home';
 import Login from './Auth/Login/Login';
@@ -20,7 +19,7 @@ function App() {
 
   // TODO: on consume, this is invoked before the consume process is done
   useEffect(() => {
-    getApolloClient(auth.getIdToken())
+    getApolloClient(auth)
       .then((client) => setClient(client));
   }, [])
 
@@ -36,7 +35,6 @@ function App() {
         <CSSTransition classNames="background" key={location.key} appear={true} timeout={600} unmountOnExit>
           <Switch location={location}>
             <Route exact path="/login" component={Login}/>
-            <Route exact path="/consume" component={Consume}/>
             <Route exact path="/create-profile" component={CreateProfile}/>
             <Route exact path="/create-challenge" component={CreateChallenge}/>
             <Route exact path="/" component={Home}/>

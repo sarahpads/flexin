@@ -19,10 +19,11 @@ workbox.routing.registerNavigationRoute(
 self.addEventListener('push', function(event) {
   console.log('[Service Worker] Push Received.');
   console.log(`[Service Worker] Push had this data: "${event.data.text()}"`);
+  const data = JSON.parse(event.data);
 
-  const title = 'Push Codelab';
+  const title = data.title;
   const options = {
-    body: 'Yay it works.',
+    body: data.body,
     icon: 'images/icon.png',
     badge: 'images/badge.png'
   };

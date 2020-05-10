@@ -3,6 +3,8 @@ import { TokenPayload } from "google-auth-library";
 
 import AuthClient from "../Auth";
 import Spinner from "../Layout/Spinner/Spinner";
+import { useLocation, Redirect, useHistory } from "react-router-dom";
+import Error from "../Layout/Error/Error";
 
 const {
   REACT_APP_CLIENT_ID,
@@ -21,14 +23,24 @@ const config = {
 export const AuthContext = React.createContext(undefined as any);
 
 const AuthProvider: React.FC = (props) => {
+  const location = useLocation();
+  const history = useHistory();
   const [isInitialized, setIsInitialized] = useState(false);
   const [client, setClient] = useState();
+  const [error, setError] = useState();
   const authClient = useRef(undefined as any);
 
   if (!authClient.current) {
     authClient.current = new AuthClient(config);
 
-    authClient.current.init()
+    const isConsuming = location.pathname.includes("consume");
+
+    const consume = isConsuming
+      ? authClient.current.consume().then(() => history.push("/"))
+      : Promise.resolve()
+
+    consume
+      .then(() => authClient.current.init())
       .then((profile: TokenPayload) => {
         setClient({
           profile,
@@ -39,11 +51,16 @@ const AuthProvider: React.FC = (props) => {
           isValid: authClient.current.isValid.bind(authClient.current)
         })
       })
+      .catch((error: any) => setError(error))
       .finally(() => setIsInitialized(true));
   }
 
   if (!isInitialized) {
     return <Spinner/>
+  }
+
+  if (error) {
+    return <Error error={error}/>
   }
 
   return (

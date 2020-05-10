@@ -8,8 +8,8 @@ import Settings from "../../Auth/Settings/Settings";
 import usePushNotification from "../../Auth/use-push-notification";
 
 const Nav: React.FC = () => {
-  const [showMenu, setShowMenu] = useState(false);
   usePushNotification()
+  const [showMenu, setShowMenu] = useState(false);
 
   return (
     <React.Fragment>

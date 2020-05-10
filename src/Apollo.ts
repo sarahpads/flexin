@@ -1,8 +1,9 @@
 import { WebSocketLink } from "@apollo/link-ws";
-import { ApolloClient, InMemoryCache, HttpLink, split, NormalizedCacheObject } from "@apollo/client"
+import { ApolloClient, InMemoryCache, HttpLink, split, NormalizedCacheObject, ApolloLink } from "@apollo/client"
 import { getMainDefinition } from '@apollo/client/utilities';
 import { SubscriptionClient } from "subscriptions-transport-ws";
 import { CachePersistor } from 'apollo-cache-persist'
+import { setContext } from '@apollo/link-context'
 import { PersistentStorage, PersistedData } from "apollo-cache-persist/types";
 
 const { REACT_APP_GRAPHQL, REACT_APP_SUBSCRIPTION } = process.env;
@@ -10,13 +11,20 @@ const SCHEMA_VERSION = '1'
 const SCHEMA_VERSION_KEY = 'apollo-schema-version'
 
 // https://rubygarage.org/blog/pwa-with-react-apollo
-export async function getApolloClient(idToken: string) {
-  const httpLink = new HttpLink({
-    uri: REACT_APP_GRAPHQL,
-    headers: {
-      Authorization: `Bearer ${idToken}`,
+export async function getApolloClient(auth: any) {
+
+  const authLink = setContext(({ headers }: any) => {
+    const token = auth.getIdToken();
+
+    return {
+      headers: {
+        ...headers,
+        Authorization: token ? `Bearer ${token}` : ''
+      }
     }
-  });
+  })
+
+  const httpLink = new HttpLink({ uri: REACT_APP_GRAPHQL });
 
   const wsClient = new SubscriptionClient(REACT_APP_SUBSCRIPTION as string, {
     reconnect: true
@@ -27,7 +35,7 @@ export async function getApolloClient(idToken: string) {
   const cache = new InMemoryCache();
 
   // https://www.apollographql.com/docs/react/v3.0-beta/data/subscriptions/
-  const link = split(
+  const splitLink = split(
     // split based on operation type
     ({ query }) => {
       const definition = getMainDefinition(query);
@@ -39,6 +47,10 @@ export async function getApolloClient(idToken: string) {
     wsLink,
     httpLink
   );
+
+  const link = ApolloLink.from([
+    authLink, splitLink
+  ])
 
   const persistor = new CachePersistor({
     cache,
