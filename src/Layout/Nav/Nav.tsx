@@ -6,9 +6,11 @@ import { CSSTransition } from "react-transition-group";
 import * as S from "./Nav.styled";
 import Settings from "../../Auth/Settings/Settings";
 import usePushNotification from "../../Auth/use-push-notification";
+import useHomeScreen from "../../Auth/use-home-screen";
 
 const Nav: React.FC = () => {
   usePushNotification()
+  const prompt = useHomeScreen();
   const [showMenu, setShowMenu] = useState(false);
 
   return (

@@ -21,6 +21,7 @@ const GET_USER_EXISTS = gql`
 
 const Home: React.FC = () => {
   const auth = useContext(AuthContext)
+  console.log(auth)
   const result = useQuery<Result>(GET_USER_EXISTS, {
     variables: { id: auth.profile?.sub }
   });

@@ -15,6 +15,7 @@ const Error: React.FC<ErrorProps> = ({
   const [errors, setErrors] = useState();
 
   useEffect(() => {
+    console.log(error)
     const message = error.networkError
       ? error.networkError.message
       : error.message;

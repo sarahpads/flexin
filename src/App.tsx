@@ -17,7 +17,6 @@ function App() {
   const auth = useContext(AuthContext)
   const [client, setClient] = useState();
 
-  // TODO: on consume, this is invoked before the consume process is done
   useEffect(() => {
     getApolloClient(auth)
       .then((client) => setClient(client));

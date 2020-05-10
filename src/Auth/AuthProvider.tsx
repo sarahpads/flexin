@@ -1,9 +1,9 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { TokenPayload } from "google-auth-library";
 
 import AuthClient from "../Auth";
 import Spinner from "../Layout/Spinner/Spinner";
-import { useLocation, Redirect, useHistory } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 import Error from "../Layout/Error/Error";
 
 const {
@@ -30,30 +30,32 @@ const AuthProvider: React.FC = (props) => {
   const [error, setError] = useState();
   const authClient = useRef(undefined as any);
 
-  if (!authClient.current) {
-    authClient.current = new AuthClient(config);
+  useEffect(() => {
+    if (!authClient.current) {
+      authClient.current = new AuthClient(config);
 
-    const isConsuming = location.pathname.includes("consume");
+      const isConsuming = location.pathname.includes("consume");
 
-    const consume = isConsuming
-      ? authClient.current.consume().then(() => history.push("/"))
-      : Promise.resolve()
+      const consume = isConsuming
+        ? authClient.current.consume().then(() => history.push("/"))
+        : Promise.resolve()
 
-    consume
-      .then(() => authClient.current.init())
-      .then((profile: TokenPayload) => {
-        setClient({
-          profile,
-          init: authClient.current.init.bind(authClient.current),
-          consume: authClient.current.consume.bind(authClient.current),
-          login: authClient.current.login.bind(authClient.current),
-          getIdToken: authClient.current.getIdToken.bind(authClient.current),
-          isValid: authClient.current.isValid.bind(authClient.current)
+      consume
+        .then(() => authClient.current.init())
+        .then((profile: TokenPayload) => {
+          setClient({
+            profile,
+            init: authClient.current.init.bind(authClient.current),
+            consume: authClient.current.consume.bind(authClient.current),
+            login: authClient.current.login.bind(authClient.current),
+            getIdToken: authClient.current.getIdToken.bind(authClient.current),
+            isValid: authClient.current.isValid.bind(authClient.current)
+          })
         })
-      })
-      .catch((error: any) => setError(error))
-      .finally(() => setIsInitialized(true));
-  }
+        .catch((error: any) => setError(error))
+        .finally(() => setIsInitialized(true));
+    }
+  }, [])
 
   if (!isInitialized) {
     return <Spinner/>
