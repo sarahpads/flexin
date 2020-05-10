@@ -4,7 +4,7 @@ import { Switch, Route, useLocation } from 'react-router';
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 
 import { AuthContext } from './Auth/AuthProvider';
-import { getClient } from './Apollo';
+import { getApolloClient } from './Apollo';
 import Nav from './Layout/Nav/Nav';
 import Consume from './Auth/Consume/Consume';
 import CreateProfile from './Auth/CreateProfile/CreateProfile';
@@ -20,7 +20,8 @@ function App() {
 
   // TODO: on consume, this is invoked before the consume process is done
   useEffect(() => {
-    setClient(getClient(auth.getIdToken()));
+    getApolloClient(auth.getIdToken())
+      .then((client) => setClient(client));
   }, [])
 
   if (!client) {

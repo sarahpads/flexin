@@ -20,6 +20,7 @@ export default class AuthClient {
   }
 
   init() {
+    // TODO: offline support, if tokens in localstorage, set profile
     return this.authClient.getAccessToken()
       .then((tokens: any) => this.getProfile())
       .catch((error: any) => console.log("auth init error", error));

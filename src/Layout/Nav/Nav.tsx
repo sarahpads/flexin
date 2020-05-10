@@ -5,9 +5,11 @@ import { CSSTransition } from "react-transition-group";
 
 import * as S from "./Nav.styled";
 import Settings from "../../Auth/Settings/Settings";
+import usePushNotification from "../../Auth/use-push-notification";
 
 const Nav: React.FC = () => {
   const [showMenu, setShowMenu] = useState(false);
+  usePushNotification()
 
   return (
     <React.Fragment>
