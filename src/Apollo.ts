@@ -7,7 +7,7 @@ import { setContext } from '@apollo/link-context'
 import { PersistentStorage, PersistedData } from "apollo-cache-persist/types";
 
 const { REACT_APP_GRAPHQL, REACT_APP_SUBSCRIPTION } = process.env;
-const SCHEMA_VERSION = '1'
+const SCHEMA_VERSION = '2'
 const SCHEMA_VERSION_KEY = 'apollo-schema-version'
 
 // https://rubygarage.org/blog/pwa-with-react-apollo
@@ -60,10 +60,10 @@ export async function getApolloClient(auth: any) {
   const currentVersion = window.localStorage.getItem(SCHEMA_VERSION_KEY)
 
   if (currentVersion === SCHEMA_VERSION) {
-    await persistor.restore()
+    // await persistor.restore()
   } else {
-    await persistor.purge()
-    window.localStorage.setItem(SCHEMA_VERSION_KEY, SCHEMA_VERSION)
+    // await persistor.purge()
+    // window.localStorage.setItem(SCHEMA_VERSION_KEY, SCHEMA_VERSION)
   }
 
   return new ApolloClient({

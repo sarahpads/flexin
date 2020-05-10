@@ -38,18 +38,19 @@ export default function usePushNotification() {
   }, [isSubscribed])
 
   useEffect(() => {
+    console.log(userConsent)
     if (userConsent !== "granted") {
       return;
     }
 
-  navigator.serviceWorker.ready
-    .then((serviceWorker) => serviceWorker.pushManager.subscribe({
-      userVisibleOnly: true,
-      applicationServerKey: process.env.REACT_APP_NOTIFICATION_KEY
-    }))
-    .then((response: PushSubscription) => createSubscription({ variables: { data: {
-      user: profile.sub,
-      notification: JSON.stringify(response)
-    }}}));
+    navigator.serviceWorker.ready
+      .then((serviceWorker) => serviceWorker.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: process.env.REACT_APP_NOTIFICATION_KEY
+      }))
+      .then((response: PushSubscription) => createSubscription({ variables: { data: {
+        user: profile.sub,
+        notification: JSON.stringify(response)
+      }}}));
   }, [userConsent])
 }
