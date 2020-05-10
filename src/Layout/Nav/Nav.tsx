@@ -10,12 +10,8 @@ import useHomeScreen from "../../Auth/use-home-screen";
 
 const Nav: React.FC = () => {
   usePushNotification()
-  const prompt = useHomeScreen();
+  useHomeScreen();
   const [showMenu, setShowMenu] = useState(false);
-
-  function addToHome() {
-    prompt();
-  }
 
   return (
     <React.Fragment>
@@ -24,8 +20,6 @@ const Nav: React.FC = () => {
           <Settings onClose={() => setShowMenu(false)}/>
         </CSSTransition>
       </S.Settings>
-
-      {prompt && <button onClick={() => addToHome()}>Add to Home</button>}
 
       <S.Nav>
         <IconContext.Provider value={{ color: "white", size: "3rem" }}>
