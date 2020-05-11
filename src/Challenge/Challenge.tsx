@@ -72,6 +72,7 @@ const Challenge: React.FC = () => {
     return () => unsubscribe();
   }, [subscribeToMore])
 
+  // TODO: this component isn't receiving the updated responses from ActiveChallenge
   function onComplete() {
     setIsActive(false);
   }
@@ -84,9 +85,11 @@ const Challenge: React.FC = () => {
     return <Spinner/>
   }
 
-  return isActive
+  return <ActiveChallenge challenge={result.data.latestChallenge} onComplete={onComplete}/>
+  /*return isActive
     ? <ActiveChallenge challenge={result.data.latestChallenge} onComplete={onComplete}/>
     : <CompletedChallenge challenge={result.data.latestChallenge} />
+    */
 }
 
 export default Challenge;

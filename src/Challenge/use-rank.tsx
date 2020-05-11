@@ -14,8 +14,8 @@ export default function useRank(challenge: Challenge) {
       return response.user.id === profile.sub;
     });
 
-    if (rank !== undefined) {
-      setRank(rank);
+    if (rank !== undefined && rank > -1) {
+      setRank(rank + 1);
     }
   }, [sortedResponses])
 

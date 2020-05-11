@@ -16,6 +16,7 @@
     "jwt-decode": "^2.2.0",
     "lodash.clamp": "^4.0.3",
     "luxon": "^1.23.0",
+    "ordinal": "^1.0.3",
     "querystring": "^0.2.0",
     "react": "^16.13.1",
     "react-confetti": "^5.0.1",

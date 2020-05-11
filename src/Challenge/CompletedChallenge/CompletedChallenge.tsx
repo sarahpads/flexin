@@ -19,6 +19,17 @@ interface CompletedChallengeProps {
 const CompletedChallenge: React.FC<CompletedChallengeProps> = ({ challenge }) => {
   const hasResponded = useHasResponded(challenge.responses);
   const [winner, isWinner] = useWinner(challenge, challenge.responses);
+  const [winnerName, setWinnerName] = useState();
+
+  useEffect(() => {
+    if (!winner) {
+      return;
+    }
+
+    const name = winner.user.name.split(" ")[0];
+
+    setWinnerName(name);
+  }, [winner])
 
   function getStatus() {
     switch(true) {
@@ -43,7 +54,7 @@ const CompletedChallenge: React.FC<CompletedChallengeProps> = ({ challenge }) =>
             <GiTrophy/>
           </IconContext.Provider>
 
-          <S.WinnerName>{winner?.user.name}</S.WinnerName>
+          <S.WinnerName>{winnerName}</S.WinnerName>
         </S.WinningUser>
       </S.Winner>
 

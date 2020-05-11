@@ -38,7 +38,6 @@ export default function usePushNotification() {
   }, [isSubscribed])
 
   useEffect(() => {
-    console.log(userConsent)
     if (userConsent !== "granted") {
       return;
     }
