@@ -3,6 +3,11 @@ export interface Palette {
   neutral: string;
 }
 
+const paletteGreen = {
+  dark: "#54904f",
+  neutral: "#66a261"
+}
+
 const palettePurple = {
   dark: "#755BA8",
   neutral: "#8567AD"
@@ -33,7 +38,8 @@ const colors: { [key: string]: Palette } = {
   paletteBlue,
   paletteRed,
   paletteYellow,
-  paletteGrey
+  paletteGrey,
+  paletteGreen
 }
 
 const theme = {
