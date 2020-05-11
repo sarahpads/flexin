@@ -19,13 +19,13 @@ workbox.routing.registerNavigationRoute(
 self.addEventListener('push', function(event) {
   console.log('[Service Worker] Push Received.');
   console.log(`[Service Worker] Push had this data: "${event.data.text()}"`);
-  const data = JSON.parse(event.data);
+  const data = event.data.json();
 
   const title = data.title;
   const options = {
     body: data.body,
-    icon: 'images/icon.png',
-    badge: 'images/badge.png'
+    icon: 'waffle.svg',
+    badge: 'waffle.svg'
   };
 
   event.waitUntil(self.registration.showNotification(title, options));
