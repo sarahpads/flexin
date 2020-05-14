@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 
 export default function useHomeScreen() {
+  const [prompt, setPrompt] = useState()
+
   useEffect(() => {
     window.addEventListener("beforeinstallprompt", onReady)
 
@@ -8,7 +10,7 @@ export default function useHomeScreen() {
   }, [])
 
   function onReady(event: any) {
-    event.prompt();
+    setPrompt(event)
   }
 
   return prompt;
