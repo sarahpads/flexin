@@ -38,8 +38,6 @@ const Nav: React.FC = () => {
 
   return (
     <React.Fragment>
-      <PWA/>
-
       <S.Settings>
         <CSSTransition classNames="background" in={showMenu} timeout={800} unmountOnExit mountOnEnter>
           <Settings onClose={() => setShowMenu(false)}/>
@@ -47,6 +45,8 @@ const Nav: React.FC = () => {
       </S.Settings>
 
       <S.Nav>
+        <PWA/>
+
         <IconContext.Provider value={{ color: "white", size: "3rem" }}>
           <S.Button onClick={() => setShowMenu(!showMenu)}>
             <MdSettings />

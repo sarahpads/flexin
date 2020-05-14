@@ -3,10 +3,11 @@ import styled from "styled-components";
 import theme from "../../theme";
 
 export const Nav = styled.div`
-  align-items: flex-start;
+  align-items: center;
+  box-sizing: border-box;
   display: flex;
   height: ${theme.dimensions.navHeight};
-  justify-content: flex-end;
+  padding: 1rem;
   position: relative;
   z-index: 10;
 `
@@ -15,8 +16,8 @@ export const Button = styled.button`
   background: transparent;
   border: none;
   cursor: pointer;
-  margin: 1rem;
   outline: none;
+  margin-left: auto;
   padding: 0;
 `
 
