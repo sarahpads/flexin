@@ -51,6 +51,10 @@ export const SelectInput = styled.select`
   width: 100%;
 `
 
+export const Option = styled.option`
+  color: ${theme.text.dark};
+`
+
 export const Button = styled(B)`
   margin-top: 4rem;
 `

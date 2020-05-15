@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import gql from "graphql-tag";
-import { useQuery, useMutation } from "@apollo/client";
+import { useQuery, useMutation, useApolloClient } from "@apollo/client";
 import { Redirect } from "react-router";
 
 import * as S from "./CreateProfile.styled";
@@ -12,6 +12,12 @@ import ProfileForm, { ProfileData } from "../../Auth/ProfileForm/ProfileForm";
 interface Result {
   exercises: { title: string, id: string }[];
 }
+
+const GET_USER_EXISTS = gql`
+  query ($id: String!) {
+    hasAccount(id: $id)
+  }
+`
 
 const GET_EXERCISES = gql`
   query Exercise {
@@ -26,10 +32,21 @@ const CREATE_PROFILE = gql`
 `
 
 const CreateProfile: React.FC = () => {
+  const client = useApolloClient();
   const { profile } = useContext(AuthContext)
   const [shouldRedirect, setShoulRedirect] = useState(false);
   const result = useQuery<Result>(GET_EXERCISES);
-  const [ createProfile ] = useMutation(CREATE_PROFILE);
+  const [ createProfile ] = useMutation(CREATE_PROFILE, {
+    onCompleted: () => {
+      client.writeQuery({
+        query: GET_USER_EXISTS,
+        variables: { id: profile?.sub },
+        data: { hasAccount: true }
+      })
+
+      setShoulRedirect(true);
+    }
+  });
 
   const handleSubmit = (profileData: ProfileData) => {
     // TODO: sometimes name isn't available on profile; how to resolve?
@@ -41,8 +58,6 @@ const CreateProfile: React.FC = () => {
         return {...data, user: id }
       })
     }}})
-
-    setShoulRedirect(true);
   }
 
   if (shouldRedirect) {
@@ -61,7 +76,6 @@ const CreateProfile: React.FC = () => {
         onSubmit={(event: any) => handleSubmit(event)}
         exercises={result.data.exercises}
       />}
-        {/* <S.Button type="submit">Get Flexin'</S.Button> */}
     </div>
   );
 }

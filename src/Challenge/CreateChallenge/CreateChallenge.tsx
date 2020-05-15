@@ -127,7 +127,7 @@ const CreateChallenge: React.FC = () => {
           <S.SelectInput {...select("exercise")} required>
             <option>Choose an exercise</option>
             {result.data && result.data.exercises.map((exercise: any) => {
-              return <option key={exercise.id} value={exercise.id}>{exercise.title}</option>
+              return <S.Option key={exercise.id} value={exercise.id}>{exercise.title}</S.Option>
             })}
           </S.SelectInput>
         </S.Select>

@@ -7,7 +7,7 @@ export const Error = styled.div`
   background-color: white;
   box-sizing: border-box;
   clip-path: circle(0%);
-  color: #464646;
+  color: ${theme.text.dark};
   height: 100vh;
   left: 0;
   padding: 5rem 2rem;

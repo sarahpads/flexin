@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { Redirect } from "react-router-dom";
-import { gql, useQuery } from "@apollo/client";
+import { gql, useQuery, useApolloClient } from "@apollo/client";
 
 import { AuthContext } from "../Auth/AuthProvider";
 import WithBackground from "../Layout/WithBackground/WithBackground";
@@ -20,9 +20,9 @@ const GET_USER_EXISTS = gql`
 `
 
 const Home: React.FC = () => {
-  const auth = useContext(AuthContext)
+  const { profile } = useContext(AuthContext)
   const result = useQuery<Result>(GET_USER_EXISTS, {
-    variables: { id: auth.profile?.sub }
+    variables: { id: profile?.sub }
   });
 
   if (result.loading) {

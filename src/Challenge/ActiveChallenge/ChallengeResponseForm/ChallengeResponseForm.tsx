@@ -77,7 +77,7 @@ const ChallengeResponseForm: React.FC<ChallengeResponseFormProps> = ({
 
   return (
     <form noValidate onSubmit={handleSubmit}>
-      <S.P>You need to do {requiredReps} reps to beat {challenge.user.name}</S.P>
+      <S.P>You need to do {requiredReps} {challenge.exercise.title}s to beat {challenge.user.name}</S.P>
 
       <div>
         <S.RepsInput {...number("reps")} min="0" max="999" required/>

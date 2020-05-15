@@ -45,7 +45,8 @@ const colors: { [key: string]: Palette } = {
 const theme = {
   colors,
   text: {
-    default: "white"
+    default: "white",
+    dark: "#464646"
   },
   dimensions: {
     navHeight: "5rem",
