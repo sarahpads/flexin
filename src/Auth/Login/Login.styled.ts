@@ -17,7 +17,7 @@ export const Logo = styled.div`
 `
 
 export const Graphic = styled.div`
-  background-image: url("/waffle.svg");
+  background-image: url("/logo.svg");
   background-size: contain;
   height: ${theme.circle.dimension};
   position: absolute;

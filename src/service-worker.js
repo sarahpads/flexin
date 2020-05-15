@@ -24,8 +24,8 @@ self.addEventListener('push', function(event) {
   const title = data.title;
   const options = {
     body: data.body,
-    icon: 'waffle.svg',
-    badge: 'waffle.svg'
+    icon: 'logo.svg',
+    badge: 'logo.svg'
   };
 
   event.waitUntil(self.registration.showNotification(title, options));

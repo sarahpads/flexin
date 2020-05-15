@@ -8,6 +8,7 @@ import Settings from "../../Auth/Settings/Settings";
 import { useQuery, gql } from "@apollo/client";
 import { AuthContext } from "../../Auth/AuthProvider";
 import PWA from "../PWA/PWA";
+import Scoreboard from "../Scoreboard/Scoreboard";
 
 interface Result {
   hasAccount: boolean;
@@ -53,6 +54,8 @@ const Nav: React.FC = () => {
           </S.Button>
         </IconContext.Provider>
       </S.Nav>
+
+      <Scoreboard/>
     </React.Fragment>
   )
 }
