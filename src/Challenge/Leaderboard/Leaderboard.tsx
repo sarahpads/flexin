@@ -45,7 +45,7 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ responses = defaultArrayProp 
       <S.Leaderboard ref={elRef}>
         <S.Title>Leaderboard</S.Title>
         {responses.map((response: any, index: number) => {
-          return <Standing key={index} response={response} rank={index}></Standing>
+          return <Standing key={index} userName={response.user.name} percentage={response.flex} rank={index}></Standing>
         })}
       </S.Leaderboard>
     </S.AnimatedLeaderboard>

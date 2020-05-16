@@ -11,6 +11,7 @@ import Home from './Home/Home';
 import Login from './Auth/Login/Login';
 import CreateChallenge from './Challenge/CreateChallenge/CreateChallenge';
 import Spinner from './Layout/Spinner/Spinner';
+import PWA from "./Layout/PWA/PWA";
 
 function App() {
   const location = useLocation();
@@ -29,6 +30,7 @@ function App() {
   return (
     <ApolloProvider client={client}>
       <Nav/>
+      <PWA/>
 
       <TransitionGroup component={null}>
         <CSSTransition classNames="background" key={location.key} appear={true} timeout={600} unmountOnExit>

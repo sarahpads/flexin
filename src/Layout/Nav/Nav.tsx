@@ -7,7 +7,6 @@ import * as S from "./Nav.styled";
 import Settings from "../../Auth/Settings/Settings";
 import { useQuery, gql } from "@apollo/client";
 import { AuthContext } from "../../Auth/AuthProvider";
-import PWA from "../PWA/PWA";
 import Scoreboard from "../Scoreboard/Scoreboard";
 
 interface Result {
@@ -46,8 +45,6 @@ const Nav: React.FC = () => {
       </S.Settings>
 
       <S.Nav>
-        <PWA/>
-
         <IconContext.Provider value={{ color: "white", size: "3rem" }}>
           <S.Button onClick={() => setShowMenu(!showMenu)}>
             <MdSettings />

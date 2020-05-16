@@ -27,6 +27,29 @@ export const Avatar = styled.div`
 
 export const Name = styled.span``
 
+export const Waffles = styled.div`
+  display: flex;
+  padding: 0 1rem 0 2.5rem;
+`
+
+interface WaffleProps {
+  value: number;
+}
+
+export const Waffle = styled.img<WaffleProps>`
+  border: 1px solid #dca662;
+  border-radius: 50%;
+  display: inherit;
+  height: 2.5rem;
+  margin-left: -1.5rem;
+
+  ${(props) => {
+    if (props.value === 0.5) {
+      return { clipPath: "inset(0 35% 0 0)" };
+    }
+  }}
+`
+
 export const Flex = styled.span`
   margin-left: auto;
 `

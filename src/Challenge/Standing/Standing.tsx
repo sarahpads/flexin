@@ -6,8 +6,10 @@ import { IconContext } from "react-icons";
 import { Response } from "../challenge.types";
 
 interface StandingProps {
-  response: Response;
+  percentage?: number;
+  waffles?: number;
   rank: number;
+  userName: number;
 }
 
 enum Medals {
@@ -17,15 +19,39 @@ enum Medals {
 }
 
 const Standing: React.FC<StandingProps> = ({
-  response,
-  rank
+  percentage,
+  rank,
+  userName,
+  waffles
 }) => {
   const [medal, setMedal] = useState();
   const [flex, setFlex] = useState();
+  const [waffleCount, setWaffleCount] = useState<number[]>([]);
 
   useEffect(() => {
-    setFlex(`${response.flex * 100}%`);
-  }, [response]);
+    if (percentage === undefined) {
+      return;
+    }
+
+    setFlex(`${percentage * 100}%`);
+  }, [percentage]);
+
+  useEffect(() => {
+    if (!waffles) {
+      return;
+    }
+
+    const waffleCount = [];
+
+    for (let i = 0; i < waffles; i++) {
+      waffleCount.push(1)
+    }
+
+    // push remainder as well
+    waffleCount.push(waffleCount.length % waffles);
+
+    setWaffleCount(waffleCount);
+  }, [waffles])
 
   useEffect(() => {
     setMedal(Medals[rank]);
@@ -43,8 +69,15 @@ const Standing: React.FC<StandingProps> = ({
       </S.Rank>
 
       <S.Avatar/>
-      <S.Name>{response.user.name}</S.Name>
-      <S.Flex>{flex}</S.Flex>
+      <S.Name>{userName}</S.Name>
+
+      <S.Waffles>
+        {waffleCount.map((value) => {
+          return <S.Waffle src="/waffle.svg" value={value}/>
+        })}
+      </S.Waffles>
+
+      {flex && <S.Flex>{flex}</S.Flex>}
     </S.Standing>
   )
 }
