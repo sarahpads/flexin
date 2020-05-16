@@ -28,26 +28,20 @@ export const Avatar = styled.div`
 export const Name = styled.span``
 
 export const Waffles = styled.div`
+  align-items: center;
   display: flex;
-  padding: 0 1rem 0 2.5rem;
+  margin-left: auto;
 `
 
-interface WaffleProps {
-  value: number;
-}
-
-export const Waffle = styled.img<WaffleProps>`
-  border: 1px solid #dca662;
-  border-radius: 50%;
+export const Waffle = styled.img`
   display: inherit;
-  height: 2.5rem;
-  margin-left: -1.5rem;
+  height: 3.5rem;
+`
 
-  ${(props) => {
-    if (props.value === 0.5) {
-      return { clipPath: "inset(0 35% 0 0)" };
-    }
-  }}
+export const WaffleCount = styled.span`
+  font-size: 2rem;
+  font-weight: 500;
+  margin-right: 1rem;
 `
 
 export const Flex = styled.span`

@@ -26,7 +26,6 @@ const Standing: React.FC<StandingProps> = ({
 }) => {
   const [medal, setMedal] = useState();
   const [flex, setFlex] = useState();
-  const [waffleCount, setWaffleCount] = useState<number[]>([]);
 
   useEffect(() => {
     if (percentage === undefined) {
@@ -35,23 +34,6 @@ const Standing: React.FC<StandingProps> = ({
 
     setFlex(`${percentage * 100}%`);
   }, [percentage]);
-
-  useEffect(() => {
-    if (!waffles) {
-      return;
-    }
-
-    const waffleCount = [];
-
-    for (let i = 0; i < waffles; i++) {
-      waffleCount.push(1)
-    }
-
-    // push remainder as well
-    waffleCount.push(waffleCount.length % waffles);
-
-    setWaffleCount(waffleCount);
-  }, [waffles])
 
   useEffect(() => {
     setMedal(Medals[rank]);
@@ -72,9 +54,8 @@ const Standing: React.FC<StandingProps> = ({
       <S.Name>{userName}</S.Name>
 
       <S.Waffles>
-        {waffleCount.map((value) => {
-          return <S.Waffle src="/waffle.svg" value={value}/>
-        })}
+        <S.WaffleCount>{waffles} x </S.WaffleCount>
+        <S.Waffle src="/waffle.png"/>
       </S.Waffles>
 
       {flex && <S.Flex>{flex}</S.Flex>}
