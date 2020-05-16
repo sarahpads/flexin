@@ -1,25 +1,24 @@
 import styled, { keyframes } from "styled-components";
 
+import theme from "../../theme";
+
 export const Spinner = styled.div`
   padding-top: 30vh;
   text-align: center;
 `
 
 const rotate = keyframes`
-  0% { transform: scaleX(1) }
-  50% { transform: scaleX(-1) }
+  0% { transform: rotate(0) }
+  100% { transform: rotate(360deg) }
 `
 
-export const Icon = styled.div`
-  animation: ${rotate} 0.3s step-end infinite;
+export const Waffle = styled.img`
+  animation: ${rotate} 1s infinite;
+  height: 6rem;
 `
 
-interface MessageProps {
-  color: string;
-}
-
-export const Message = styled.span<MessageProps>`
-  color: ${(props) => props.color};
+export const Message = styled.span`
+  color: ${"var(--palette-text, " + theme.text.dark + ")"};
   display: block;
   font-size: 2rem;
   text-transform: uppercase;

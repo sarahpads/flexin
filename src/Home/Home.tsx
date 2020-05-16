@@ -25,6 +25,7 @@ const Home: React.FC = () => {
     variables: { id: profile?.sub }
   });
 
+    return <Spinner/>
   if (result.loading) {
     return <Spinner/>
   }
