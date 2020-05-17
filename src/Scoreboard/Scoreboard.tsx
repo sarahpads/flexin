@@ -8,6 +8,7 @@ import Standing from "../Layout/Standing/Standing";
 import WithBackground from "../Layout/WithBackground/WithBackground";
 import Header from "./Header/Header";
 import { AuthContext } from "../Auth/AuthProvider";
+import PWA from "../Layout/PWA/PWA";
 
 interface Standing {
   user: {
@@ -103,7 +104,7 @@ const Scoreboard: React.FC = () => {
 
   return (
     <S.Scoreboard>
-      <Header rank={user.rank + 1} waffles={user.waffles}/>
+      <Header rank={user.rank} waffles={user.waffles}/>
 
       <S.Ranks>
         {standings && standings.map((standing: Standing, index: number) => {
@@ -112,6 +113,7 @@ const Scoreboard: React.FC = () => {
       </S.Ranks>
 
       {/* <span>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a></span> */}
+      <PWA/>
     </S.Scoreboard>
   )
 }

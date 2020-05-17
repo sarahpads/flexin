@@ -12,7 +12,6 @@ import Home from './Home/Home';
 import Login from './Auth/Login/Login';
 import CreateChallenge from './Challenge/CreateChallenge/CreateChallenge';
 import Spinner from './Layout/Spinner/Spinner';
-import PWA from "./Layout/PWA/PWA";
 import Scoreboard from './Scoreboard/Scoreboard';
 
 import styled from 'styled-components';
@@ -46,11 +45,10 @@ function App() {
 
   return (
     <ApolloProvider client={client}>
-      <PWA/>
-      {/* <Nav/> */}
+      <Nav/>
 
-      <button onClick={() => onClick(0)}>Leaderboard</button>
-      <button onClick={() => onClick(1)}>Challenge</button>
+      {/* <button onClick={() => onClick(0)}>Leaderboard</button> */}
+      {/* <button onClick={() => onClick(1)}>Challenge</button> */}
 
       <Test>
         <Test2 style={{ display: props[0].display, transform: props[0].x.interpolate(x => `translate3d(${x}px,0,0)`) }}>
