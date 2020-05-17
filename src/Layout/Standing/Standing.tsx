@@ -1,29 +1,35 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { FaMedal } from "react-icons/fa";
 
 import * as S from "./Standing.styled";
 import { IconContext } from "react-icons";
-import { Response } from "../challenge.types";
+import { Response } from "../../Challenge/challenge.types";
+import ProfilePicture from "../ProfilePicture/ProfilePicture";
+import { AuthContext } from "../../Auth/AuthProvider";
 
 interface StandingProps {
   percentage?: number;
   waffles?: number;
   rank: number;
-  userName: number;
+  user: {
+    name: string;
+    id: string;
+  };
 }
 
 enum Medals {
-  "#F4D466" = 0,
-  "#D5D6E8" = 1,
-  "#F09A5C" = 2
+  "#F4D466" = 1,
+  "#D5D6E8" = 2,
+  "#F09A5C" = 3
 }
 
 const Standing: React.FC<StandingProps> = ({
   percentage,
   rank,
-  userName,
+  user,
   waffles
 }) => {
+  const { profile } = useContext(AuthContext);
   const [medal, setMedal] = useState();
   const [flex, setFlex] = useState();
 
@@ -40,7 +46,7 @@ const Standing: React.FC<StandingProps> = ({
   }, [rank])
 
   return (
-    <S.Standing>
+    <S.Standing highlight={profile.sub === user.id}>
       <S.Rank>
         {medal
           ? <IconContext.Provider value={{ color: medal, size: "2.5rem" }}>
@@ -50,8 +56,10 @@ const Standing: React.FC<StandingProps> = ({
         }
       </S.Rank>
 
-      <S.Avatar/>
-      <S.Name>{userName}</S.Name>
+      <S.Avatar>
+        <ProfilePicture/>
+      </S.Avatar>
+      <S.Name>{user.name}</S.Name>
 
       <S.Waffles>
         <S.WaffleCount>{waffles} x </S.WaffleCount>

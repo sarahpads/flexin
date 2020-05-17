@@ -4,7 +4,7 @@ import { useDrag } from "react-use-gesture";
 import clamp from "lodash.clamp";
 
 import * as S from "./Leaderboard.styled";
-import Standing from "../Standing/Standing";
+import Standing from "../../Layout/Standing/Standing";
 import { Response } from "../challenge.types";
 
 interface LeaderboardProps {
@@ -40,12 +40,13 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ responses = defaultArrayProp 
     return memo;
   }, { axis: "y" });
 
+  // TODO: waffle-ify
   return (
     <S.AnimatedLeaderboard {...bind()} style={props}>
       <S.Leaderboard ref={elRef}>
         <S.Title>Leaderboard</S.Title>
         {responses.map((response: any, index: number) => {
-          return <Standing key={index} userName={response.user.name} percentage={response.flex} rank={index}></Standing>
+          return <Standing key={index} user={response.user} percentage={response.flex} rank={index}></Standing>
         })}
       </S.Leaderboard>
     </S.AnimatedLeaderboard>

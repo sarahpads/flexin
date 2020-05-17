@@ -1,10 +1,18 @@
 import styled from "styled-components";
 
-export const Standing = styled.div`
+interface StandingProps {
+  highlight: boolean;
+}
+
+export const Standing = styled.div<StandingProps>`
   align-items: center;
+  background-color: ${(props) => props.highlight ? "var(--palette-light)" : "transparent"};
   border-bottom: 1px solid #EDEDED;
+  box-sizing: border-box;
   display: flex;
-  padding: 1.5rem 0;
+  margin-left: -2rem;
+  padding: 1.5rem 2rem;
+  width: calc(100% + 4rem);
 
   &:last-child {
     border: none;

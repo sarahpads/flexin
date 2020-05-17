@@ -1,10 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { gql, useQuery } from "@apollo/client";
 
 import * as S from "./Scoreboard.styled";
-import Spinner from "../Spinner/Spinner";
-import Error from "../Error/Error";
-import Standing from "../../Challenge/Standing/Standing";
+import Spinner from "../Layout/Spinner/Spinner";
+import Error from "../Layout/Error/Error";
+import Standing from "../Layout/Standing/Standing";
+import WithBackground from "../Layout/WithBackground/WithBackground";
+import Header from "./Header/Header";
+import { AuthContext } from "../Auth/AuthProvider";
+
+interface Standing {
+  user: {
+    name: string;
+    id: string;
+  }
+  waffles: number;
+}
 
 interface Result {
   users: { id: string, name: string }[],
@@ -30,8 +41,11 @@ const GET_DATA = gql`
   }
 `
 
+// TODO: make sure this updates with new responses
 const Scoreboard: React.FC = () => {
-  const [users, setUsers] = useState()
+  const { profile } = useContext(AuthContext);
+  const [user, setUser] = useState();
+  const [standings, setStandings] = useState()
   const result = useQuery<Result>(GET_DATA);
 
   useEffect(() => {
@@ -57,14 +71,13 @@ const Scoreboard: React.FC = () => {
       }
     }
 
-    const users = result.data.users
+    const standings: Standing[] = result.data.users
       .map((user) => {
         // get total number of waffles earned
         const waffleTotal = userMap[user.id].reduce((total, waffle) => total += waffle, 0);
 
         return {
-          ...user,
-          name: user.name.split(" ")[0],
+          user,
           waffles: Math.round(waffleTotal * 2) / 2 // round to nearest .5
         }
       })
@@ -72,10 +85,15 @@ const Scoreboard: React.FC = () => {
         return a.waffles < b.waffles ? 1 : -1;
       })
 
-    setUsers(users);
+    const userIndex = standings.findIndex((standing: Standing) => standing.user.id === profile.sub);
+    const user = standings[userIndex];
+
+    setUser({ ...user, rank: userIndex + 1 });
+
+    setStandings(standings);
   }, [result.data])
 
-  if (result.loading) {
+  if (result.loading || !user) {
     return <Spinner/>
   }
 
@@ -84,21 +102,18 @@ const Scoreboard: React.FC = () => {
   }
 
   return (
-    <S.AnimatedScoreboard>
-      <S.Scoreboard>
-        {users && users.map((user: any, index: number) => {
-          return <Standing
-            key={user.id}
-            rank={index}
-            userName={user.name}
-            waffles={user.waffles}
-            percentage={user.percentage}/>
-        })}
+    <S.Scoreboard>
+      <Header rank={user.rank + 1} waffles={user.waffles}/>
 
-      <span>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a></span>
-      </S.Scoreboard>
-    </S.AnimatedScoreboard>
+      <S.Ranks>
+        {standings && standings.map((standing: Standing, index: number) => {
+          return <Standing key={standing.user.id} user={standing.user} rank={index + 1} waffles={standing.waffles}/>
+        })}
+      </S.Ranks>
+
+      {/* <span>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a></span> */}
+    </S.Scoreboard>
   )
 }
 
-export default Scoreboard;
+export default WithBackground(Scoreboard);

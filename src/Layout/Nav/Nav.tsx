@@ -7,7 +7,6 @@ import * as S from "./Nav.styled";
 import Settings from "../../Auth/Settings/Settings";
 import { useQuery, gql } from "@apollo/client";
 import { AuthContext } from "../../Auth/AuthProvider";
-import Scoreboard from "../Scoreboard/Scoreboard";
 
 interface Result {
   hasAccount: boolean;
@@ -52,7 +51,6 @@ const Nav: React.FC = () => {
         </IconContext.Provider>
       </S.Nav>
 
-      <Scoreboard/>
     </React.Fragment>
   )
 }
