@@ -104,8 +104,6 @@ const Scoreboard: React.FC = () => {
 
   return (
     <S.Scoreboard>
-      <Header rank={user.rank} waffles={user.waffles}/>
-
       <S.Ranks>
         {standings && standings.map((standing: Standing, index: number) => {
           return <Standing key={standing.user.id} user={standing.user} rank={index + 1} waffles={standing.waffles}/>
@@ -118,4 +116,4 @@ const Scoreboard: React.FC = () => {
   )
 }
 
-export default WithBackground(Scoreboard);
+export default Scoreboard;

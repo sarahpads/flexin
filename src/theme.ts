@@ -60,7 +60,7 @@ const theme = {
     pagePadding: "2rem"
   },
   circle: {
-    dimension: "22rem",
+    dimension: "15rem",
     fontSize: "7rem"
   }
 }

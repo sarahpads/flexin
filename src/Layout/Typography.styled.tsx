@@ -4,7 +4,7 @@ import { Link as L } from "react-router-dom";
 import theme from "../theme";
 
 export const Button = styled.button`
-  background: white;
+  background-color: white;
   border: none;
   border-radius: 20px;
   color: var(--palette-neutral);
@@ -21,6 +21,16 @@ export const Button = styled.button`
   text-decoration: none;
   text-transform: uppercase;
   width: 25rem;
+
+  .background--light & {
+    background-color: var(--palette-neutral);
+    color: white;
+  }
+
+  .background--dark & {
+    background-color: white;
+    color: var(--palette-neutral);
+  }
 `
 
 export const Cancel = styled.div`

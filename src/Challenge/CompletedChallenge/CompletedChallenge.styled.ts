@@ -5,19 +5,29 @@ import { Circle } from "../../Layout/Typography.styled";
 export { Button, H1, P } from "../../Layout/Typography.styled";
 
 export const CompletedChallenge = styled.div`
+  height: 100%;
   text-align: center;
 `
 
-export const Winner = styled(Circle)`
-  background-color: white;
-  box-sizing: border-box;
-  padding-top: 4rem;
-  position: relative;
+export const Test = styled(Circle)`
 `
 
-export const WinningUser = styled.div`
+export const Content = styled.div`
+  padding-top: 10rem;
   position: relative;
   z-index: 3;
+`
+
+export const Standing = styled.div`
+  padding-top: 3rem;
+`
+
+export const Wimp = styled.div`
+  align-items: center;
+  display: flex;
+  font-size: 2rem;
+  height: 100%;
+  justify-content: center;
 `
 
 export const WinnerName = styled.span`
@@ -27,4 +37,9 @@ export const WinnerName = styled.span`
   font-weight: 700;
   letter-spacing: -4px;
   line-height: 0.8em;
+`
+
+export const Number = styled.span`
+  font-size: 4rem;
+  font-weight: 550;
 `

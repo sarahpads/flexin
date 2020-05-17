@@ -7,13 +7,13 @@ import { IconContext } from "react-icons";
 import { GiQueenCrown } from "react-icons/gi";
 
 interface HeaderProps {
-  rank: number;
-  waffles: number;
+  rank?: number;
+  waffles?: number;
 }
 
 const Header: React.FC<HeaderProps> = ({
-  rank,
-  waffles
+  rank = 1,
+  waffles = 4
 }) => {
   const [suffix, setSuffix] = useState();
 
