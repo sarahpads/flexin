@@ -18,7 +18,7 @@ export const Track = styled.div`
   border-bottom-color: #F0F2F3;
   border-radius: 2rem;
   display: flex;
-  height: 2.5rem;
+  height: 3rem;
   margin: auto;
   position: relative;
   width: 30rem;
@@ -36,9 +36,12 @@ export const Background = styled(animated.div)`
 
 export const Home = styled.div`
   margin-left: -${theme.dimensions.pagePadding};
-  height: calc(100% + 2rem);
+  min-height: calc(100% + 2rem);
   text-align: center;
   width: 100vw;
+
+  display: flex;
+  flex-direction: column;
 `
 
 export const Label = styled.label`
@@ -46,7 +49,7 @@ export const Label = styled.label`
   display: block;
   font-size: 1.4rem;
   font-weight: 600;
-  line-height: 2.4rem;
+  line-height: 3rem;
   text-align: center;
   width: 15rem;
   z-index: 2;
@@ -64,14 +67,19 @@ export const Radio = styled.input`
 export const Pages = styled.div`
   position: absolute;
   width: 100vw;
-  height: 100vh;
+  height: 100%;
   will-change: transform;
 `
 
 export const AnimatedPage = styled(animated.div)`
   background-color: white;
-  position: fixed;
-  overflow: hidden;
+  position: absolute;
+  overflow-y: auto;
   width: 100%;
   height: 100%;
+`
+
+export const Test = styled.div`
+  flex: 1;
+  position: relative;
 `

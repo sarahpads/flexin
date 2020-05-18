@@ -3,11 +3,10 @@ import React from "react";
 import * as S from "./ActiveChallenge.styled";
 
 import Timer from "../../Layout/Timer/Timer";
-import Leaderboard from "../Leaderboard/Leaderboard";
 import ChallengeResponseForm from "./ChallengeResponseForm/ChallengeResponseForm";
-import ChallengeResponded from "./ChallengeResponded/ChallengeResponded";
 import { Challenge } from "../challenge.types";
 import useHasResponded from "../use-has-responded";
+import Standing from "../../Layout/Standing/Standing";
 
 interface ActiveChallengeProps {
   challenge: Challenge;
@@ -20,21 +19,18 @@ const ActiveChallenge: React.FC<ActiveChallengeProps> = ({
 }) => {
   const hasResponded = useHasResponded(challenge.responses);
 
-  function getStatus() {
-    return hasResponded
-      ? <ChallengeResponded challenge={challenge}/>
-      : <ChallengeResponseForm challenge={challenge}/>;
-  }
-
   return (
     <React.Fragment>
-      <S.Challenge>
+      <S.Challenge className="background--light">
         <Timer expiresAt={challenge.expiresAt} createdAt={challenge.createdAt} onComplete={onComplete}/>
 
-        {getStatus()}
+        {!hasResponded && <ChallengeResponseForm challenge={challenge}/>}
       </S.Challenge>
 
-      <Leaderboard responses={challenge.responses}/>
+      <S.Title>Challengers</S.Title>
+      {challenge.responses.map((response: any, index: number) => {
+        return <Standing key={index} user={response.user} percentage={response.flex} rank={index + 1}></Standing>
+      })}
     </React.Fragment>
   )
 }

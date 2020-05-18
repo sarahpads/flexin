@@ -39,7 +39,6 @@ const CompletedChallenge: React.FC<CompletedChallengeProps> = ({ challenge }) =>
                 <S.Number>7</S.Number>{suffix}
               </S.Standing>
             }
-          {/* You didn't place */}
         </S.Test>
 
         <S.Button as={Link} to="/create-challenge">

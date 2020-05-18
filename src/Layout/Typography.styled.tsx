@@ -52,7 +52,6 @@ export const P = styled.p`
 
 export const Input = styled.input`
   background-color: transparent;
-  border: none;
   border: 1px solid white;
   border-radius: 20px;
   box-sizing: border-box;
@@ -75,6 +74,17 @@ export const Input = styled.input`
   &::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
+  }
+
+  .background--light & {
+    border-color: var(--palette-neutral);
+    color: var(--palette-neutral);
+  }
+
+  .background--dark & {
+    background-color: transparent;
+    border-color: white;
+    color: ${theme.text.default};
   }
 `
 

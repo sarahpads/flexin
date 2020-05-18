@@ -61,7 +61,7 @@ const theme = {
   },
   circle: {
     dimension: "15rem",
-    fontSize: "7rem"
+    fontSize: "4rem"
   }
 }
 

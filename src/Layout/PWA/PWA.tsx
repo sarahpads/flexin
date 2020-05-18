@@ -12,7 +12,11 @@ const PWA: React.FC = () => {
     return <></>;
   }
 
-  return <S.Button onClick={() => prompt.prompt()}>Add to Home Screen</S.Button>;
+  return (
+    <div className="background--light">
+      <S.Button onClick={() => prompt.prompt()}>Add to Home Screen</S.Button>
+    </div>
+  )
 }
 
 export default PWA;

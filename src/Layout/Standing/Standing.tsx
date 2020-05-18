@@ -61,12 +61,13 @@ const Standing: React.FC<StandingProps> = ({
       </S.Avatar>
       <S.Name>{user.name}</S.Name>
 
-      <S.Waffles>
+      {flex && <S.Flex>{flex} flex</S.Flex>}
+
+      {waffles !== undefined && <S.Waffles>
         <S.WaffleCount>{waffles} x </S.WaffleCount>
         <S.Waffle src="/waffle.png"/>
-      </S.Waffles>
+      </S.Waffles>}
 
-      {flex && <S.Flex>{flex}</S.Flex>}
     </S.Standing>
   )
 }

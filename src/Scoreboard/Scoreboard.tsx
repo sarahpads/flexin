@@ -5,8 +5,6 @@ import * as S from "./Scoreboard.styled";
 import Spinner from "../Layout/Spinner/Spinner";
 import Error from "../Layout/Error/Error";
 import Standing from "../Layout/Standing/Standing";
-import WithBackground from "../Layout/WithBackground/WithBackground";
-import Header from "./Header/Header";
 import { AuthContext } from "../Auth/AuthProvider";
 import PWA from "../Layout/PWA/PWA";
 

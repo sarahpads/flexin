@@ -1,5 +1,7 @@
 import styled from "styled-components";
 
+import theme from "../../theme";
+
 interface StandingProps {
   highlight: boolean;
 }
@@ -9,10 +11,9 @@ export const Standing = styled.div<StandingProps>`
   background-color: ${(props) => props.highlight ? "var(--palette-light)" : "transparent"};
   border-bottom: 1px solid #EDEDED;
   box-sizing: border-box;
+  color: ${theme.text.dark};
   display: flex;
-  margin-left: -2rem;
   padding: 1.5rem 2rem;
-  width: calc(100% + 4rem);
 
   &:last-child {
     border: none;

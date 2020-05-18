@@ -10,8 +10,8 @@ import WithAuth from "../Auth/WithAuth";
 import Challenge from "../Challenge/Challenge";
 import Spinner from "../Layout/Spinner/Spinner";
 import Error from "../Layout/Error/Error";
-import { useSprings, animated, useSpring } from "react-spring";
-import Header from "../Scoreboard/Header/Header";
+import { useSprings, useSpring } from "react-spring";
+import Header from "./Header/Header";
 import Scoreboard from "../Scoreboard/Scoreboard";
 
 interface Result {
@@ -66,25 +66,27 @@ const Home: React.FC = () => {
     <S.Home>
       <Header/>
 
-      <S.Nav>
-        <S.Track>
-          <S.Background style={{ transform: moreProps.x.interpolate(x => `translate3d(${x}px,0,0)`) }}/>
-          <S.Radio {...radio("page", "0")} />
-          <S.Label {...label("page", "0")}>Leaderboard</S.Label>
-          <S.Radio {...radio("page", "1")} />
-          <S.Label {...label("page", "1")}>Challenge</S.Label>
-        </S.Track>
-      </S.Nav>
+      <S.Test>
+        <S.Nav>
+          <S.Track>
+            <S.Background style={{ transform: moreProps.x.interpolate(x => `translate3d(${x}px,0,0)`) }} />
+            <S.Radio {...radio("page", "0")} />
+            <S.Label {...label("page", "0")}>Leaderboard</S.Label>
+            <S.Radio {...radio("page", "1")} />
+            <S.Label {...label("page", "1")}>Challenge</S.Label>
+          </S.Track>
+        </S.Nav>
 
-      <S.Pages>
-        <S.AnimatedPage style={{ transform: props[0].x.interpolate(x => `translate3d(${x}px,0,0)`) }}>
-          <Scoreboard/>
-        </S.AnimatedPage>
+        <S.Pages>
+          <S.AnimatedPage style={{ transform: props[0].x.interpolate(x => `translate3d(${x}px,0,0)`) }}>
+            <Scoreboard />
+          </S.AnimatedPage>
 
-        <S.AnimatedPage style={{ transform: props[1].x.interpolate(x => `translate3d(${x}px,0,0)`) }}>
-          <Challenge/>
-        </S.AnimatedPage>
-      </S.Pages>
+          <S.AnimatedPage style={{ transform: props[1].x.interpolate(x => `translate3d(${x}px,0,0)`) }}>
+            <Challenge />
+          </S.AnimatedPage>
+        </S.Pages>
+      </S.Test>
     </S.Home>
   )
 }

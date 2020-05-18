@@ -64,7 +64,7 @@ const ChallengeResponseForm: React.FC<ChallengeResponseFormProps> = ({
     event.preventDefault();
     const { reps } = formState.values;
 
-    if (Object.keys(formState.errors).length || !reps) {
+    if (!reps) {
       return;
     }
 
@@ -76,7 +76,7 @@ const ChallengeResponseForm: React.FC<ChallengeResponseFormProps> = ({
   }
 
   return (
-    <form noValidate onSubmit={handleSubmit}>
+    <S.Form noValidate onSubmit={handleSubmit}>
       <S.P>You need to do {requiredReps} {challenge.exercise.title}s to beat {challenge.user.name}</S.P>
 
       <div>
@@ -85,7 +85,7 @@ const ChallengeResponseForm: React.FC<ChallengeResponseFormProps> = ({
       </div>
 
       <S.Button>Flex Back!</S.Button>
-    </form>
+    </S.Form>
   )
 }
 
