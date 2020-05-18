@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useRef } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { ApolloProvider } from '@apollo/client';
 import { Switch, Route, useLocation } from 'react-router';
 import { TransitionGroup, CSSTransition } from "react-transition-group";

@@ -1,14 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import Confetti from "react-confetti";
-import { IconContext } from "react-icons";
-import { GiTrophy } from "react-icons/gi";
 import ordinal from "ordinal/indicator";
-import useWindowSize from 'react-use/lib/useWindowSize'
 
 import * as S from "./CompletedChallenge.styled";
 import { Challenge } from "../challenge.types";
-import useWinner from "../use-winner";
 import useHasResponded from "../use-has-responded";
 import useRank from "../use-rank";
 
@@ -17,7 +13,7 @@ interface CompletedChallengeProps {
 }
 
 const CompletedChallenge: React.FC<CompletedChallengeProps> = ({ challenge }) => {
-  const { width, height } = useWindowSize()
+  const elRef = useRef<any>();
   const rank = useRank(challenge);
   const [suffix, setSuffix] = useState();
   const hasResponded = useHasResponded(challenge.responses);
@@ -27,19 +23,24 @@ const CompletedChallenge: React.FC<CompletedChallengeProps> = ({ challenge }) =>
   }, [rank])
 
   return (
-    <S.CompletedChallenge className="background--light">
-      <Confetti height={height} width={width} opacity={0.6}/>
+    <S.CompletedChallenge className="background--light" ref={elRef}>
+      <Confetti height={elRef.current?.offsetHeight} width={elRef.current?.offsetWidth} opacity={0.6}/>
 
       <S.Content>
-        <S.Test>
+        <S.Circle>
           {!hasResponded
             ? <S.Wimp>You Wimped Out</S.Wimp>
             : <S.Standing>
-                You placed<br/>
-                <S.Number>7</S.Number>{suffix}
+                7
+                <S.Suffix>{suffix}</S.Suffix>
               </S.Standing>
             }
-        </S.Test>
+        </S.Circle>
+
+        {!hasResponded
+          ? <S.Message>No waffles for you</S.Message>
+          : <S.Message>You earned 5 x <S.Waffle src="/waffle.png"/></S.Message>
+        }
 
         <S.Button as={Link} to="/create-challenge">
           Create Challenge

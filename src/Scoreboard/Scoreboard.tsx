@@ -43,7 +43,6 @@ const GET_DATA = gql`
 // TODO: make sure this updates with new responses
 const Scoreboard: React.FC = () => {
   const { profile } = useContext(AuthContext);
-  const [user, setUser] = useState();
   const [standings, setStandings] = useState()
   const result = useQuery<Result>(GET_DATA);
 
@@ -84,15 +83,10 @@ const Scoreboard: React.FC = () => {
         return a.waffles < b.waffles ? 1 : -1;
       })
 
-    const userIndex = standings.findIndex((standing: Standing) => standing.user.id === profile.sub);
-    const user = standings[userIndex];
-
-    setUser({ ...user, rank: userIndex + 1 });
-
     setStandings(standings);
   }, [result.data])
 
-  if (result.loading || !user) {
+  if (result.loading) {
     return <Spinner/>
   }
 
@@ -108,7 +102,6 @@ const Scoreboard: React.FC = () => {
         })}
       </S.Ranks>
 
-      {/* <span>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a></span> */}
       <PWA/>
     </S.Scoreboard>
   )
