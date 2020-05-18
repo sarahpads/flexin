@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { gql, useQuery } from "@apollo/client";
 
-import * as S from "./Scoreboard.styled";
+import * as S from "./Leaderboard.styled";
 import Spinner from "../Layout/Spinner/Spinner";
 import Error from "../Layout/Error/Error";
 import Standing from "../Layout/Standing/Standing";
@@ -41,7 +41,7 @@ const GET_DATA = gql`
 `
 
 // TODO: make sure this updates with new responses
-const Scoreboard: React.FC = () => {
+const Leaderboard: React.FC = () => {
   const { profile } = useContext(AuthContext);
   const [standings, setStandings] = useState()
   const result = useQuery<Result>(GET_DATA);
@@ -95,7 +95,7 @@ const Scoreboard: React.FC = () => {
   }
 
   return (
-    <S.Scoreboard>
+    <S.Leaderboard>
       <S.Ranks>
         {standings && standings.map((standing: Standing, index: number) => {
           return <Standing key={standing.user.id} user={standing.user} rank={index + 1} waffles={standing.waffles}/>
@@ -103,8 +103,8 @@ const Scoreboard: React.FC = () => {
       </S.Ranks>
 
       <PWA/>
-    </S.Scoreboard>
+    </S.Leaderboard>
   )
 }
 
-export default Scoreboard;
+export default Leaderboard;

@@ -12,7 +12,7 @@ import Spinner from "../Layout/Spinner/Spinner";
 import Error from "../Layout/Error/Error";
 import { useSprings, useSpring } from "react-spring";
 import Header from "./Header/Header";
-import Scoreboard from "../Scoreboard/Scoreboard";
+import Leaderboard from "../Leaderboard/Leaderboard"
 
 interface Result {
   hasAccount: boolean;
@@ -79,7 +79,7 @@ const Home: React.FC = () => {
 
         <S.Pages>
           <S.AnimatedPage style={{ transform: props[0].x.interpolate(x => `translate3d(${x}px,0,0)`) }}>
-            <Scoreboard />
+            <Leaderboard/>
           </S.AnimatedPage>
 
           <S.AnimatedPage style={{ transform: props[1].x.interpolate(x => `translate3d(${x}px,0,0)`) }}>
@@ -90,4 +90,5 @@ const Home: React.FC = () => {
     </S.Home>
   )
 }
+
 export default WithBackground(WithAuth(Home));

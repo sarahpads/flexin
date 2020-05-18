@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 import theme from "../theme";
 
-export const Scoreboard = styled.div`
+export const Leaderboard = styled.div`
   color: ${theme.text.dark};
   padding-top: 10rem;
 `
