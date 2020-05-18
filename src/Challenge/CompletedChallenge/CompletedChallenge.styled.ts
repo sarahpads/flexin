@@ -8,10 +8,6 @@ export const CompletedChallenge = styled.div`
   height: 100%;
   text-align: center;
 `
-export const Confetti = styled.div`
-  position: fixed;
-  top: 0;
-`
 
 export const Circle = styled(C)`
   margin-bottom: 3rem;
@@ -61,6 +57,10 @@ export const Waffle = styled.img`
   height: 4rem;
   margin-left: 0.5rem;
 `
+
+export const Explanation = styled.p`
+  color: ${theme.text.dark};
+`;
 
 export const Button = styled(B)`
   bottom: 2rem;

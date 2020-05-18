@@ -17,6 +17,7 @@ export default function useStanding(challenge: Challenge) {
   const { profile } = useContext(AuthContext);
   const [standing, setStanding] = useState();
   const [waffles, setWaffles] = useState();
+  const [explanation, setExplanation] = useState();
   const [hasResponded, setHasResponded] = useState();
   const result = useQuery<Result>(GET_USERS, {
     skip: !hasResponded
@@ -34,7 +35,12 @@ export default function useStanding(challenge: Challenge) {
   }, [challenge])
 
   useEffect(() => {
-    if (!result.data || !hasResponded) {
+    if (!result.data) {
+      return;
+    }
+
+    if (!hasResponded) {
+      setExplanation("There are no waffles for quitters")
       return;
     }
 
@@ -42,8 +48,16 @@ export default function useStanding(challenge: Challenge) {
     const inverse = challenge.responses.length - standing;
     const waffles = Math.round((inverse * lobby) * 2) / 2;
 
+    if (standing === 1 && challenge.responses.length === 1) {
+      setExplanation("You came in first, but you didn't beat anyone.");
+    } else if (standing === challenge.responses.length) {
+      setExplanation("You came in last; there are no waffles in last place");
+    } else {
+      setExplanation(`You beat ${inverse} people!`);
+    }
+
     setWaffles(waffles);
   }, [challenge, result.data])
 
-  return { standing, waffles };
+  return { standing, waffles, explanation };
 }

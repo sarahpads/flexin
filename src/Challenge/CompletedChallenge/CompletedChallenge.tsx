@@ -17,8 +17,13 @@ const CompletedChallenge: React.FC<CompletedChallengeProps> = ({ challenge }) =>
   const elRef = useRef<any>();
   const rank = useRank(challenge);
   const [suffix, setSuffix] = useState();
+  const [hasStanding, setHasStanding] = useState();
   const hasResponded = useHasResponded(challenge.responses);
-  const { standing, waffles } = useStanding(challenge);
+  const { standing, waffles, explanation } = useStanding(challenge);
+
+  useEffect(() => {
+    setHasStanding(hasResponded && challenge.responses.length > 1);
+  }, [hasResponded, challenge])
 
   useEffect(() => {
     setSuffix(ordinal(rank));
@@ -30,8 +35,8 @@ const CompletedChallenge: React.FC<CompletedChallengeProps> = ({ challenge }) =>
 
       <S.Content>
         <S.Circle>
-          {!hasResponded
-            ? <S.Wimp>You Wimped Out</S.Wimp>
+          {!hasStanding
+            ? <S.Wimp>{hasResponded ? "No Contest" : "You wimped out"}</S.Wimp>
             : <S.Standing>
                 {standing}
                 <S.Suffix>{suffix}</S.Suffix>
@@ -39,10 +44,8 @@ const CompletedChallenge: React.FC<CompletedChallengeProps> = ({ challenge }) =>
             }
         </S.Circle>
 
-        {!hasResponded
-          ? <S.Message>No waffles for you</S.Message>
-          : <S.Message>You earned {waffles} x <S.Waffle src="/waffle.png"/></S.Message>
-        }
+        <S.Message>You earned {waffles} x <S.Waffle src="/waffle.png"/></S.Message>
+        <S.Explanation>{explanation}</S.Explanation>
 
         <S.Button as={Link} to="/create-challenge">
           Create Challenge
