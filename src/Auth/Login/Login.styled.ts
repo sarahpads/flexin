@@ -7,6 +7,7 @@ export const Login = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
+  padding: ${theme.dimensions.pagePadding};
   text-align: center;
 `
 

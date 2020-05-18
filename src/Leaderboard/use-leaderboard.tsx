@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 
 import { UserStanding } from "./leaderboard.types";
+import { AuthContext } from "../Auth/AuthProvider";
 
 interface User {
   name: string;
@@ -13,7 +14,9 @@ interface Challenge {
 }
 
 export default function useLeaderboard(users: User[] | undefined, challenges: Challenge[] | undefined) {
+  const { profile } = useContext(AuthContext);
   const [standings, setStandings] = useState()
+  const [userStanding, setUserStanding] = useState();
 
   useEffect(() => {
     if (!users || !challenges) {
@@ -51,9 +54,15 @@ export default function useLeaderboard(users: User[] | undefined, challenges: Ch
       .sort((a, b) => {
         return a.waffles < b.waffles ? 1 : -1;
       })
+      .map((standing, i) => {
+        return { ...standing, rank: i + 1 };
+      });
 
+    const userStanding = standings.find((standing) => standing.user.id === profile.sub);
+
+    setUserStanding(userStanding);
     setStandings(standings);
   }, [users, challenges])
 
-  return standings;
+  return { standings, userStanding };
 }

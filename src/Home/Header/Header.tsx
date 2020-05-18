@@ -5,32 +5,39 @@ import * as S from "./Header.styled";
 import ProfilePicture from "../../Layout/ProfilePicture/ProfilePicture";
 import { IconContext } from "react-icons";
 import { GiQueenCrown } from "react-icons/gi";
+import { UserStanding } from "../../Leaderboard/leaderboard.types";
 
 interface HeaderProps {
-  rank?: number;
-  waffles?: number;
+  standing: UserStanding
 }
 
 const Header: React.FC<HeaderProps> = ({
-  rank = 1,
-  waffles = 4
+  standing
 }) => {
   const [suffix, setSuffix] = useState();
 
   useEffect(() => {
-    setSuffix(ordinal(rank));
-  }, [rank])
+    if (!standing) {
+      return;
+    }
+
+    setSuffix(ordinal(standing.rank));
+  }, [standing])
+
+  if (!standing) {
+    return <></>;
+  }
 
   return (
     <S.Header>
       <S.Section>
-        <S.Number>{rank}</S.Number>{suffix}
+        <S.Number>{standing.rank}</S.Number>{suffix}
       </S.Section>
 
       <S.Section>
         <S.Picture>
           <S.Crown>
-            {rank === 1 && <IconContext.Provider value={{ color: "#F4D466", size: "3rem" }}>
+            {standing.rank === 1 && <IconContext.Provider value={{ color: "#F4D466", size: "3rem" }}>
               <GiQueenCrown/>
             </IconContext.Provider>}
           </S.Crown>
@@ -40,7 +47,7 @@ const Header: React.FC<HeaderProps> = ({
       </S.Section>
 
       <S.Section>
-        <S.Number>{waffles}</S.Number>wfls
+        <S.Number>{standing.waffles}</S.Number>wfls
       </S.Section>
 
     </S.Header>

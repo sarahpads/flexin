@@ -1,31 +1,46 @@
-import React, { useContext } from "react";
-import { Redirect } from "react-router-dom";
+import React from "react";
 import { useFormState } from "react-use-form-state";
 import { gql, useQuery } from "@apollo/client";
 
 import * as S from "./Home.styled";
-import { AuthContext } from "../Auth/AuthProvider";
 import WithBackground from "../Layout/WithBackground/WithBackground";
 import WithAuth from "../Auth/WithAuth";
 import Challenge from "../Challenge/Challenge";
-import Spinner from "../Layout/Spinner/Spinner";
-import Error from "../Layout/Error/Error";
 import { useSprings, useSpring } from "react-spring";
 import Header from "./Header/Header";
 import Leaderboard from "../Leaderboard/Leaderboard"
+import useLeaderboard from "../Leaderboard/use-leaderboard";
+import Spinner from "../Layout/Spinner/Spinner";
+import Error from "../Layout/Error/Error";
 
 interface Result {
-  hasAccount: boolean;
+  users: { id: string, name: string }[],
+  challenges: {
+    id: string;
+    responses: { user: { id: string }, flex: number }[]
+  }[]
 }
 
-const GET_USER_EXISTS = gql`
-  query ($id: String!) {
-    hasAccount(id: $id)
+const GET_DATA = gql`
+  query {
+    users {
+      id,
+      name
+    },
+    challenges {
+      id,
+      createdAt,
+      responses {
+        user { id },
+        flex
+      }
+    }
   }
 `
 
 const Home: React.FC = () => {
-  const { profile } = useContext(AuthContext);
+  const result = useQuery<Result>(GET_DATA);
+  const {standings, userStanding} = useLeaderboard(result.data?.users, result.data?.challenges)
   const [formState, { radio, label }] = useFormState({ page: "0" }, {
     withIds: true,
     onChange: (event, oldValues, newValues) => {
@@ -43,9 +58,6 @@ const Home: React.FC = () => {
       moreSet({ x: index * 150 });
     }
   });
-  const result = useQuery<Result>(GET_USER_EXISTS, {
-    variables: { id: profile?.sub }
-  });
 
   const [props, set] = useSprings(2, i => ({ x: i * window.innerWidth }));
   const [moreProps, moreSet] = useSpring(() => ({ x: 0 }));
@@ -58,13 +70,9 @@ const Home: React.FC = () => {
     return <Error error={result.error}/>
   }
 
-  if (!result.data?.hasAccount) {
-    return <Redirect to="/create-profile"/>
-  }
-
   return (
     <S.Home>
-      <Header/>
+      <Header standing={userStanding}/>
 
       <S.Test>
         <S.Nav>
@@ -79,7 +87,7 @@ const Home: React.FC = () => {
 
         <S.Pages>
           <S.AnimatedPage style={{ transform: props[0].x.interpolate(x => `translate3d(${x}px,0,0)`) }}>
-            <Leaderboard/>
+            <Leaderboard standings={standings}/>
           </S.AnimatedPage>
 
           <S.AnimatedPage style={{ transform: props[1].x.interpolate(x => `translate3d(${x}px,0,0)`) }}>

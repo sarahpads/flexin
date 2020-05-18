@@ -8,4 +8,5 @@ export interface UserStanding {
     id: string;
   }
   waffles: number;
+  rank: number;
 }

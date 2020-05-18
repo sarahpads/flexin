@@ -9,7 +9,7 @@ import Error from "../Layout/Error/Error";
 
 const Challenge: React.FC = () => {
   const [isActive, setIsActive] = useState(false);
-  const { data: challenge, error, loading } = useChallenge()
+  const { data: challenge, error, loading } = useChallenge();
 
   useEffect(() => {
     if (!challenge) {
