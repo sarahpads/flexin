@@ -32,6 +32,16 @@ const Standing: React.FC<StandingProps> = ({
   const { profile } = useContext(AuthContext);
   const [medal, setMedal] = useState();
   const [flex, setFlex] = useState();
+  const [name, setName] = useState();
+
+  useEffect(() => {
+    const names = user.name.split(" ");
+    const lastInitial = names[1]
+      ? `${names[1].charAt(0)}.`
+      : undefined;
+
+    setName([names[0], lastInitial].join(" "));
+  }, [user]);
 
   useEffect(() => {
     if (percentage === undefined) {
@@ -59,7 +69,7 @@ const Standing: React.FC<StandingProps> = ({
       <S.Avatar>
         <ProfilePicture/>
       </S.Avatar>
-      <S.Name>{user.name}</S.Name>
+      <S.Name>{name}</S.Name>
 
       {flex && <S.Flex>{flex} flex</S.Flex>}
 

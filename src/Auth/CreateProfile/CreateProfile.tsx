@@ -65,7 +65,7 @@ const CreateProfile: React.FC = () => {
   }
 
   return (
-    <div>
+    <S.CreateProfile>
       <S.H1>Hey there, {profile.given_name}</S.H1>
       <S.P>
         Before you get started, enter some benchmarks.
@@ -76,7 +76,7 @@ const CreateProfile: React.FC = () => {
         onSubmit={(event: any) => handleSubmit(event)}
         exercises={result.data.exercises}
       />}
-    </div>
+    </S.CreateProfile>
   );
 }
 

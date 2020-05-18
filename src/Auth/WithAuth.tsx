@@ -1,5 +1,5 @@
-import React, { useContext, useState } from "react";
-import { Redirect } from "react-router-dom";
+import React, { useContext } from "react";
+import { Redirect, useLocation } from "react-router-dom";
 import { useQuery, gql } from "@apollo/client";
 import Spinner from "../Layout/Spinner/Spinner";
 
@@ -19,6 +19,7 @@ const GET_USER_EXISTS = gql`
 const WithAuth = (Component: any) => {
   function Wrapper() {
     const auth = useContext(AuthContext);
+    const location = useLocation();
     const result = useQuery<Result>(GET_USER_EXISTS, {
       variables: { id: auth.profile?.sub },
       skip: !auth.isValid()
@@ -36,7 +37,8 @@ const WithAuth = (Component: any) => {
       return <Error error={result.error}/>
     }
 
-    if (!result.data?.hasAccount) {
+    // Make sure we don't infinitely redirect when creating profile
+    if (!result.data?.hasAccount && !location.pathname.includes("create-profile")) {
       return <Redirect to="/create-profile"/>
     }
 
