@@ -4,7 +4,7 @@ export const Header = styled.div`
   align-items: center;
   box-shadow: 0px 4px 5px 0px rgba(0,0,0,0.2);
   display: flex;
-  padding-bottom: 2rem;
+  padding-bottom: 1rem;
   position: relative;
   z-index: 3;
 `;

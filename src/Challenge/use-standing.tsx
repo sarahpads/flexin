@@ -35,12 +35,13 @@ export default function useStanding(challenge: Challenge) {
   }, [challenge])
 
   useEffect(() => {
-    if (!result.data) {
+    if (!hasResponded) {
+      setWaffles(0);
+      setExplanation("There are no waffles for quitters")
       return;
     }
 
-    if (!hasResponded) {
-      setExplanation("There are no waffles for quitters")
+    if (!result.data) {
       return;
     }
 

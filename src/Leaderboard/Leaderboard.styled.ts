@@ -4,7 +4,7 @@ import theme from "../theme";
 
 export const Leaderboard = styled.div`
   color: ${theme.text.dark};
-  padding-top: 10rem;
+  padding-top: 8rem;
 `
 
 export const Ranks = styled.div`

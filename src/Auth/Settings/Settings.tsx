@@ -78,7 +78,7 @@ const Settings: React.FC<SettingsProps> = ({
   }
 
   return (
-    <div>
+    <S.Settings>
       <S.H1>Benchmarks</S.H1>
       <S.P>
         What is your typical max for each exercise?
@@ -94,7 +94,7 @@ const Settings: React.FC<SettingsProps> = ({
       <S.Cancel>
         <S.Link as="button" onClick={() => onClose()}>Cancel</S.Link>
       </S.Cancel>
-    </div>
+    </S.Settings>
   )
 }
 

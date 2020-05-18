@@ -110,7 +110,7 @@ const CreateChallenge: React.FC = () => {
   }
 
   return (
-    <React.Fragment>
+    <S.CreateChallenge>
       <S.Form noValidate onSubmit={handleSubmit}>
         <S.Circle>
           <S.Output>{flex}%</S.Output>
@@ -143,7 +143,7 @@ const CreateChallenge: React.FC = () => {
       <S.Cancel>
         <S.Link to="/">or wimp out</S.Link>
       </S.Cancel>
-    </React.Fragment>
+    </S.CreateChallenge>
   )
 }
 

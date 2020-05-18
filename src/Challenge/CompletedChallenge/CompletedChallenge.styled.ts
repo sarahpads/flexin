@@ -10,11 +10,11 @@ export const CompletedChallenge = styled.div`
 `
 
 export const Circle = styled(C)`
-  margin-bottom: 3rem;
+  margin-bottom: 1rem;
 `
 
 export const Content = styled.div`
-  padding-top: 10rem;
+  padding-top: 8rem;
   position: relative;
   z-index: 3;
 `
@@ -37,10 +37,12 @@ export const Suffix = styled.span`
 
 export const Wimp = styled.div`
   align-items: center;
+  box-sizing: border-box;
   display: flex;
   font-size: 2rem;
   height: 100%;
   justify-content: center;
+  padding: 1rem;
 `
 
 export const Message = styled.p`
@@ -63,7 +65,7 @@ export const Explanation = styled.p`
 `;
 
 export const Button = styled(B)`
-  bottom: 2rem;
+  bottom: 4rem;
   left: 50%;
   position: fixed;
   transform: translateX(-50%);

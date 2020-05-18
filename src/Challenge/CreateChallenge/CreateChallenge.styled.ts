@@ -4,6 +4,10 @@ import theme from "../../theme"
 import { Button as B, Input, Circle as C } from "../../Layout/Typography.styled";
 export { Label, Link, RepsInput, Cancel } from "../../Layout/Typography.styled";
 
+export const CreateChallenge = styled.div`
+  padding: ${theme.dimensions.pagePadding};
+`
+
 export const Form = styled.form`
   margin: auto;
   max-width: 100%;

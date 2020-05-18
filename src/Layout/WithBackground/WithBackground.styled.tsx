@@ -55,7 +55,7 @@ interface ComponentProps {
 export const Component = styled.div<ComponentProps>`
   box-sizing: border-box;
   flex: 1;
-  padding: ${theme.dimensions.pagePadding};
+  /* padding: ${theme.dimensions.pagePadding}; */
   transition: opacity 0.3s, transform 0.3s;
   transition-timing-function: ease-out;
   width: 100%;

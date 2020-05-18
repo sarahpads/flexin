@@ -35,13 +35,12 @@ export const Background = styled(animated.div)`
 `
 
 export const Home = styled.div`
-  margin-left: -${theme.dimensions.pagePadding};
+  display: flex;
+  flex-direction: column;
+  /* margin-left: -${theme.dimensions.pagePadding}; */
   min-height: calc(100% + 2rem);
   text-align: center;
   width: 100vw;
-
-  display: flex;
-  flex-direction: column;
 `
 
 export const Label = styled.label`
