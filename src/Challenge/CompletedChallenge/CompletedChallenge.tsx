@@ -7,6 +7,7 @@ import * as S from "./CompletedChallenge.styled";
 import { Challenge } from "../challenge.types";
 import useHasResponded from "../use-has-responded";
 import useRank from "../use-rank";
+import useStanding from "../use-standing";
 
 interface CompletedChallengeProps {
   challenge: Challenge;
@@ -17,6 +18,7 @@ const CompletedChallenge: React.FC<CompletedChallengeProps> = ({ challenge }) =>
   const rank = useRank(challenge);
   const [suffix, setSuffix] = useState();
   const hasResponded = useHasResponded(challenge.responses);
+  const { standing, waffles } = useStanding(challenge);
 
   useEffect(() => {
     setSuffix(ordinal(rank));
@@ -31,7 +33,7 @@ const CompletedChallenge: React.FC<CompletedChallengeProps> = ({ challenge }) =>
           {!hasResponded
             ? <S.Wimp>You Wimped Out</S.Wimp>
             : <S.Standing>
-                7
+                {standing}
                 <S.Suffix>{suffix}</S.Suffix>
               </S.Standing>
             }
@@ -39,7 +41,7 @@ const CompletedChallenge: React.FC<CompletedChallengeProps> = ({ challenge }) =>
 
         {!hasResponded
           ? <S.Message>No waffles for you</S.Message>
-          : <S.Message>You earned 5 x <S.Waffle src="/waffle.png"/></S.Message>
+          : <S.Message>You earned {waffles} x <S.Waffle src="/waffle.png"/></S.Message>
         }
 
         <S.Button as={Link} to="/create-challenge">
