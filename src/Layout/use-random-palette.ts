@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 
 import theme, { Palette } from "../theme";
 
-let currentPalette: Palette;
-
 export default function useRandomPalette() {
   const [palette, setPalette] = useState({} as Palette);
 
@@ -15,8 +13,7 @@ export default function useRandomPalette() {
   ];
 
   useEffect(() => {
-    const available = palettes.filter((p) => p !== currentPalette);
-    const index: number = Math.floor(Math.random() * available.length);
+    const index: number = Math.floor(Math.random() * palettes.length);
 
     setPalette(palettes[index]);
   }, [])

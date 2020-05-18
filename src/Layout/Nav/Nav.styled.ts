@@ -8,7 +8,8 @@ export const Nav = styled.div`
   display: flex;
   height: ${theme.dimensions.navHeight};
   padding: 1rem;
-  position: relative;
+  position: absolute;
+  width: 100%;
   z-index: 10;
 `
 

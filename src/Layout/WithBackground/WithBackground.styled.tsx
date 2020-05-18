@@ -12,6 +12,7 @@ export const Container = styled.div<ContainerProps>`
   --palette-text: #fff;
   --palette-neutral: ${(props) => props.palette.neutral};
   --palette-dark: ${(props) => props.palette.dark};
+  --palette-light: ${(props) => props.palette.light};
   background-color: var(--palette-neutral);
   box-sizing: border-box;
   clip-path: ${(props) => "circle(0% at " + props.origin + ")"};

@@ -26,6 +26,7 @@
     "react-scripts": "3.4.1",
     "react-spring": "^9.0.0-beta.4",
     "react-transition-group": "^4.3.0",
+    "react-use": "^15.0.1",
     "react-use-form-state": "^0.12.1",
     "react-use-gesture": "^7.0.15",
     "serve": "^11.3.0",

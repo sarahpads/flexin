@@ -39,7 +39,7 @@ function App() {
             <Route exact path="/" component={Home}/>
           </Switch>
         </CSSTransition>
-      </TransitionGroup>
+        </TransitionGroup>
     </ApolloProvider>
   );
 }

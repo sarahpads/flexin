@@ -7,7 +7,6 @@ import * as S from "./Nav.styled";
 import Settings from "../../Auth/Settings/Settings";
 import { useQuery, gql } from "@apollo/client";
 import { AuthContext } from "../../Auth/AuthProvider";
-import PWA from "../PWA/PWA";
 
 interface Result {
   hasAccount: boolean;
@@ -45,14 +44,13 @@ const Nav: React.FC = () => {
       </S.Settings>
 
       <S.Nav>
-        <PWA/>
-
         <IconContext.Provider value={{ color: "white", size: "3rem" }}>
           <S.Button onClick={() => setShowMenu(!showMenu)}>
             <MdSettings />
           </S.Button>
         </IconContext.Provider>
       </S.Nav>
+
     </React.Fragment>
   )
 }

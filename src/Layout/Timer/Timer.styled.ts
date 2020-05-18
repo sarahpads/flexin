@@ -3,7 +3,6 @@ import styled from "styled-components";
 import theme from "../../theme";
 
 export const Timer = styled.div`
-  margin-bottom: 5rem;
   position: relative;
 `
 
@@ -25,7 +24,7 @@ export const CountdownSeconds = styled.span`
 
 export const CountdownLabel = styled.span`
   display: block;
-  font-size: 2rem;
+  font-size: 1.5rem;
   text-transform: uppercase;
 `
 
@@ -54,9 +53,9 @@ export const Circle = styled.circle.attrs<CircleProps>((props) => {
     strokeDashoffset: 764 * (1 - props.progress)
   }
 })<CircleProps>`
-  fill: var(--palette-dark);
+  fill: var(--palette-neutral);
   r: calc(50% - 0.5rem);
-  stroke: white;
+  stroke: var(--palette-dark);
   stroke-dasharray: 764;
   stroke-width: 0.5rem;
   transform: rotate(-90deg);

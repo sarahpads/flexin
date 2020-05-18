@@ -11,8 +11,8 @@ export const Error = styled.div`
   height: 100vh;
   left: 0;
   padding: 5rem 2rem;
-  position: absolute;
-  top: -${theme.dimensions.navHeight};
+  position: fixed;
+  top: 0;
   transition: clip-path .8s;
   width: 100vw;
   z-index: 10;
