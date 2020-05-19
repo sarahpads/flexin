@@ -37,7 +37,7 @@ export default function useStanding(challenge: Challenge) {
   useEffect(() => {
     if (!hasResponded) {
       setWaffles(0);
-      setExplanation("There are no waffles for quitters")
+      setExplanation("Quitters don't get waffles.")
       return;
     }
 
@@ -54,7 +54,7 @@ export default function useStanding(challenge: Challenge) {
     } else if (standing === challenge.responses.length) {
       setExplanation("You came in last; there are no waffles in last place");
     } else {
-      setExplanation(`You beat ${inverse} people!`);
+      setExplanation(`You beat ${inverse} ${inverse > 1 ? "people" : "person"}!`);
     }
 
     setWaffles(waffles);

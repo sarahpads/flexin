@@ -42,7 +42,7 @@ const Header: React.FC<HeaderProps> = ({
             </IconContext.Provider>}
           </S.Crown>
 
-          <ProfilePicture size={"7rem"} />
+          <ProfilePicture size={"7rem"} id={standing.user.id}/>
         </S.Picture>
       </S.Section>
 

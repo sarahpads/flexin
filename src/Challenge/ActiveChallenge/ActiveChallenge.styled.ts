@@ -6,7 +6,7 @@ export const Challenge = styled.div`
   display: flex;
   flex: 1;
   flex-direction: column;
-  padding-top: 10rem;
+  padding-top: 8rem;
   text-align: center;
 `
 

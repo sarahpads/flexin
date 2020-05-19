@@ -3,7 +3,6 @@ import { FaMedal } from "react-icons/fa";
 
 import * as S from "./Standing.styled";
 import { IconContext } from "react-icons";
-import { Response } from "../../Challenge/challenge.types";
 import ProfilePicture from "../ProfilePicture/ProfilePicture";
 import { AuthContext } from "../../Auth/AuthProvider";
 
@@ -67,7 +66,7 @@ const Standing: React.FC<StandingProps> = ({
       </S.Rank>
 
       <S.Avatar>
-        <ProfilePicture/>
+        <ProfilePicture id={user.id}/>
       </S.Avatar>
       <S.Name>{name}</S.Name>
 

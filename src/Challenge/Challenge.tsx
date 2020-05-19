@@ -34,9 +34,7 @@ const Challenge: React.FC = () => {
   }
 
 
-  return isActive
-    ? <ActiveChallenge challenge={challenge} onComplete={onComplete}/>
-    : <CompletedChallenge challenge={challenge}/>
+    return <ActiveChallenge challenge={challenge} onComplete={onComplete}/>
 }
 
 export default Challenge;

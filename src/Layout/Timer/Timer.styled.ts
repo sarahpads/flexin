@@ -56,7 +56,7 @@ export const Circle = styled.circle.attrs<CircleProps>((props) => {
   fill: var(--palette-neutral);
   r: calc(50% - 0.5rem);
   stroke: var(--palette-dark);
-  stroke-dasharray: 764;
+  stroke-dasharray: 512;
   stroke-width: 0.5rem;
   transform: rotate(-90deg);
   transition: stroke-dashoffset 1s linear;
