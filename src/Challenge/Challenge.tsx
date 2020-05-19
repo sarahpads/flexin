@@ -33,8 +33,9 @@ const Challenge: React.FC = () => {
     return <Spinner/>
   }
 
-
-    return <ActiveChallenge challenge={challenge} onComplete={onComplete}/>
+  return isActive
+    ? <ActiveChallenge challenge={challenge} onComplete={onComplete}/>
+    : <CompletedChallenge challenge={challenge}/>
 }
 
 export default Challenge;

@@ -37,7 +37,6 @@ export const Background = styled(animated.div)`
 export const Home = styled.div`
   display: flex;
   flex-direction: column;
-  /* margin-left: -${theme.dimensions.pagePadding}; */
   min-height: 100%;
   text-align: center;
   width: 100vw;
