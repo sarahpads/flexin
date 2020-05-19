@@ -1,6 +1,5 @@
 import styled from "styled-components";
 
-import theme from "../../theme";
 import { Button as B } from "../Typography.styled";
 
 export const Button = styled(B)`

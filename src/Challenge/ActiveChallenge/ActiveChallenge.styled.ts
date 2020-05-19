@@ -1,7 +1,5 @@
 import styled from "styled-components";
 
-import theme from "../../theme";
-
 export const Challenge = styled.div`
   display: flex;
   flex: 1;

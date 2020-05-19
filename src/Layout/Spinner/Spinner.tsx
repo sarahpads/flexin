@@ -1,6 +1,4 @@
 import React from "react";
-import { MdFitnessCenter } from "react-icons/md";
-import { IconContext } from "react-icons";
 
 import * as S from "./Spinner.styled";
 import useRandomPalette from "../use-random-palette";

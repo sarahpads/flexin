@@ -10,6 +10,7 @@ interface User {
 
 interface Challenge {
   id: string;
+  expiresAt: string;
   responses: { flex: number, user: { id: string } }[]
 }
 
@@ -30,6 +31,11 @@ export default function useLeaderboard(users: User[] | undefined, challenges: Ch
     }
 
     for (let challenge of challenges) {
+      // if challenge isn't done, ignore
+      if (challenge.expiresAt > new Date().toISOString()) {
+        return;
+      }
+
       // order responses from lowest to highest
       const responses = [...challenge.responses].sort((a, b) => a.flex > b.flex ? 1 : -1);
       // modifier value depending on number of people

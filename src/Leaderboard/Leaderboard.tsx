@@ -1,5 +1,4 @@
 import React from "react";
-import { gql, useQuery } from "@apollo/client";
 
 import * as S from "./Leaderboard.styled";
 import Standing from "../Layout/Standing/Standing";
