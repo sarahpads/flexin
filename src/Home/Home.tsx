@@ -15,32 +15,25 @@ import Error from "../Layout/Error/Error";
 
 interface Result {
   users: { id: string, name: string }[],
-  challenges: {
+  leaderboard: {
     id: string;
+    expiresAt: string;
     responses: { user: { id: string }, flex: number }[]
   }[]
 }
 
 const GET_DATA = gql`
   query {
-    users {
-      id,
-      name
-    },
-    challenges {
-      id,
-      createdAt,
-      responses {
-        user { id },
-        flex
-      }
+    users { id, name }
+    leaderboard {
+      id, expiresAt, responses { user { id } flex }
     }
   }
 `
 
 const Home: React.FC = () => {
   const result = useQuery<Result>(GET_DATA);
-  const {standings, userStanding} = useLeaderboard(result.data?.users, result.data?.challenges)
+  const {standings, userStanding} = useLeaderboard(result.data?.users, result.data?.leaderboard)
   const [formState, { radio, label }] = useFormState({ page: "0" }, {
     withIds: true,
     onChange: (event, oldValues, newValues) => {

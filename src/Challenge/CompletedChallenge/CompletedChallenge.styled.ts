@@ -31,7 +31,6 @@ export const Suffix = styled.span`
   font-size: 2rem;
   font-weight: 400;
   line-height: 11rem;
-  margin-left: -0.4rem;
   position: absolute;
 `
 
