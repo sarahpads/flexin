@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { useFormState } from "react-use-form-state";
 import { gql, useQuery } from "@apollo/client";
 
@@ -12,28 +12,12 @@ import Leaderboard from "../Leaderboard/Leaderboard"
 import useLeaderboard from "../Leaderboard/use-leaderboard";
 import Spinner from "../Layout/Spinner/Spinner";
 import Error from "../Layout/Error/Error";
-
-interface Result {
-  users: { id: string, name: string }[],
-  leaderboard: {
-    id: string;
-    expiresAt: string;
-    responses: { user: { id: string }, flex: number }[]
-  }[]
-}
-
-const GET_DATA = gql`
-  query {
-    users { id, name }
-    leaderboard {
-      id, expiresAt, responses { user { id } flex }
-    }
-  }
-`
+import { AuthContext } from "../Auth/AuthProvider";
 
 const Home: React.FC = () => {
-  const result = useQuery<Result>(GET_DATA);
-  const {standings, userStanding} = useLeaderboard(result.data?.users, result.data?.leaderboard)
+  const { profile } = useContext(AuthContext);
+  const result = useLeaderboard()
+  const [userStanding, setUserStanding] = useState();
   const [formState, { radio, label }] = useFormState({ page: "0" }, {
     withIds: true,
     onChange: (event, oldValues, newValues) => {
@@ -55,7 +39,16 @@ const Home: React.FC = () => {
   const [props, set] = useSprings(2, i => ({ x: i * window.innerWidth }));
   const [moreProps, moreSet] = useSpring(() => ({ x: 0 }));
 
-  if (result.loading) {
+  useEffect(() => {
+    if (!result.data) {
+      return;
+    }
+
+    const userStanding = result.data.standings?.find((standing) => standing.user.id === profile.sub);
+    setUserStanding(userStanding);
+  }, [result.data])
+
+  if (result.loading || !result.data) {
     return <Spinner/>
   }
 
@@ -80,11 +73,11 @@ const Home: React.FC = () => {
 
         <S.Pages>
           <S.AnimatedPage style={{ transform: props[0].x.interpolate(x => `translate3d(${x}px,0,0)`) }}>
-            <Leaderboard standings={standings}/>
+            {result.data.standings && <Leaderboard standings={result.data.standings}/>}
           </S.AnimatedPage>
 
           <S.AnimatedPage style={{ transform: props[1].x.interpolate(x => `translate3d(${x}px,0,0)`) }}>
-            <Challenge />
+            {result.data.challenges && <Challenge challenge={result.data.challenges[0]}/>}
           </S.AnimatedPage>
         </S.Pages>
       </S.Test>

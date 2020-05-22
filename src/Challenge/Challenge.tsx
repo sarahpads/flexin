@@ -3,13 +3,14 @@ import { DateTime } from "luxon";
 
 import ActiveChallenge from "./ActiveChallenge/ActiveChallenge";
 import CompletedChallenge from "./CompletedChallenge/CompletedChallenge";
-import useChallenge from "./use-challenge";
-import Spinner from "../Layout/Spinner/Spinner";
-import Error from "../Layout/Error/Error";
+import { Challenge as C } from "./challenge.types";
 
-const Challenge: React.FC = () => {
+interface ChallengeProps {
+  challenge: C
+}
+
+const Challenge: React.FC<ChallengeProps> = ({ challenge }) => {
   const [isActive, setIsActive] = useState(false);
-  const { data: challenge, error, loading } = useChallenge();
 
   useEffect(() => {
     if (!challenge) {
@@ -23,14 +24,6 @@ const Challenge: React.FC = () => {
 
   function onComplete() {
     setIsActive(false);
-  }
-
-  if (error) {
-    return <Error error={error}/>
-  }
-
-  if (loading || !challenge) {
-    return <Spinner/>
   }
 
   return isActive
