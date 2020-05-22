@@ -60,15 +60,27 @@ const NEW_CHALLENGE = gql`
   }
 `
 
+// subscription for "challengeResult"
+// which will send along updated challengeResponses, with populated
+// rank and score fields
+
 export default function useLeaderboard() {
   const [error, setError] = useState();
-  const [loading, setLoading] = useState();
-  const [standings, setStandings] = useState<UserStanding[]>();
+  const [loading, setLoading] = useState(true);
   const [challenges, setChallenges] = useState<Challenge[]>();
+  const [matrix, setMatrix] = useState()
+  const [userLeaderboard, setUserLeaderboard] = useState();
+  const [challengeLeaderboard, setChallengeLeaderboard] = useState();
+
   const result = useQuery<Result>(GET_DATA);
   const challengeResult = useSubscription<ChallengeResult>(NEW_CHALLENGE);
   const responseResult = useSubscription<ResponseResult>(NEW_RESPONSE);
 
+
+
+  const [standings, setStandings] = useState<any[]>()
+
+  // maybe this stuff comes from useChallenge?
   useEffect(() => {
     setLoading(result.loading);
     setError(result.error);
@@ -76,14 +88,91 @@ export default function useLeaderboard() {
     if (!result.data) {
       return;
     }
-    console.log(result.data.leaderboard)
 
-    const challenges = [...result.data.leaderboard].sort((a, b) => {
-      return a.createdAt > b.createdAt ? -1 : 1;
-    });
-
-    setChallenges(challenges)
+    setChallenges(result.data.leaderboard)
   }, [result.data, result.error, result.loading])
+
+  useEffect(() => {
+    setError(challengeResult.error);
+
+    if (!challengeResult.data) {
+      return;
+    }
+
+    setChallenges([
+      challengeResult.data.latestChallenge,
+      ...challenges || []
+    ])
+  }, [challengeResult.data, challengeResult.error, challengeResult.loading])
+
+  useEffect(() => {
+    setError(responseResult.error);
+
+    if (!responseResult.data || !challenges) {
+      return;
+    }
+
+    challenges[0].responses = [
+      ...challenges[0].responses,
+      responseResult.data.newResponse
+    ]
+
+    setChallenges(challenges);
+  }, [responseResult.data, responseResult.error, responseResult.loading]);
+
+  // set matrix
+  useEffect(() => {
+    if (!challenges || !result.data) {
+      return;
+    }
+
+    const xKeys: { [key: string]: number } = {};
+    const yKeys: { [key: string]: number } = {};
+    const matrix: number[][][] = [];
+
+    for (let i = 0, len = result.data.users.length; i < len; i++) {
+      const user = result.data.users[i];
+      yKeys[user.id] = i;
+    }
+
+    for (let x = 0, len = challenges.length; x < len; x++) {
+      const challenge = challenges[x];
+      xKeys[challenge.id] = x;
+      matrix[x] = [];
+
+      const ranks = getRanks(challenge.responses);
+      const length = ranks.length;
+
+      for (let response of challenge.responses) {
+        const y = yKeys[response.user.id];
+        const rank = ranks.indexOf(response.flex);
+        const score = (length - rank) * .25;
+
+        matrix[x][y] = [rank + 1, score];
+      }
+    }
+
+    console.table(matrix)
+    setMatrix({ xKeys, yKeys, matrix})
+  }, [challenges, result.data?.users])
+
+  // set challenge leaderboard
+
+  // set user leaderboard
+  useEffect(() => {
+    if (!matrix) {
+      return;
+    }
+
+    const keys = Object.keys(matrix.yKeys);
+
+    for (let y = 0, len = keys.length; y < len; y++) {
+      const id = keys[y];
+      console.log(id)
+    }
+        // const rank = ranks.indexOf(response.flex);
+        // const score = (length - rank) * .25;
+  }, [matrix])
 
   useEffect(() => {
     if (!challenges || !result.data?.users) {
@@ -145,33 +234,15 @@ export default function useLeaderboard() {
     setStandings(standings);
   }, [challenges, result.data?.users])
 
-  useEffect(() => {
-    setError(challengeResult.error);
+  function getRanks(responses: Response[]) {
+    let ranks = new Set();
 
-    if (!challengeResult.data) {
-      return;
+    for (let response of responses) {
+      ranks.add(response.flex)
     }
 
-    setChallenges([
-      challengeResult.data.latestChallenge,
-      ...challenges || []
-    ])
-  }, [challengeResult.data, challengeResult.error, challengeResult.loading])
-
-  useEffect(() => {
-    setError(responseResult.error);
-
-    if (!responseResult.data || !challenges) {
-      return;
-    }
-
-    challenges[0].responses = [
-      ...challenges[0].responses,
-      responseResult.data.newResponse
-    ]
-
-    setChallenges(challenges);
-  }, [responseResult.data, responseResult.error, responseResult.loading]);
+    return Array.from(ranks).sort();
+  }
 
   return { data: { standings, challenges }, error, loading };
 }

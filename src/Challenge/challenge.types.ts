@@ -15,6 +15,7 @@ export interface Response {
     name: string;
     id: string;
   };
+  challengeId: string;
   reps: number;
   flex: number;
 }
