@@ -6,7 +6,7 @@ import CompletedChallenge from "./CompletedChallenge/CompletedChallenge";
 import { Challenge as C } from "./challenge.types";
 
 interface ChallengeProps {
-  challenge: C
+  challenge?: C
 }
 
 const Challenge: React.FC<ChallengeProps> = ({ challenge }) => {
@@ -24,6 +24,10 @@ const Challenge: React.FC<ChallengeProps> = ({ challenge }) => {
 
   function onComplete() {
     setIsActive(false);
+  }
+
+  if (!challenge) {
+    return <></>;
   }
 
   return isActive

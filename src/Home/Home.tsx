@@ -8,15 +8,15 @@ import WithAuth from "../Auth/WithAuth";
 import Challenge from "../Challenge/Challenge";
 import { useSprings, useSpring } from "react-spring";
 import Header from "./Header/Header";
-import Leaderboard from "../Leaderboard/Leaderboard"
-import useLeaderboard from "../Leaderboard/use-leaderboard";
+import Leaderboard from "../Challenge/Leaderboard/Leaderboard"
+import useHomeData from "./use-home-data";
 import Spinner from "../Layout/Spinner/Spinner";
 import Error from "../Layout/Error/Error";
 import { AuthContext } from "../Auth/AuthProvider";
 
 const Home: React.FC = () => {
   const { profile } = useContext(AuthContext);
-  const result = useLeaderboard()
+  const result = useHomeData();
   const [userStanding, setUserStanding] = useState();
   const [formState, { radio, label }] = useFormState({ page: "0" }, {
     withIds: true,
@@ -36,6 +36,7 @@ const Home: React.FC = () => {
     }
   });
 
+  // TODO: rename these
   const [props, set] = useSprings(2, i => ({ x: i * window.innerWidth }));
   const [moreProps, moreSet] = useSpring(() => ({ x: 0 }));
 
@@ -44,7 +45,7 @@ const Home: React.FC = () => {
       return;
     }
 
-    const userStanding = result.data.standings?.find((standing) => standing.user.id === profile.sub);
+    const userStanding = result.data.leaderboard?.find((standing) => standing.user.id === profile.sub);
     setUserStanding(userStanding);
   }, [result.data])
 
@@ -73,11 +74,11 @@ const Home: React.FC = () => {
 
         <S.Pages>
           <S.AnimatedPage style={{ transform: props[0].x.interpolate(x => `translate3d(${x}px,0,0)`) }}>
-            {result.data.standings && <Leaderboard standings={result.data.standings}/>}
+            <Leaderboard standings={result.data.leaderboard}/>
           </S.AnimatedPage>
 
           <S.AnimatedPage style={{ transform: props[1].x.interpolate(x => `translate3d(${x}px,0,0)`) }}>
-            {result.data.challenges && <Challenge challenge={result.data.challenges[0]}/>}
+            <Challenge challenge={result.data.challenge}/>}
           </S.AnimatedPage>
         </S.Pages>
       </S.Test>

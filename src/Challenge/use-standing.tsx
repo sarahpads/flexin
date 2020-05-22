@@ -15,50 +15,41 @@ interface Result {
 
 export default function useStanding(challenge: Challenge) {
   const { profile } = useContext(AuthContext);
-  const [standing, setStanding] = useState();
-  const [waffles, setWaffles] = useState();
   const [explanation, setExplanation] = useState();
+  const [waffles, setWaffles] = useState();
+  const [rank, setRank] = useState();
+  const [response, setResponse] = useState();
   const [hasResponded, setHasResponded] = useState();
-  const result = useQuery<Result>(GET_USERS, {
-    skip: !hasResponded
-  })
 
   useEffect(() => {
-    const standing = challenge.responses.findIndex((response) => response.user.id === profile.sub);
-    const hasResponded = standing > -1;
+    const response = challenge.responses.find((response) => response.user.id === profile.sub);
 
-    setHasResponded(hasResponded);
+    setResponse(response);
+    setHasResponded(!!response);
 
-    if (hasResponded) {
-      setStanding(standing + 1);
-    }
-  }, [challenge])
-
-  useEffect(() => {
-    if (!hasResponded) {
+    if (!response) {
       setWaffles(0);
+      setRank(-1);
       setExplanation("Quitters don't get waffles.")
       return;
     }
 
-    if (!result.data) {
-      return;
-    }
+    const vanquishedFoes = challenge.responses.filter((r) => {
+      return response.rank > r.rank;
+    })
 
-    const lobby = challenge.responses.length / result.data.users.length;
-    const inverse = challenge.responses.length - standing;
-    const waffles = Math.round((inverse * lobby) * 2) / 2;
-
-    if (standing === 1 && challenge.responses.length === 1) {
+    if (response.rank === 1 && !vanquishedFoes.length) {
       setExplanation("You came in first, but you didn't beat anyone.");
-    } else if (standing === challenge.responses.length) {
+    } else if (!vanquishedFoes.length) {
       setExplanation("You came in last; there are no waffles in last place");
     } else {
-      setExplanation(`You beat ${inverse} ${inverse > 1 ? "people" : "person"}!`);
+      // TODO: this probably isn't going to be acurrate. Look at rank and below for
+      // lowers and disregard those with the same gains
+      setExplanation(`You beat ${vanquishedFoes.length} ${vanquishedFoes.length > 1 ? "people" : "person"}!`);
     }
 
     setWaffles(waffles);
-  }, [challenge, result.data])
+  }, [challenge])
 
-  return { standing, waffles, explanation };
+  return { rank, waffles, explanation };
 }

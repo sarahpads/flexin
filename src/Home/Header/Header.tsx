@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import ordinal from "ordinal/indicator";
+import { IconContext } from "react-icons";
+import { GiQueenCrown } from "react-icons/gi";
 
 import * as S from "./Header.styled";
 import ProfilePicture from "../../Layout/ProfilePicture/ProfilePicture";
-import { IconContext } from "react-icons";
-import { GiQueenCrown } from "react-icons/gi";
-import { UserStanding } from "../../Leaderboard/leaderboard.types";
+import { Standing } from "../../Challenge/challenge.types";
 
 interface HeaderProps {
-  standing: UserStanding
+  standing: Standing
 }
 
 const Header: React.FC<HeaderProps> = ({
@@ -21,6 +21,7 @@ const Header: React.FC<HeaderProps> = ({
       return;
     }
 
+    console.log(standing.rank)
     setSuffix(ordinal(standing.rank));
   }, [standing])
 

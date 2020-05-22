@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
 import { FaMedal } from "react-icons/fa";
 
-import * as S from "./Standing.styled";
+import * as S from "./Rank.styled";
 import { IconContext } from "react-icons";
 import ProfilePicture from "../ProfilePicture/ProfilePicture";
 import { AuthContext } from "../../Auth/AuthProvider";
 
-interface StandingProps {
+interface RankProps {
   percentage?: number;
   waffles?: number;
   rank: number;
@@ -22,7 +22,7 @@ enum Medals {
   "#F09A5C" = 3
 }
 
-const Standing: React.FC<StandingProps> = ({
+const Rank: React.FC<RankProps> = ({
   percentage,
   rank,
   user,
@@ -81,4 +81,4 @@ const Standing: React.FC<StandingProps> = ({
   )
 }
 
-export default Standing;
+export default Rank;

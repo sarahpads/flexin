@@ -6,7 +6,7 @@ import Timer from "../../Layout/Timer/Timer";
 import ChallengeResponseForm from "./ChallengeResponseForm/ChallengeResponseForm";
 import { Challenge } from "../challenge.types";
 import useHasResponded from "../use-has-responded";
-import Standing from "../../Layout/Standing/Standing";
+import Rank from "../../Layout/Rank/Rank";
 
 interface ActiveChallengeProps {
   challenge: Challenge;
@@ -28,8 +28,8 @@ const ActiveChallenge: React.FC<ActiveChallengeProps> = ({
       </S.Challenge>
 
       <S.Title>Challengers</S.Title>
-      {challenge.responses.map((response: any, index: number) => {
-        return <Standing key={index} user={response.user} percentage={response.flex} rank={index + 1}></Standing>
+      {challenge.responses.map((response: any) => {
+        return <Rank key={response.user.id} user={response.user} percentage={response.flex} rank={response.rank}/>
       })}
     </React.Fragment>
   )

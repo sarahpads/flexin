@@ -1,35 +1,52 @@
 import { useState, useEffect } from "react";
 import { useQuery, gql, useSubscription } from "@apollo/client";
 
-import { Challenge, Response } from "./challenge.types";
+import { Challenge } from "./challenge.types";
+
+// TODO: on new challenge/response, create a toast with confetti
+// advertise their rank
+
+interface User {
+  name: string;
+  id: string
+}
+
+interface ResponseResult {
+  updatedChallenge: Challenge
+}
 
 interface ChallengeResult {
   latestChallenge: Challenge;
 }
 
-interface ResponseResult {
-  newResponse: Response
+interface Result {
+  users: User[],
+  leaderboard: Challenge[]
 }
 
-const NEW_RESPONSE = gql`
-  subscription {
-    newResponse {
-      user { name, id },
-      reps,
-      flex
-    }
-  }
-`
-
-const GET_CHALLENGE = gql`
+const GET_DATA = gql`
   query {
-    latestChallenge {
+    users { id, name }
+    leaderboard {
       id,
       user { name, id },
       exercise { title, id },
       createdAt,
       expiresAt,
-      responses { user { name, id }, reps, flex }
+      responses { user { name, id }, reps, flex, gains, rank }
+    }
+  }
+`
+
+const NEW_RESPONSE = gql`
+  subscription {
+    updatedChallenge {
+      id,
+      user { name, id },
+      exercise { title, id },
+      createdAt,
+      expiresAt,
+      responses { user { name, id }, reps, flex, gains, rank }
     }
   }
 `
@@ -49,65 +66,50 @@ const NEW_CHALLENGE = gql`
 
 
 export default function useChallenge() {
-  const [challenge, setChallenge] = useState();
+  const [challenges, setChallenges] = useState<Challenge[]>();
   const [error, setError] = useState();
-  const [loading, setLoading] = useState();
-  const { subscribeToMore, ...challengeResult } = useQuery<ChallengeResult>(GET_CHALLENGE)
+  const [loading, setLoading] = useState(true);
+
+  const result = useQuery<Result>(GET_DATA);
+  const challengeResult = useSubscription<ChallengeResult>(NEW_CHALLENGE);
   const responseResult = useSubscription<ResponseResult>(NEW_RESPONSE);
 
   useEffect(() => {
-    const unsubscribe = subscribeToMore({
-      document: NEW_CHALLENGE,
-      updateQuery: (prev, { subscriptionData }) => {
-        // ALERT: what is returned from this function MUST match the exact data format
-        // returned by NEW_CHALLENGE; otherwise Apollo will silently discard the update
-        if (!subscriptionData.data) {
-          return prev;
-        }
+    setLoading(result.loading);
+    setError(result.error);
 
-        // @ts-ignore
-        return { latestChallenge: subscriptionData.data.newChallenge };
-      }
-    });
+    if (!result.data) {
+      return;
+    }
 
-    return () => unsubscribe();
-  }, [])
+    setChallenges(result.data.leaderboard)
+  }, [result.data, result.error, result.loading])
 
   useEffect(() => {
-    setLoading(challengeResult.loading);
     setError(challengeResult.error);
 
     if (!challengeResult.data) {
       return;
     }
 
-    setChallenge({
-      ...challengeResult.data.latestChallenge,
-      responses: sortResponses([...challengeResult.data.latestChallenge.responses])
-    })
+    setChallenges([
+      challengeResult.data.latestChallenge,
+      ...challenges || []
+    ])
   }, [challengeResult.data, challengeResult.error, challengeResult.loading])
 
   useEffect(() => {
     setError(responseResult.error);
 
-    if (!responseResult.data) {
+    if (!responseResult.data || !challenges) {
       return;
     }
 
-    setChallenge({
-      ...challenge,
-      responses: sortResponses([
-        ...challenge.responses,
-        responseResult.data.newResponse
-      ])
-    });
-  }, [responseResult.data, responseResult.error, responseResult.loading])
+    const newChallenges = [...challenges]
+    newChallenges[0] = responseResult.data.updatedChallenge;
 
-  return { data: challenge, error, loading };
-}
+    setChallenges(newChallenges);
+  }, [responseResult.data, responseResult.error, responseResult.loading]);
 
-function sortResponses(responses: Response[]) {
-  return responses.sort((a, b) => {
-    return a.flex < b.flex ? 1 : -1;
-  });
+  return { loading, error, data: { challenges, users: result.data?.users }};
 }

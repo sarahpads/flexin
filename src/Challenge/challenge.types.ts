@@ -18,4 +18,15 @@ export interface Response {
   challengeId: string;
   reps: number;
   flex: number;
+  rank: number;
+  gains: number;
+}
+
+export interface Standing {
+  user: {
+    name: string;
+    id: string;
+  }
+  waffles: number;
+  rank: number;
 }

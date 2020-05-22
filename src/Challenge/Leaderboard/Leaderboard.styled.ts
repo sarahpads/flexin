@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import theme from "../theme";
+import theme from "../../theme";
 
 export const Leaderboard = styled.div`
   color: ${theme.text.dark};

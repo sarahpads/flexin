@@ -5,8 +5,6 @@ import ordinal from "ordinal/indicator";
 
 import * as S from "./CompletedChallenge.styled";
 import { Challenge } from "../challenge.types";
-import useHasResponded from "../use-has-responded";
-import useRank from "../use-rank";
 import useStanding from "../use-standing";
 
 interface CompletedChallengeProps {
@@ -15,15 +13,8 @@ interface CompletedChallengeProps {
 
 const CompletedChallenge: React.FC<CompletedChallengeProps> = ({ challenge }) => {
   const elRef = useRef<any>();
-  const rank = useRank(challenge);
   const [suffix, setSuffix] = useState();
-  const [hasStanding, setHasStanding] = useState();
-  const hasResponded = useHasResponded(challenge.responses);
-  const { standing, waffles, explanation } = useStanding(challenge);
-
-  useEffect(() => {
-    setHasStanding(hasResponded && challenge.responses.length > 1);
-  }, [hasResponded, challenge])
+  const { rank, waffles, explanation } = useStanding(challenge);
 
   useEffect(() => {
     setSuffix(ordinal(rank));
@@ -35,10 +26,10 @@ const CompletedChallenge: React.FC<CompletedChallengeProps> = ({ challenge }) =>
 
       <S.Content>
         <S.Circle>
-          {!hasStanding
-            ? <S.Wimp>{hasResponded ? "No Contest" : "You wimped out"}</S.Wimp>
+          {rank === -1
+            ? <S.Wimp>{"You wimped out"}</S.Wimp>
             : <S.Standing>
-                {standing}
+                {rank}
                 <S.Suffix>{suffix}</S.Suffix>
               </S.Standing>
             }
