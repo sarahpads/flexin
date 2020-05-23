@@ -21,7 +21,6 @@ const Header: React.FC<HeaderProps> = ({
       return;
     }
 
-    console.log(standing.rank)
     setSuffix(ordinal(standing.rank));
   }, [standing])
 

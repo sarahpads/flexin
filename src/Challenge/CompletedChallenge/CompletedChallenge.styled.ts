@@ -6,6 +6,7 @@ export { H1, P } from "../../Layout/Typography.styled";
 
 export const CompletedChallenge = styled.div`
   height: 100%;
+  padding: 0 ${theme.dimensions.pagePadding};
   text-align: center;
 `
 

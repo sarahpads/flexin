@@ -18,14 +18,9 @@ export default function useStanding(challenge: Challenge) {
   const [explanation, setExplanation] = useState();
   const [waffles, setWaffles] = useState();
   const [rank, setRank] = useState();
-  const [response, setResponse] = useState();
-  const [hasResponded, setHasResponded] = useState();
 
   useEffect(() => {
     const response = challenge.responses.find((response) => response.user.id === profile.sub);
-
-    setResponse(response);
-    setHasResponded(!!response);
 
     if (!response) {
       setWaffles(0);
@@ -34,9 +29,12 @@ export default function useStanding(challenge: Challenge) {
       return;
     }
 
+    setRank(response.rank);
+    setWaffles(response.gains);
+
     const vanquishedFoes = challenge.responses.filter((r) => {
-      return response.rank > r.rank;
-    })
+      return response.rank < r.rank;
+    });
 
     if (response.rank === 1 && !vanquishedFoes.length) {
       setExplanation("You came in first, but you didn't beat anyone.");
@@ -47,8 +45,6 @@ export default function useStanding(challenge: Challenge) {
       // lowers and disregard those with the same gains
       setExplanation(`You beat ${vanquishedFoes.length} ${vanquishedFoes.length > 1 ? "people" : "person"}!`);
     }
-
-    setWaffles(waffles);
   }, [challenge])
 
   return { rank, waffles, explanation };

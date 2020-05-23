@@ -41,13 +41,13 @@ export default function useHomeData() {
       }
     }
 
-    const scores = new Set();
+    const scores = new Set<number>();
 
     for (let user in users) {
       scores.add(users[user]);
     }
 
-    const ranks = Array.from(scores).sort();
+    const ranks = Array.from(scores).sort((a, b) => a < b ? 1 : -1);
 
     const standings = result.data.users
       .map((user) => {

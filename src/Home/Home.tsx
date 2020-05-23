@@ -49,12 +49,12 @@ const Home: React.FC = () => {
     setUserStanding(userStanding);
   }, [result.data])
 
-  if (result.loading || !result.data) {
-    return <Spinner/>
-  }
-
   if (result.error) {
     return <Error error={result.error}/>
+  }
+
+  if (result.loading || !result.data) {
+    return <Spinner/>
   }
 
   return (
@@ -78,7 +78,7 @@ const Home: React.FC = () => {
           </S.AnimatedPage>
 
           <S.AnimatedPage style={{ transform: props[1].x.interpolate(x => `translate3d(${x}px,0,0)`) }}>
-            <Challenge challenge={result.data.challenge}/>}
+            <Challenge challenge={result.data.challenge}/>
           </S.AnimatedPage>
         </S.Pages>
       </S.Test>

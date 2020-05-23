@@ -13,7 +13,7 @@ import Error from "../../Layout/Error/Error";
 interface Result {
   exercises: { title: string; id: string}[];
   user: {
-    exercises: { reps: number, exercise: { id: string } }[]
+    exercises: { reps: number, exerciseId: string }[]
   }
 }
 
@@ -21,7 +21,7 @@ const GET_DATA = gql`
   query Data($userId: String!) {
     exercises { title, id },
     user (id: $userId) {
-      exercises { reps, exercise { id } }
+      exercises { reps, exerciseId }
     }
   }
 `
@@ -57,7 +57,7 @@ const CreateChallenge: React.FC = () => {
     }
 
     const userExercise = result.data.user.exercises.find((userExercise) => {
-      return userExercise.exercise.id === exercise;
+      return userExercise.exerciseId === exercise;
     })
 
     if (!userExercise) {

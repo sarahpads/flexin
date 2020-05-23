@@ -18,9 +18,7 @@ interface Result {
   user: {
     exercises: {
       reps: number;
-      exercise: {
-        id: string;
-      }
+      exerciseId: string;
     }[]
   }
 }
@@ -34,7 +32,7 @@ const GET_DATA = gql`
   query User($id: String!) {
     exercises { title, id }
     user(id: $id) {
-      exercises { reps, exercise { id } }
+      exercises { reps, exerciseId }
     }
   }
 `
@@ -63,7 +61,7 @@ const Settings: React.FC<SettingsProps> = ({
     const data = {
       exercises: result.data.exercises,
       userExercises: result.data.user.exercises.map((userExercise) => {
-        return { reps: userExercise.reps, exerciseId: userExercise.exercise.id };
+        return { reps: userExercise.reps, exerciseId: userExercise.exerciseId };
       })
     };
 
