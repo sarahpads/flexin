@@ -55,7 +55,6 @@ const Rain: React.FC<RainProps> = ({ height, width }) => {
       drop.update()
 
       if (drop.y > height || drop.x > width) {
-        debugger;
         const x = randomRange(0, width)
         drops[i] = new Raindrop(ctx, x, height);
       }
