@@ -1,6 +1,6 @@
 workbox.core.setCacheNameDetails({
-  prefix: "flexin",
-  suffix: "v1"
+  prefix: "waffle-tax",
+  suffix: "v1.1"
 });
 
 self.oninstall = (event) => event.waitUntil(self.skipWaiting());
@@ -19,11 +19,10 @@ workbox.routing.registerNavigationRoute(
 self.addEventListener('push', function(event) {
   console.log('[Service Worker] Push Received.');
   console.log(`[Service Worker] Push had this data: "${event.data.text()}"`);
-  const data = event.data.json();
+  const { title, body } = event.data.json();
 
-  const title = data.title;
   const options = {
-    body: data.body,
+    body,
     icon: 'logo.svg',
     badge: 'logo.svg'
   };
