@@ -16,14 +16,7 @@ export default function useHomeData() {
       return;
     }
 
-    const challenges: Challenge[] = [...result.data.challenges].sort((a, b) => {
-      return a.createdAt > b.createdAt ? -1 : 1
-    });
-
-    const challenge: Challenge = cloneDeep(challenges[0]);
-    challenge.responses.sort((a, b) => {
-      return a.flex > b.flex ? -1 : 1;
-    })
+    const challenge: Challenge = result.data.challenges[0];
 
     const users: { [key: string]: number } = {};
 
@@ -31,7 +24,7 @@ export default function useHomeData() {
       users[user.id] = 0;
     }
 
-    for (let challenge of challenges) {
+    for (let challenge of result.data.challenges) {
       if (challenge.expiresAt > new Date().toISOString()) {
         continue;
       }

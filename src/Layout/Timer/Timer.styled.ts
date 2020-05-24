@@ -18,7 +18,6 @@ export const CountdownSeconds = styled.span`
   font-family: "ManRope";
   font-size: ${theme.circle.fontSize};
   font-weight: 600;
-  letter-spacing: -0.5rem;
   width: 100%;
 `
 
@@ -50,13 +49,13 @@ export const Circle = styled.circle.attrs<CircleProps>((props) => {
   }
 
   return {
-    strokeDashoffset: 764 * (1 - props.progress)
+    strokeDashoffset: 440 * (1 - props.progress)
   }
 })<CircleProps>`
   fill: var(--palette-neutral);
   r: calc(50% - 0.5rem);
   stroke: var(--palette-dark);
-  stroke-dasharray: 512;
+  stroke-dasharray: 440;
   stroke-width: 0.5rem;
   transform: rotate(-90deg);
   transition: stroke-dashoffset 1s linear;
