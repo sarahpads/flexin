@@ -6,6 +6,7 @@ import ordinal from "ordinal/indicator";
 import * as S from "./CompletedChallenge.styled";
 import { Challenge } from "../challenge.types";
 import useStanding from "../use-standing";
+import Rain from "../Rain/Rain";
 
 interface CompletedChallengeProps {
   challenge: Challenge;
@@ -14,7 +15,7 @@ interface CompletedChallengeProps {
 const CompletedChallenge: React.FC<CompletedChallengeProps> = ({ challenge }) => {
   const elRef = useRef<any>();
   const [suffix, setSuffix] = useState();
-  const { rank, waffles, explanation } = useStanding(challenge);
+  const { rank, waffles, explanation, vanquishedFoes } = useStanding(challenge);
 
   useEffect(() => {
     setSuffix(ordinal(rank));
@@ -22,7 +23,10 @@ const CompletedChallenge: React.FC<CompletedChallengeProps> = ({ challenge }) =>
 
   return (
     <S.CompletedChallenge className="background--light" ref={elRef}>
-      <Confetti height={elRef.current?.offsetHeight} width={elRef.current?.offsetWidth} opacity={0.6}/>
+      {vanquishedFoes?.length
+        ? <Confetti height={elRef.current?.offsetHeight} width={elRef.current?.offsetWidth} opacity={0.6}/>
+        : <Rain height={elRef.current?.offsetHeight} width={elRef.current?.offsetWidth}/>
+      }
 
       <S.Content>
         <S.Circle>
