@@ -16,7 +16,7 @@ interface ResponseResult {
 }
 
 interface ChallengeResult {
-  latestChallenge: Challenge;
+  newChallenge: Challenge;
 }
 
 interface Result {
@@ -93,7 +93,7 @@ export default function useChallenge() {
     }
 
     setChallenges([
-      challengeResult.data.latestChallenge,
+      challengeResult.data.newChallenge,
       ...challenges || []
     ])
   }, [challengeResult.data, challengeResult.error, challengeResult.loading])

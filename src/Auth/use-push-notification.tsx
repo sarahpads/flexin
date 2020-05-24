@@ -4,8 +4,8 @@ import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "./AuthProvider";
 
 const CREATE_SUBSCRIPTION = gql`
-  mutation createSubscription($data: CreateSubscriptionInput!) {
-    createSubscription(data: $data)
+  mutation subscribe($data: CreateSubscriptionInput!) {
+    subscribe(data: $data)
   }
 `
 
