@@ -13,9 +13,11 @@ import useHomeData from "./use-home-data";
 import Spinner from "../Layout/Spinner/Spinner";
 import Error from "../Layout/Error/Error";
 import { AuthContext } from "../Auth/AuthProvider";
+import { ToastContext } from "../Layout/Toast/ToastProvider";
 
 const Home: React.FC = () => {
   const { profile } = useContext(AuthContext);
+  const { add } = useContext(ToastContext);
   const result = useHomeData();
   const [userStanding, setUserStanding] = useState();
   const [formState, { radio, label }] = useFormState({ page: "0" }, {
@@ -61,6 +63,7 @@ const Home: React.FC = () => {
     <S.Home>
       <Header standing={userStanding}/>
 
+      <button onClick={() => add(<div>Test</div>)}>Test</button>
       <S.Test>
         <S.Nav>
           <S.Track>
