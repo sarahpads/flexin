@@ -119,6 +119,10 @@ export default function useChallenge() {
     }
 
     const challenge = responseResult.data.updatedChallenge;
+    challenge.responses.sort((a, b) => {
+      return a.flex > b.flex ? -1 : 1;
+    });
+
     const respondees = challenges[0].responses.map((response) => response.user.id);
     let newResponse;
 
@@ -130,10 +134,6 @@ export default function useChallenge() {
     }
 
     const newChallenges = [...challenges]
-    // TODO: need to sort these responses
-    challenge.responses.sort((a, b) => {
-      return a.flex > b.flex ? -1 : 1;
-    });
     newChallenges[0] = challenge;
 
     setChallenges(newChallenges);
