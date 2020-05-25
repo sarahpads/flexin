@@ -3,10 +3,10 @@ import React from "react";
 import * as S from "./ActiveChallenge.styled";
 
 import Timer from "../../Layout/Timer/Timer";
-import ChallengeResponseForm from "./ChallengeResponseForm/ChallengeResponseForm";
 import { Challenge } from "../challenge.types";
 import useHasResponded from "../use-has-responded";
 import Rank from "../../Layout/Rank/Rank";
+import CreateResponse from "../CreateResponse/CreateResponse";
 
 interface ActiveChallengeProps {
   challenge: Challenge;
@@ -24,7 +24,7 @@ const ActiveChallenge: React.FC<ActiveChallengeProps> = ({
       <S.Challenge className="background--light">
         <Timer expiresAt={challenge.expiresAt} createdAt={challenge.createdAt} onComplete={onComplete}/>
 
-        {!hasResponded && <ChallengeResponseForm challenge={challenge}/>}
+        {!hasResponded && <CreateResponse challenge={challenge}/>}
       </S.Challenge>
 
       <S.Title>Challengers</S.Title>

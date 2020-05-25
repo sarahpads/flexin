@@ -3,11 +3,11 @@ import { useFormState } from "react-use-form-state";
 import gql from "graphql-tag";
 import { useMutation, useQuery } from "@apollo/client";
 
-import * as S from "./ChallengeResponseForm.styled";
-import { AuthContext } from "../../../Auth/AuthProvider";
-import { Challenge } from "../../challenge.types";
+import * as S from "./CreateResponse.styled";
+import { AuthContext } from "../../Auth/AuthProvider";
+import { Challenge } from "../challenge.types";
 
-interface ChallengeResponseFormProps {
+interface CreateResponseProps {
   challenge: Challenge;
 }
 
@@ -31,7 +31,7 @@ const CREATE_RESPONSE = gql`
   }
 `
 
-const ChallengeResponseForm: React.FC<ChallengeResponseFormProps> = ({
+const CreateResponse: React.FC<CreateResponseProps> = ({
   challenge
 }) => {
   const { profile } = useContext(AuthContext);
@@ -89,4 +89,4 @@ const ChallengeResponseForm: React.FC<ChallengeResponseFormProps> = ({
   )
 }
 
-export default ChallengeResponseForm;
+export default CreateResponse;
