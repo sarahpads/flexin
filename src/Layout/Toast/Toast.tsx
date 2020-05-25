@@ -9,7 +9,7 @@ interface ToastProps {
 
 const Toast: React.FC<ToastProps> = ({ content, onDismiss }) => {
   useEffect(() => {
-    setTimeout(onDismiss, 3000);
+    setTimeout(onDismiss, 6000);
   }, []);
 
   return <S.Toast>{content}</S.Toast>;
