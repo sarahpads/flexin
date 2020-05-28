@@ -33,7 +33,7 @@ function App() {
         <Nav />
 
         <TransitionGroup component={null}>
-          <CSSTransition classNames="background" key={location.key} appear={true} timeout={600} unmountOnExit>
+          <CSSTransition classNames="background" key={location.pathname.split("?")[0]} appear={true} timeout={600} unmountOnExit>
             <Switch location={location}>
               <Route exact path="/login" component={Login} />
               <Route exact path="/create-profile" component={CreateProfile} />

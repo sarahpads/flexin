@@ -1,11 +1,10 @@
-import React, { useContext, useState, useEffect } from "react";
-import { useFormState } from "react-use-form-state";
+import React, { useContext, useState, useEffect, useRef, useCallback } from "react";
+import { useLocation } from "react-router-dom";
 
 import * as S from "./Home.styled";
 import WithBackground from "../Layout/WithBackground/WithBackground";
 import WithAuth from "../Auth/WithAuth";
 import Challenge from "../Challenge/Challenge";
-import { useSprings, useSpring } from "react-spring";
 import Header from "./Header/Header";
 import Leaderboard from "../Challenge/Leaderboard/Leaderboard"
 import useHomeData from "./use-home-data";
@@ -14,30 +13,46 @@ import Error from "../Layout/Error/Error";
 import { AuthContext } from "../Auth/AuthProvider";
 
 const Home: React.FC = () => {
+  const { search } = useLocation()
   const { profile } = useContext(AuthContext);
   const result = useHomeData();
   const [userStanding, setUserStanding] = useState();
-  const [formState, { radio, label }] = useFormState({ page: "0" }, {
-    withIds: true,
-    onChange: (event, oldValues, newValues) => {
-      const index = parseInt(newValues.page);
+  const [page, setPage] = useState();
+  const [pagesStyle, setPagesStyle] = useState();
+  const [trackStyle, setTrackStyle] = useState();
+  const [pages, setPages] = useState();
+  const [track, setTrack] = useState();
 
-      // @ts-ignore
-      set((i: number) => {
-        if (i === index) {
-          return { x: 0 }
-        } else {
-          return { x: (i - index) * window.innerWidth }
-        }
-      })
+  const pagesRef = useCallback((node) => setPages(node), []);
+  const trackRef = useCallback((node) => setTrack(node), []);
 
-      moreSet({ x: index * 150 });
+  useEffect(() => {
+    const params = new URLSearchParams(search);
+    const page = params.get("page") || "leaderboard";
+
+    setPage(page);
+  }, [search])
+
+  useEffect(() => {
+    if (!pages || !track) {
+      return;
     }
-  });
 
-  // TODO: rename these
-  const [props, set] = useSprings(2, i => ({ x: i * window.innerWidth }));
-  const [moreProps, moreSet] = useSpring(() => ({ x: 0 }));
+    const index = page === "leaderboard" ? 0 : 1;
+    const options = {
+      duration: 400,
+      fill: "forwards",
+      easing: "ease"
+    }
+
+    const pagesKeyframe = { transform: `translate(${index * -100}vw)` };
+    const trackKeyframe = { transform: `translate(${index * 100}%)` };
+    setPagesStyle(pagesKeyframe);
+    setTrackStyle(trackKeyframe);
+
+    pages.animate([pagesStyle || pagesKeyframe, pagesKeyframe], options);
+    track.animate([trackStyle || trackKeyframe, trackKeyframe], options);
+  }, [page, pages, track])
 
   useEffect(() => {
     if (!result.data) {
@@ -60,27 +75,25 @@ const Home: React.FC = () => {
     <S.Home>
       <Header standing={userStanding}/>
 
-      <S.Test>
+      <S.Content>
         <S.Nav>
           <S.Track>
-            <S.Background style={{ transform: moreProps.x.interpolate(x => `translate3d(${x}px,0,0)`) }} />
-            <S.Radio {...radio("page", "0")} />
-            <S.Label {...label("page", "0")}>Leaderboard</S.Label>
-            <S.Radio {...radio("page", "1")} />
-            <S.Label {...label("page", "1")}>Challenge</S.Label>
+            <S.Background ref={trackRef}/>
+            <S.Label active={page === "leaderboard" ? 1 : 0} to="?page=leaderboard">Leaderboard</S.Label>
+            <S.Label active={page === "challenge" ? 1 : 0} to="?page=challenge">Challenge</S.Label>
           </S.Track>
         </S.Nav>
 
-        <S.Pages>
-          <S.AnimatedPage style={{ transform: props[0].x.interpolate(x => `translate3d(${x}px,0,0)`) }}>
+        <S.Pages ref={pagesRef}>
+          <S.AnimatedPage>
             <Leaderboard standings={result.data.leaderboard}/>
           </S.AnimatedPage>
 
-          <S.AnimatedPage style={{ transform: props[1].x.interpolate(x => `translate3d(${x}px,0,0)`) }}>
+          <S.AnimatedPage>
             <Challenge challenge={result.data.challenge}/>
           </S.AnimatedPage>
         </S.Pages>
-      </S.Test>
+      </S.Content>
     </S.Home>
   )
 }

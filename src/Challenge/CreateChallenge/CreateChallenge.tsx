@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useFormState } from "react-use-form-state";
-import { Redirect } from "react-router-dom";
+import { Redirect, useHistory } from "react-router-dom";
 import gql from "graphql-tag";
 import { useQuery, useMutation } from "@apollo/client";
 
@@ -33,8 +33,9 @@ const CREATE_CHALLENGE = gql`
 `
 
 const CreateChallenge: React.FC = () => {
-  const [error, setError] = useState();
+  const history = useHistory();
   const auth = useContext(AuthContext);
+  const [error, setError] = useState();
   const [createChallenge] = useMutation(CREATE_CHALLENGE, {
     onError: (error) => setError(error)
   });
@@ -84,6 +85,10 @@ const CreateChallenge: React.FC = () => {
       default:
         return "Now you're flexin'!"
     }
+  }
+
+  function goBack() {
+    history.goBack();
   }
 
   const handleSubmit = (event: any) => {
@@ -141,7 +146,7 @@ const CreateChallenge: React.FC = () => {
       </S.Form>
 
       <S.Cancel>
-        <S.Link to="/">or wimp out</S.Link>
+        <S.Link as="button" onClick={() => goBack()}>or wimp out</S.Link>
       </S.Cancel>
     </S.CreateChallenge>
   )

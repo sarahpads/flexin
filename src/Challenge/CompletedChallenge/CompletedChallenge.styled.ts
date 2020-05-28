@@ -15,6 +15,9 @@ export const Circle = styled(C)`
 `
 
 export const Content = styled.div`
+  /* TODO: some of these styles are shared */
+  box-sizing: border-box;
+  height: 100%;
   padding-top: 8rem;
   position: relative;
   z-index: 3;
@@ -67,6 +70,6 @@ export const Explanation = styled.p`
 export const Button = styled(B)`
   bottom: 4rem;
   left: 50%;
-  position: fixed;
+  position: absolute;
   transform: translateX(-50%);
 `

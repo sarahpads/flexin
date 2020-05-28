@@ -2,7 +2,22 @@ import styled from "styled-components";
 import { animated } from "react-spring";
 
 import theme from "../theme";
+import { Link } from "react-router-dom";
 export { Button, H1, P } from "../Layout/Typography.styled";
+
+export const Home = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  text-align: center;
+  width: 100vw;
+`
+
+export const Content = styled.div`
+  background-color: #fff;
+  flex: 1;
+  position: relative;
+`
 
 export const Nav = styled.div`
   padding-top: 2rem;
@@ -34,50 +49,33 @@ export const Background = styled(animated.div)`
   z-index: 1;
 `
 
-export const Home = styled.div`
-  display: flex;
-  flex-direction: column;
-  min-height: 100%;
-  text-align: center;
-  width: 100vw;
-`
+interface LabelProps {
+  active: number;
+}
 
-export const Label = styled.label`
-  color: ${theme.text.dark};
+export const Label = styled(Link)<LabelProps>`
+  color: ${(props) => props.active ? "white" : theme.text.dark};
   display: block;
   font-size: 1.4rem;
   font-weight: 600;
   line-height: 3rem;
   text-align: center;
+  text-decoration: none;
   width: 15rem;
   z-index: 2;
 `
 
-export const Radio = styled.input`
-  opacity: 0;
-  position: absolute;
-
-  &:checked + label {
-    color: white;
-  }
-`
-
 export const Pages = styled.div`
+  display: flex;
   position: absolute;
-  width: 100vw;
+  width: 200vw;
   height: 100%;
-  will-change: transform;
 `
 
 export const AnimatedPage = styled(animated.div)`
   background-color: white;
-  position: absolute;
   overflow-y: auto;
-  width: 100%;
-  height: 100%;
-`
-
-export const Test = styled.div`
-  flex: 1;
   position: relative;
+  width: 100vw;
+  height: 100%;
 `
