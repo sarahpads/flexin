@@ -14,6 +14,7 @@ export const Picture = styled.div`
   border-radius: 50%;
   height: 7rem;
   margin: 0 auto 0.5rem;
+  position: relative;
   width: 7rem;
 `;
 
@@ -29,7 +30,7 @@ export const UserName = styled.div`
 export const Crown = styled.div`
   position: absolute;
   left: 50%;
-  top: -2.7rem;
+  top: -3.2rem;
   transform: translateX(-50%);
 `;
 

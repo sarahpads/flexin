@@ -37,7 +37,7 @@ const Header: React.FC<HeaderProps> = ({
       <S.Section>
         <S.Picture>
           <S.Crown>
-            {standing.rank === 1 && <IconContext.Provider value={{ color: "#F4D466", size: "3rem" }}>
+            {standing.rank === 1 && <IconContext.Provider value={{ color: "#F4D466", size: "30px" }}>
               <GiQueenCrown/>
             </IconContext.Provider>}
           </S.Crown>

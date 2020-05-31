@@ -44,7 +44,7 @@ const Nav: React.FC = () => {
       </S.Settings>
 
       <S.Nav>
-        <IconContext.Provider value={{ color: "white", size: "3rem" }}>
+        <IconContext.Provider value={{ color: "white", size: "30px" }}>
           <S.Button onClick={() => setShowMenu(!showMenu)}>
             <MdSettings />
           </S.Button>

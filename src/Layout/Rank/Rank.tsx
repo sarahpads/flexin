@@ -58,7 +58,7 @@ const Rank: React.FC<RankProps> = ({
     <S.Standing highlight={profile.sub === user.id}>
       <S.Rank>
         {medal
-          ? <IconContext.Provider value={{ color: medal, size: "2.5rem" }}>
+          ? <IconContext.Provider value={{ color: medal, size: "25px" }}>
             <FaMedal/>
           </IconContext.Provider>
           : <span>{rank}</span>
