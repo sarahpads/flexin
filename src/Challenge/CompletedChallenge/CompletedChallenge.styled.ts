@@ -18,7 +18,7 @@ export const Content = styled.div`
   /* TODO: some of these styles are shared */
   box-sizing: border-box;
   height: 100%;
-  padding-top: 8rem;
+  padding: 8rem 0 10rem;
   position: relative;
   z-index: 3;
 `;
