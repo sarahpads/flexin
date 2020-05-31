@@ -10,30 +10,30 @@ import WithAuth from "../../Auth/WithAuth";
 import ProfileForm, { ProfileData } from "../../Auth/ProfileForm/ProfileForm";
 
 interface Result {
-  exercises: { title: string, id: string }[];
+  exercises: { title: string; id: string }[];
 }
 
 const GET_USER_EXISTS = gql`
   query ($id: String!) {
     hasAccount(id: $id)
   }
-`
+`;
 
 const GET_EXERCISES = gql`
   query Exercise {
     exercises { title, id }
   }
-`
+`;
 
 const CREATE_PROFILE = gql`
   mutation CreateProfile($data: CreateProfileInput!) {
     createProfile(data: $data) { id, name, email}
   }
-`
+`;
 
 const CreateProfile: React.FC = () => {
   const client = useApolloClient();
-  const { profile } = useContext(AuthContext)
+  const { profile } = useContext(AuthContext);
   const [shouldRedirect, setShoulRedirect] = useState(false);
   const result = useQuery<Result>(GET_EXERCISES);
   const [ createProfile ] = useMutation(CREATE_PROFILE, {
@@ -42,26 +42,26 @@ const CreateProfile: React.FC = () => {
         query: GET_USER_EXISTS,
         variables: { id: profile?.sub },
         data: { hasAccount: true }
-      })
+      });
 
       setShoulRedirect(true);
     }
   });
 
-  const handleSubmit = (profileData: ProfileData) => {
+  const handleSubmit = (profileData: ProfileData): void => {
     // TODO: sometimes name isn't available on profile; how to resolve?
     const { name, email, sub: id } = profile;
 
     createProfile({ variables: { data: {
       user: { id, name, email },
       exercises: profileData.map((data) => {
-        return {...data, user: id }
+        return {...data, user: id };
       })
-    }}})
-  }
+    }}});
+  };
 
   if (shouldRedirect) {
-    return <Redirect to="/"/>
+    return <Redirect to="/"/>;
   }
 
   return (
@@ -73,11 +73,11 @@ const CreateProfile: React.FC = () => {
       </S.P>
 
       {result.data && <ProfileForm
-        onSubmit={(event: any) => handleSubmit(event)}
+        onSubmit={handleSubmit}
         exercises={result.data.exercises}
       />}
     </S.CreateProfile>
   );
-}
+};
 
 export default WithBackground(WithAuth(CreateProfile));

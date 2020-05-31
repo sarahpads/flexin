@@ -16,12 +16,12 @@ const GET_USER_EXISTS = gql`
   query ($id: String!) {
     hasAccount(id: $id)
   }
-`
+`;
 
 const Nav: React.FC = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const { profile } = useContext(AuthContext)
+  const { profile } = useContext(AuthContext);
   const result = useQuery<Result>(GET_USER_EXISTS, {
     variables: { id: profile?.sub },
     skip: !isAuthenticated
@@ -29,7 +29,7 @@ const Nav: React.FC = () => {
 
   useEffect(() => {
     setIsAuthenticated(!!profile);
-  }, [profile])
+  }, [profile]);
 
   if (!result.data?.hasAccount) {
     return <></>;
@@ -52,7 +52,7 @@ const Nav: React.FC = () => {
       </S.Nav>
 
     </React.Fragment>
-  )
-}
+  );
+};
 
 export default Nav;

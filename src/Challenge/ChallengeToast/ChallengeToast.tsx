@@ -18,7 +18,7 @@ const ChallengeToast: React.FC<ChallengeToastProps> = ({
 
       <S.Message>{message}</S.Message>
     </S.Toast>
-  )
-}
+  );
+};
 
 export default ChallengeToast;

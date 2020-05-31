@@ -8,7 +8,7 @@ import ProfilePicture from "../../Layout/ProfilePicture/ProfilePicture";
 import { Standing } from "../../Challenge/challenge.types";
 
 interface HeaderProps {
-  standing: Standing
+  standing: Standing;
 }
 
 const Header: React.FC<HeaderProps> = ({
@@ -22,7 +22,7 @@ const Header: React.FC<HeaderProps> = ({
     }
 
     setSuffix(ordinal(standing.rank));
-  }, [standing])
+  }, [standing]);
 
   if (!standing) {
     return <></>;
@@ -51,7 +51,7 @@ const Header: React.FC<HeaderProps> = ({
       </S.Section>
 
     </S.Header>
-  )
-}
+  );
+};
 
 export default Header;

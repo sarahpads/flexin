@@ -11,7 +11,7 @@ export const Nav = styled.div`
   position: absolute;
   width: 100%;
   z-index: 10;
-`
+`;
 
 export const Button = styled.button`
   background: transparent;
@@ -20,9 +20,9 @@ export const Button = styled.button`
   outline: none;
   margin-left: auto;
   padding: 0;
-`
+`;
 
 export const Settings = styled.div`
   position: relative;
   z-index: 5;
-`
+`;

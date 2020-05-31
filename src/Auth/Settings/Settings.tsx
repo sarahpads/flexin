@@ -6,6 +6,7 @@ import WithBackground from "../../Layout/WithBackground/WithBackground";
 import { AuthContext } from "../AuthProvider";
 import ProfileForm, { ProfileData } from "../ProfileForm/ProfileForm";
 
+// TODO: feedback on success
 interface SettingsProps {
   onClose: Function;
 }
@@ -14,18 +15,18 @@ interface Result {
   exercises: {
     title: string;
     id: string;
-  }[],
+  }[];
   user: {
     exercises: {
       reps: number;
       exerciseId: string;
-    }[]
-  }
+    }[];
+  };
 }
 
 interface Data {
-  exercises: { title: string, id: string }[];
-  userExercises: { reps: number, exerciseId: string }[];
+  exercises: { title: string; id: string }[];
+  userExercises: { reps: number; exerciseId: string }[];
 }
 
 const GET_DATA = gql`
@@ -35,13 +36,13 @@ const GET_DATA = gql`
       exercises { reps, exerciseId }
     }
   }
-`
+`;
 
 const UPDATE_USER_EXERCISES = gql`
   mutation UpdateUserExercises($data: UpdateUserExercisesInput!) {
     updateUserExercises(data: $data) { reps exercise { id } }
   }
-`
+`;
 
 const Settings: React.FC<SettingsProps> = ({
   onClose
@@ -68,12 +69,12 @@ const Settings: React.FC<SettingsProps> = ({
     setData(data);
   }, [result.data]);
 
-  const handleSubmit = (profileData: ProfileData) => {
+  const handleSubmit = (profileData: ProfileData): void => {
     updateUserExercises({ variables: { data: {
       user: auth.profile.sub,
       exercises: profileData
     }}});
-  }
+  };
 
   return (
     <S.Settings>
@@ -84,7 +85,7 @@ const Settings: React.FC<SettingsProps> = ({
       </S.P>
 
       {data && <ProfileForm
-        onSubmit={(event: any) => handleSubmit(event)}
+        onSubmit={handleSubmit}
         exercises={data.exercises}
         userExercises={data.userExercises}
       />}
@@ -93,8 +94,8 @@ const Settings: React.FC<SettingsProps> = ({
         <S.Link as="button" onClick={() => onClose()}>Cancel</S.Link>
       </S.Cancel>
     </S.Settings>
-  )
-}
+  );
+};
 
 export default WithBackground(Settings, {
   origin: "top right",

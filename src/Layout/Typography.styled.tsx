@@ -31,24 +31,24 @@ export const Button = styled.button`
     background-color: white;
     color: var(--palette-neutral);
   }
-`
+`;
 
 export const Cancel = styled.div`
   margin-top: 0.8rem;
   text-align: center;
-`
+`;
 
 export const H1 = styled.h1`
   line-height: 1em;
   margin: 0;
   margin-bottom: 1rem;
-`
+`;
 
 export const P = styled.p`
   font-size: 1.4rem;
   margin: 0;
   margin-bottom: 3rem;
-`
+`;
 
 export const Input = styled.input`
   background-color: transparent;
@@ -86,20 +86,20 @@ export const Input = styled.input`
     border-color: white;
     color: ${theme.text.default};
   }
-`
+`;
 
 export const RepsInput = styled(Input)`
   margin-right: 1rem;
   text-align: center;
   width: 6rem;
-`
+`;
 
 export const Label = styled.label`
   display: block;
   font-size: 1.5rem;
   margin-bottom: 1rem;
   padding-left: 2rem;
-`
+`;
 
 export const Link = styled(L)`
   background-color: transparent;
@@ -109,7 +109,7 @@ export const Link = styled(L)`
   font-size: 1.6rem;
   outline: none;
   text-decoration: underline;
-`
+`;
 
 export const Circle = styled.div`
   background-color: var(--palette-dark);
@@ -118,4 +118,4 @@ export const Circle = styled.div`
   margin: auto;
   margin-bottom: 5rem;
   width: ${theme.circle.dimension};
-`
+`;

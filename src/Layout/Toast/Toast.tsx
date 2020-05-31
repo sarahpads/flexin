@@ -13,6 +13,6 @@ const Toast: React.FC<ToastProps> = ({ content, onDismiss }) => {
   }, []);
 
   return <S.Toast>{content}</S.Toast>;
-}
+};
 
 export default Toast;

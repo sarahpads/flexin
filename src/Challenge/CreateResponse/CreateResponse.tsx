@@ -14,7 +14,7 @@ interface CreateResponseProps {
 interface Result {
   userExercise: {
     reps: number;
-  }
+  };
 }
 
 const GET_USER_EXERCISE = gql`
@@ -23,13 +23,13 @@ const GET_USER_EXERCISE = gql`
       reps
     }
   }
-`
+`;
 
 const CREATE_RESPONSE = gql`
   mutation CreateResponse($data: CreateResponseInput!) {
     createResponse(data: $data) { challenge { id } reps }
   }
-`
+`;
 
 const CreateResponse: React.FC<CreateResponseProps> = ({
   challenge
@@ -58,9 +58,9 @@ const CreateResponse: React.FC<CreateResponseProps> = ({
     }
 
     setRequiredReps(Math.ceil(result.data.userExercise.reps * challenger.flex));
-  }, [result.data])
+  }, [result.data]);
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
     const { reps } = formState.values;
 
@@ -73,7 +73,7 @@ const CreateResponse: React.FC<CreateResponseProps> = ({
       user: profile.sub,
       reps: parseInt(reps)
     }}});
-  }
+  };
 
   return (
     <S.Form noValidate onSubmit={handleSubmit}>
@@ -86,7 +86,7 @@ const CreateResponse: React.FC<CreateResponseProps> = ({
 
       <S.Button>Flex Back!</S.Button>
     </S.Form>
-  )
-}
+  );
+};
 
 export default CreateResponse;

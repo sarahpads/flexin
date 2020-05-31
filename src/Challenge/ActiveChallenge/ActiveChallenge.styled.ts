@@ -6,7 +6,7 @@ export const Challenge = styled.div`
   flex-direction: column;
   padding-top: 8rem;
   text-align: center;
-`
+`;
 
 export const Title = styled.span`
   border-bottom: 1px solid #EDEDED;
@@ -17,4 +17,4 @@ export const Title = styled.span`
   padding: 0 2rem 1.5rem;
   text-align: left;
   text-transform: uppercase;
-`
+`;

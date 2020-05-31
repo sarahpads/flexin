@@ -8,4 +8,4 @@ export const Button = styled(B)`
   position: fixed;
   transform: translateX(-50%);
   z-index: 2;
-`
+`;

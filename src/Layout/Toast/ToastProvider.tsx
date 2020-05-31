@@ -1,29 +1,38 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { createPortal } from "react-dom";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
-import Toast from "./Toast";
 import { v4 as uuid } from "uuid";
 
+import Toast from "./Toast";
 import * as S from "./Toast.styled";
 
-export const ToastContext = React.createContext(undefined as any);
+interface ToastValue {
+  add: Function;
+  remove: Function;
+}
+
+export const ToastContext = React.createContext({} as ToastValue);
 
 interface Toast {
   id: string;
   content: Node;
 }
 
-const ToastProvider: React.FC = (props) => {
+interface ToastProps {
+  children: React.ReactNode;
+}
+
+const ToastProvider: React.FC<ToastProps> = (props) => {
   const [toasts, setToasts] = useState<Toast[]>([]);
-  const toastsRef = useRef(toasts)
+  const toastsRef = useRef(toasts);
   toastsRef.current = toasts;
 
- function add(content: Node) {
+  function add(content: Node) {
     const id = uuid();
     setToasts([...toasts, { id, content }]);
 
     return id;
-  };
+  }
 
   // this is called asynchronously from a setTimeout in a nested component
   // setTimeout will use the 'toasts' value it receives when scheduled, causing it
@@ -31,7 +40,7 @@ const ToastProvider: React.FC = (props) => {
   // https://upmostly.com/tutorials/settimeout-in-react-components-using-hooks
   function remove(id: string) {
     setToasts(toastsRef.current.filter((toast: Toast) => toast.id !== id ));
-  };
+  }
 
   return (
     <ToastContext.Provider value={{
@@ -57,9 +66,9 @@ const ToastProvider: React.FC = (props) => {
             ))}
           </TransitionGroup>
         </S.ToastContainer>
-      , document.body)}
+        , document.body)}
     </ToastContext.Provider>
-  )
-}
+  );
+};
 
 export default ToastProvider;

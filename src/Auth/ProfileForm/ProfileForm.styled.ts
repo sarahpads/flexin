@@ -11,18 +11,18 @@ export const UserExercise = styled.div`
   &:last-of-type {
     border: none;
   }
-`
+`;
 
 export const Label = styled.label`
   font-weight: 600;
   text-transform: uppercase;
-`
+`;
 
 export const Input = styled(RepsInput)`
   margin-left: auto;
   margin-bottom: 0;
-`
+`;
 
 export const Button = styled(B)`
   margin-top: 3rem;
-`
+`;

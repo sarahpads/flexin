@@ -6,14 +6,14 @@ import WithBackground from "../Layout/WithBackground/WithBackground";
 import WithAuth from "../Auth/WithAuth";
 import Challenge from "../Challenge/Challenge";
 import Header from "./Header/Header";
-import Leaderboard from "../Challenge/Leaderboard/Leaderboard"
+import Leaderboard from "../Challenge/Leaderboard/Leaderboard";
 import useHomeData from "./use-home-data";
 import Spinner from "../Layout/Spinner/Spinner";
 import Error from "../Layout/Error/Error";
 import { AuthContext } from "../Auth/AuthProvider";
 
 const Home: React.FC = () => {
-  const { search } = useLocation()
+  const { search } = useLocation();
   const { profile } = useContext(AuthContext);
   const result = useHomeData();
   const [userStanding, setUserStanding] = useState();
@@ -31,7 +31,7 @@ const Home: React.FC = () => {
     const page = params.get("page") || "leaderboard";
 
     setPage(page);
-  }, [search])
+  }, [search]);
 
   useEffect(() => {
     if (!pages || !track) {
@@ -43,16 +43,16 @@ const Home: React.FC = () => {
       duration: 400,
       fill: "forwards",
       easing: "ease"
-    }
+    };
 
-    const pagesKeyframe = { transform: `translate(${index * -100}vw)` };
-    const trackKeyframe = { transform: `translate(${index * 100}%)` };
+    const pagesKeyframe = { transform: `translateX(${index * -100}vw)` };
+    const trackKeyframe = { transform: `translateX(${index * 100}%)` };
     setPagesStyle(pagesKeyframe);
     setTrackStyle(trackKeyframe);
 
     pages.animate([pagesStyle || pagesKeyframe, pagesKeyframe], options);
     track.animate([trackStyle || trackKeyframe, trackKeyframe], options);
-  }, [page, pages, track])
+  }, [page, pages, track]);
 
   useEffect(() => {
     if (!result.data) {
@@ -61,14 +61,14 @@ const Home: React.FC = () => {
 
     const userStanding = result.data.leaderboard?.find((standing) => standing.user.id === profile.sub);
     setUserStanding(userStanding);
-  }, [result.data])
+  }, [result.data]);
 
   if (result.error) {
-    return <Error error={result.error}/>
+    return <Error error={result.error}/>;
   }
 
   if (result.loading || !result.data) {
-    return <Spinner/>
+    return <Spinner/>;
   }
 
   return (
@@ -95,7 +95,7 @@ const Home: React.FC = () => {
         </S.Pages>
       </S.Content>
     </S.Home>
-  )
-}
+  );
+};
 
 export default WithBackground(WithAuth(Home));

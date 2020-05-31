@@ -9,7 +9,7 @@ const Spinner: React.FC = () => {
       <S.Waffle src="/food.svg"/>
       <S.Message>Loading...</S.Message>
     </S.Spinner>
-  )
-}
+  );
+};
 
 export default Spinner;

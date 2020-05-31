@@ -23,23 +23,23 @@ export const Error = styled.div`
     clip-path: circle(150%);
     transition-delay: 1s;
   }
-`
+`;
 
 export const Message = styled.span`
   display: block;
   font-size: 2rem;
   font-weight: 600;
   text-align: center;
-`
+`;
 
 export const Stack = styled.code`
   display: block;
   height: 50vh;
   margin: 3rem 0;
   overflow: auto;
-`
+`;
 
 export const Button = styled(B)`
   background-color: #FF6162;
   color: white;
-`
+`;

@@ -6,7 +6,7 @@ import CompletedChallenge from "./CompletedChallenge/CompletedChallenge";
 import { Challenge as C } from "./challenge.types";
 
 interface ChallengeProps {
-  challenge?: C
+  challenge?: C;
 }
 
 const Challenge: React.FC<ChallengeProps> = ({ challenge }) => {
@@ -19,10 +19,10 @@ const Challenge: React.FC<ChallengeProps> = ({ challenge }) => {
 
     const now = DateTime.fromISO(challenge.expiresAt);
 
-    setIsActive(now.diffNow().as("seconds") > 0)
-  }, [challenge])
+    setIsActive(now.diffNow().as("seconds") > 0);
+  }, [challenge]);
 
-  function onComplete() {
+  const onComplete = (): void => {
     setIsActive(false);
   }
 
@@ -32,7 +32,7 @@ const Challenge: React.FC<ChallengeProps> = ({ challenge }) => {
 
   return isActive
     ? <ActiveChallenge challenge={challenge} onComplete={onComplete}/>
-    : <CompletedChallenge challenge={challenge}/>
-}
+    : <CompletedChallenge challenge={challenge}/>;
+};
 
 export default Challenge;

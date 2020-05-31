@@ -10,25 +10,35 @@ const {
   REACT_APP_CLIENT_ID,
   REACT_APP_CLIENT_SECRET,
   REACT_APP_REDIRECT
-} = process.env
+} = process.env;
 
 const config = {
-  clientId: REACT_APP_CLIENT_ID,
-  clientSecret: REACT_APP_CLIENT_SECRET,
-  redirectUri: REACT_APP_REDIRECT,
+  clientId: REACT_APP_CLIENT_ID as string,
+  clientSecret: REACT_APP_CLIENT_SECRET as string,
+  redirectUri: REACT_APP_REDIRECT as string,
   accessType: "offline",
-  scopes: ['openid', 'profile', 'email'],
+  scopes: ["openid", "profile", "email"],
+};
+
+export interface Auth {
+  profile: TokenPayload;
+  init: Function;
+  consume: Function;
+  login: Function;
+  getIdToken: Function;
+  isValid: Function;
 }
 
-export const AuthContext = React.createContext(undefined as any);
+export const AuthContext = React.createContext<Auth>({} as Auth);
 
 const AuthProvider: React.FC = (props) => {
   const location = useLocation();
   const history = useHistory();
   const [isInitialized, setIsInitialized] = useState(false);
-  const [client, setClient] = useState();
+  const [client, setClient] = useState<Auth>({} as Auth);
   const [error, setError] = useState();
-  const authClient = useRef(undefined as any);
+  // TODO: removing the "any" makes ref.current readonly
+  const authClient = useRef<AuthClient>(null as any);
 
   useEffect(() => {
     if (!authClient.current) {
@@ -38,10 +48,11 @@ const AuthProvider: React.FC = (props) => {
 
       const consume = isConsuming
         ? authClient.current.consume().then(() => history.push("/"))
-        : Promise.resolve()
+        : Promise.resolve();
 
       consume
         .then(() => authClient.current.init())
+        // @ts-ignore
         .then((profile: TokenPayload) => {
           setClient({
             profile,
@@ -50,19 +61,19 @@ const AuthProvider: React.FC = (props) => {
             login: authClient.current.login.bind(authClient.current),
             getIdToken: authClient.current.getIdToken.bind(authClient.current),
             isValid: authClient.current.isValid.bind(authClient.current)
-          })
+          });
         })
         .catch((error: any) => setError(error))
         .finally(() => setIsInitialized(true));
     }
-  }, [])
+  }, []);
 
   if (!isInitialized) {
-    return <Spinner/>
+    return <Spinner/>;
   }
 
   if (error) {
-    return <Error error={error}/>
+    return <Error error={error}/>;
   }
 
   return (
@@ -70,6 +81,6 @@ const AuthProvider: React.FC = (props) => {
       {props.children}
     </AuthContext.Provider>
   );
-}
+};
 
 export default AuthProvider;

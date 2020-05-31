@@ -12,11 +12,11 @@ import { AuthContext } from "../Auth/AuthProvider";
 
 interface User {
   name: string;
-  id: string
+  id: string;
 }
 
 interface ResponseResult {
-  updatedChallenge: Challenge
+  updatedChallenge: Challenge;
 }
 
 interface ChallengeResult {
@@ -24,8 +24,8 @@ interface ChallengeResult {
 }
 
 interface Result {
-  users: User[],
-  leaderboard: Challenge[]
+  users: User[];
+  leaderboard: Challenge[];
 }
 
 const GET_DATA = gql`
@@ -40,7 +40,7 @@ const GET_DATA = gql`
       responses { user { name, id }, reps, flex, gains, rank }
     }
   }
-`
+`;
 
 const NEW_RESPONSE = gql`
   subscription {
@@ -53,7 +53,7 @@ const NEW_RESPONSE = gql`
       responses { user { name, id }, reps, flex, gains, rank }
     }
   }
-`
+`;
 
 const NEW_CHALLENGE = gql`
   subscription {
@@ -66,7 +66,7 @@ const NEW_CHALLENGE = gql`
       responses { user { name, id }, reps, flex, rank }
     }
   }
-`
+`;
 
 
 export default function useChallenge() {
@@ -88,8 +88,8 @@ export default function useChallenge() {
       return;
     }
 
-    setChallenges(result.data.leaderboard)
-  }, [result.data, result.error, result.loading])
+    setChallenges(result.data.leaderboard);
+  }, [result.data, result.error, result.loading]);
 
   useEffect(() => {
     setError(challengeResult.error);
@@ -106,10 +106,10 @@ export default function useChallenge() {
     setChallenges([
       challenge,
       ...challenges || []
-    ])
+    ]);
 
-    add(<ChallengeToast uid={challenge.user.id} message={message}/>)
-  }, [challengeResult.data, challengeResult.error, challengeResult.loading])
+    add(<ChallengeToast uid={challenge.user.id} message={message}/>);
+  }, [challengeResult.data, challengeResult.error, challengeResult.loading]);
 
   useEffect(() => {
     setError(responseResult.error);
@@ -126,14 +126,14 @@ export default function useChallenge() {
     const respondees = challenges[0].responses.map((response) => response.user.id);
     let newResponse;
 
-    for (let response of challenge.responses) {
+    for (const response of challenge.responses) {
       if (!respondees.includes(response.user.id)) {
         newResponse = response;
         break;
       }
     }
 
-    const newChallenges = [...challenges]
+    const newChallenges = [...challenges];
     newChallenges[0] = challenge;
 
     setChallenges(newChallenges);
@@ -145,10 +145,10 @@ export default function useChallenge() {
     const yourResponse = challenge.responses.find((response) => response.user.id === profile.sub);
     const message = yourResponse && yourResponse.rank > newResponse.rank
       ? `${newResponse.user.name} has out-flexed you and bumped you into ${yourResponse.rank}${ordinal(yourResponse.rank)} place!`
-      : `${newResponse.user.name} has flexed into ${newResponse.rank}${ordinal(newResponse.rank)} place!`
+      : `${newResponse.user.name} has flexed into ${newResponse.rank}${ordinal(newResponse.rank)} place!`;
 
 
-    add(<ChallengeToast uid={newResponse.user.id} message={message}/>)
+    add(<ChallengeToast uid={newResponse.user.id} message={message}/>);
   }, [responseResult.data, responseResult.error, responseResult.loading]);
 
   return { loading, error, data: { challenges, users: result.data?.users }};

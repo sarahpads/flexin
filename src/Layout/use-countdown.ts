@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import { DateTime } from "luxon";
 
-export default function useCountdown(date: string) {
+export default function useCountdown(date: string): number {
   const [secondsLeft, setSecondsLeft] = useState();
 
   useEffect(() => {
     const dateTime = DateTime.fromISO(date);
 
-    const interval: any = setInterval(() => {
+    const interval: number = setInterval((): void => {
       const seconds = getSeconds(dateTime);
 
       if (seconds < 0) {
@@ -15,11 +15,11 @@ export default function useCountdown(date: string) {
       }
 
       setSecondsLeft(seconds);
-    }, 1000)
+    }, 1000);
 
     setSecondsLeft(getSeconds(dateTime));
 
-    return () => clearInterval(interval);
+    return (): void => clearInterval(interval);
   }, [date]);
 
   return secondsLeft;
@@ -28,5 +28,5 @@ export default function useCountdown(date: string) {
 function getSeconds(date: DateTime) {
   const seconds = date.diffNow().as("seconds");
 
-  return Math.floor(seconds)
+  return Math.floor(seconds);
 }

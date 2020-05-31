@@ -5,7 +5,7 @@ import usePushNotification from "../../Auth/use-push-notification";
 import useHomeScreen from "../../Auth/use-home-screen";
 
 const PWA: React.FC = () => {
-  usePushNotification()
+  usePushNotification();
   const prompt = useHomeScreen();
 
   if (!prompt) {
@@ -16,7 +16,7 @@ const PWA: React.FC = () => {
     <div className="background--light">
       <S.Button onClick={() => prompt.prompt()}>Add to Home Screen</S.Button>
     </div>
-  )
-}
+  );
+};
 
 export default PWA;

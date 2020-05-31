@@ -7,9 +7,9 @@ const CREATE_SUBSCRIPTION = gql`
   mutation subscribe($data: CreateSubscriptionInput!) {
     subscribe(data: $data)
   }
-`
+`;
 
-export default function usePushNotification() {
+export default function usePushNotification(): void {
   const { profile } = useContext(AuthContext);
   const [createSubscription] = useMutation(CREATE_SUBSCRIPTION);
   const [userConsent, setUserConsent] = useState(Notification.permission);
@@ -25,17 +25,17 @@ export default function usePushNotification() {
       .then((subscription) => {
         setIsSubscribed(!!subscription);
       });
-  }, [profile])
+  }, [profile]);
 
   useEffect(() => {
-    if (!!isSubscribed) {
+    if (isSubscribed) {
       return;
     }
 
     Notification.requestPermission().then((consent) => {
       setUserConsent(consent);
-    })
-  }, [isSubscribed])
+    });
+  }, [isSubscribed]);
 
   useEffect(() => {
     if (userConsent !== "granted") {
@@ -51,5 +51,5 @@ export default function usePushNotification() {
         user: profile.sub,
         notification: JSON.stringify(response)
       }}}));
-  }, [userConsent])
+  }, [userConsent]);
 }

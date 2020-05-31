@@ -7,4 +7,4 @@ export const Canvas = styled.canvas`
   position: absolute;
   right: 0;
   top: 0;
-`
+`;

@@ -1,6 +1,6 @@
-import { Challenge } from "./challenge.types";
 import { useState, useEffect, useContext } from "react";
-import { gql, useQuery } from "@apollo/client";
+
+import { Challenge } from "./challenge.types";
 import { AuthContext } from "../Auth/AuthProvider";
 
 export default function useStanding(challenge: Challenge) {
@@ -16,7 +16,7 @@ export default function useStanding(challenge: Challenge) {
     if (!response) {
       setWaffles(0);
       setRank(-1);
-      setExplanation("Quitters don't get waffles.")
+      setExplanation("Quitters don't get waffles.");
       return;
     }
 
@@ -35,7 +35,7 @@ export default function useStanding(challenge: Challenge) {
     } else {
       setExplanation(`You beat ${vanquishedFoes.length} ${vanquishedFoes.length > 1 ? "people" : "person"}!`);
     }
-  }, [challenge])
+  }, [challenge]);
 
   return { rank, waffles, explanation, vanquishedFoes };
 }

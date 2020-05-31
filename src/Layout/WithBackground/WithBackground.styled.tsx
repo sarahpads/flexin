@@ -39,13 +39,13 @@ export const Container = styled.div<ContainerProps>`
 
   &.background-exit-active {
     clip-path: ${(props) => {
-      return props.animateOut
-        ? "circle(0% at " + props.origin + ")"
-        : "circle(150% at " + props.origin + ")"
-    }};
+    return props.animateOut
+      ? "circle(0% at " + props.origin + ")"
+      : "circle(150% at " + props.origin + ")";
+  }};
     z-index: 0;
   }
-`
+`;
 
 interface ComponentProps {
   animation: string;
@@ -62,16 +62,16 @@ export const Component = styled.div<ComponentProps>`
 
   ${(props) => {
     if (props.animation === "fade") {
-      return { opacity: 0, transform: "translateY(2rem)" }
+      return { opacity: 0, transform: "translateY(2rem)" };
     }
   }}
 
   .background-enter-done &,
   .background-exit-active & {
     ${(props) => {
-      if (props.animation === "fade") {
-        return { opacity: 1, transform: "translateY(0)" }
-      }
-    }}
+    if (props.animation === "fade") {
+      return { opacity: 1, transform: "translateY(0)" };
+    }
+  }}
   }
-`
+`;

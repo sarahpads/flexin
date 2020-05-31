@@ -29,10 +29,10 @@ const WithBackground = <T extends {}>(Component: React.ComponentType<T>, {
           <Component {...props}/>
         </S.Component>
       </S.Container>
-    )
+    );
   }
 
   return Wrapper;
-}
+};
 
 export default WithBackground;

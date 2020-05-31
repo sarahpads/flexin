@@ -6,4 +6,4 @@ interface ProfilePictureProps {
 
 export const ProfilePicture = styled.img<ProfilePictureProps>`
   height: ${(props) => props.size};
-`
+`;

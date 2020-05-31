@@ -15,7 +15,7 @@ const Timer: React.FC<TimerProps> = ({
   createdAt,
   onComplete
 }) => {
-  const seconds = useCountdown(expiresAt)
+  const seconds = useCountdown(expiresAt);
   const [progress, setProgress] = useState();
 
   useEffect(() => {
@@ -32,8 +32,8 @@ const Timer: React.FC<TimerProps> = ({
       onComplete();
     }
 
-    setProgress(seconds/totalSeconds)
-  }, [seconds, createdAt, expiresAt])
+    setProgress(seconds/totalSeconds);
+  }, [seconds, createdAt, expiresAt]);
 
   return (
     <S.Timer>
@@ -48,7 +48,7 @@ const Timer: React.FC<TimerProps> = ({
         </S.G>
       </S.SVG>
     </S.Timer>
-  )
-}
+  );
+};
 
 export default Timer;

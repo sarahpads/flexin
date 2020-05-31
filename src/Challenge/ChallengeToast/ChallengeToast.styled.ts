@@ -12,9 +12,9 @@ export const Toast = styled.div`
   height: 100%;
   padding: 0 2rem;
   width: 100%;
-`
+`;
 
 export const Message = styled.span`
   display: block;
   margin-left: 1.5rem;
-`
+`;

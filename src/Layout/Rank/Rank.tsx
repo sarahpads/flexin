@@ -52,15 +52,15 @@ const Rank: React.FC<RankProps> = ({
 
   useEffect(() => {
     setMedal(Medals[rank]);
-  }, [rank])
+  }, [rank]);
 
   return (
     <S.Standing highlight={profile.sub === user.id}>
       <S.Rank>
         {medal
           ? <IconContext.Provider value={{ color: medal, size: "2.5rem" }}>
-              <FaMedal/>
-            </IconContext.Provider>
+            <FaMedal/>
+          </IconContext.Provider>
           : <span>{rank}</span>
         }
       </S.Rank>
@@ -78,7 +78,7 @@ const Rank: React.FC<RankProps> = ({
       </S.Waffles>}
 
     </S.Standing>
-  )
-}
+  );
+};
 
 export default Rank;

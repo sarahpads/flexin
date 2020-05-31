@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, MouseEvent, FormEvent } from "react";
 import { useFormState } from "react-use-form-state";
 import { Redirect, useHistory } from "react-router-dom";
 import gql from "graphql-tag";
@@ -10,11 +10,12 @@ import WithBackground from "../../Layout/WithBackground/WithBackground";
 import WithAuth from "../../Auth/WithAuth";
 import Error from "../../Layout/Error/Error";
 
+// TODO: type exercise
 interface Result {
   exercises: { title: string; id: string}[];
   user: {
-    exercises: { reps: number, exerciseId: string }[]
-  }
+    exercises: { reps: number; exerciseId: string }[];
+  };
 }
 
 const GET_DATA = gql`
@@ -24,13 +25,13 @@ const GET_DATA = gql`
       exercises { reps, exerciseId }
     }
   }
-`
+`;
 
 const CREATE_CHALLENGE = gql`
   mutation CreateChallenge($data: CreateChallengeInput!) {
     createChallenge(data: $data) { id, exercise { title } }
   }
-`
+`;
 
 const CreateChallenge: React.FC = () => {
   const history = useHistory();
@@ -45,7 +46,7 @@ const CreateChallenge: React.FC = () => {
   // https://github.com/wsmd/react-use-form-state/issues/75
   // can't use the built-in "onChange" events because they cache the closures
   // meaning we won't have access to the current values from apollo
-  const [formState, { number, label, select }] = useFormState({ reps: 0 })
+  const [formState, { number, label, select }] = useFormState({ reps: 0 });
   const [flex, setFlex] = useState(0);
   const [message, setMessage] = useState();
   const [shouldRedirect, setShouldRedirect] = useState();
@@ -59,7 +60,7 @@ const CreateChallenge: React.FC = () => {
 
     const userExercise = result.data.user.exercises.find((userExercise) => {
       return userExercise.exerciseId === exercise;
-    })
+    });
 
     if (!userExercise) {
       return;
@@ -69,29 +70,29 @@ const CreateChallenge: React.FC = () => {
 
     setFlex(flex);
     setMessage(getMessage(flex));
-  }, [formState.values])
+  }, [formState.values]);
 
   const getMessage = (flex: number): string => {
     switch(true) {
-      case flex < 50:
-        return "That's pathetic"
+    case flex < 50:
+      return "That's pathetic";
 
-      case flex > 50 && flex < 90:
-        return "We both know you can do better than that"
+    case flex > 50 && flex < 90:
+      return "We both know you can do better than that";
 
-      case flex < 100:
-        return "That's your typical output";
+    case flex < 100:
+      return "That's your typical output";
 
-      default:
-        return "Now you're flexin'!"
+    default:
+      return "Now you're flexin'!";
     }
-  }
+  };
 
-  function goBack() {
+  const goBack = (): void => {
     history.goBack();
   }
 
-  const handleSubmit = (event: any) => {
+  const handleSubmit = (event: FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
     // the library only validates inputs on blur/touch, so we
     // need to check for the presense of these fields directly
@@ -104,14 +105,14 @@ const CreateChallenge: React.FC = () => {
     createChallenge({ variables: { data: { exercise, reps: parseInt(reps), user: auth.profile.sub }}});
 
     setShouldRedirect(true);
-  }
+  };
 
   if (shouldRedirect) {
-    return <Redirect to="/"/>
+    return <Redirect to="/"/>;
   }
 
   if (result.error || error) {
-    return <Error error={result.error || error}/>
+    return <Error error={result.error || error}/>;
   }
 
   return (
@@ -132,7 +133,7 @@ const CreateChallenge: React.FC = () => {
           <S.SelectInput {...select("exercise")} required>
             <option>Choose an exercise</option>
             {result.data && result.data.exercises.map((exercise: any) => {
-              return <S.Option key={exercise.id} value={exercise.id}>{exercise.title}</S.Option>
+              return <S.Option key={exercise.id} value={exercise.id}>{exercise.title}</S.Option>;
             })}
           </S.SelectInput>
         </S.Select>
@@ -149,7 +150,7 @@ const CreateChallenge: React.FC = () => {
         <S.Link as="button" onClick={() => goBack()}>or wimp out</S.Link>
       </S.Cancel>
     </S.CreateChallenge>
-  )
-}
+  );
+};
 
 export default WithBackground(WithAuth(CreateChallenge));

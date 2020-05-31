@@ -1,13 +1,21 @@
 import { OAuth2Client, LoginTicket, VerifyIdTokenOptions } from "google-auth-library";
 import * as Url from "url";
 
+interface AuthConfig {
+  clientId: string;
+  clientSecret: string;
+  redirectUri: string;
+  accessType: string;
+  scopes: string[];
+}
+
 export default class AuthClient {
-  config: any;
+  config: AuthConfig;
   authClient: OAuth2Client;
 
   private KEY: string;
 
-  constructor(config: any) {
+  constructor(config: AuthConfig) {
     this.config = config;
     this.authClient = new OAuth2Client(
       this.config.clientId,
@@ -23,7 +31,8 @@ export default class AuthClient {
     // TODO: offline support, if tokens in localstorage, set profile
     return this.authClient.getAccessToken()
       .then((tokens: any) => this.getProfile())
-      .catch((error: any) => console.log("auth init error", error));
+      // swallow this error; user will be redirected to login page
+      .catch((error: any) => console.error(error))
   }
 
   getProfile() {
@@ -43,6 +52,7 @@ export default class AuthClient {
 
   isValid() {
     // @ts-ignore
+    // ignoring since isTokenExpiring is *technically* a private method
     return this.authClient.credentials.expiry_date && !this.authClient.isTokenExpiring();
   }
 
@@ -57,11 +67,11 @@ export default class AuthClient {
   }
 
   async consume() {
-    var url = Url.parse(window.location.href, true)
+    const url = Url.parse(window.location.href, true);
 
-    const { tokens } = await this.authClient.getToken(url.query.code as string)
+    const { tokens } = await this.authClient.getToken(url.query.code as string);
     this.authClient.setCredentials(tokens);
-    this.setTokens(tokens)
+    this.setTokens(tokens);
   }
 
   setTokens(tokens: any) {

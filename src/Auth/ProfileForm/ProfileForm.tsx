@@ -3,10 +3,12 @@ import { useFormState } from "react-use-form-state";
 
 import * as S from "./ProfileForm.styled";
 
+export type ProfileData = { exercise: string; reps: number }[];
+
 interface ProfileProps {
-  onSubmit: Function;
-  exercises: { title: string, id: string }[];
-  userExercises?: { reps: number, exerciseId: string }[];
+  onSubmit: (a: ProfileData) => any;
+  exercises: { title: string; id: string }[];
+  userExercises?: { reps: number; exerciseId: string }[];
 }
 
 interface Input {
@@ -15,10 +17,9 @@ interface Input {
   value: number;
 }
 
-export type ProfileData = { exercise: string, reps: number }[];
 // need to declare this outside of the destructure; otherwise a new array is provided
 // on every render, causing an infinite useEffect loop
-const defaultArrayProp: any = [];
+const defaultArrayProp: { reps: number, exerciseId: string }[] = [];
 
 const ProfileForm: React.FC<ProfileProps> = ({
   onSubmit,
@@ -35,7 +36,7 @@ const ProfileForm: React.FC<ProfileProps> = ({
 
     const userExerciseMap: {[key: string]: number} = {};
 
-    for (let userExercise of userExercises) {
+    for (const userExercise of userExercises) {
       userExerciseMap[userExercise.exerciseId] = userExercise.reps;
     }
 
@@ -48,9 +49,9 @@ const ProfileForm: React.FC<ProfileProps> = ({
     });
 
     setInputs(inputs);
-  }, [exercises, userExercises])
+  }, [exercises, userExercises]);
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
 
     const isMissingValues = Object.keys(formState.values).some((key) => {
@@ -70,7 +71,7 @@ const ProfileForm: React.FC<ProfileProps> = ({
     });
 
     onSubmit(userExercises);
-  }
+  };
 
   return (
     <form noValidate onSubmit={(event) => handleSubmit(event)}>
@@ -84,7 +85,7 @@ const ProfileForm: React.FC<ProfileProps> = ({
 
       <S.Button type="submit">Save</S.Button>
     </form>
-  )
-}
+  );
+};
 
 export default ProfileForm;

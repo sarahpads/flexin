@@ -6,7 +6,7 @@ export const ToastContainer = styled.div`
   position: fixed;
   width: 100vw;
   z-index: 1;
-`
+`;
 
 export const Toast = styled.div`
   height: 0;
@@ -22,4 +22,4 @@ export const Toast = styled.div`
   &.toast-exit-active {
     z-index: 0;
   }
-`
+`;

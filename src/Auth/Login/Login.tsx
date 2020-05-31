@@ -5,7 +5,7 @@ import { AuthContext } from "../AuthProvider";
 import WithBackground from "../../Layout/WithBackground/WithBackground";
 
 const Login: React.FC = () => {
-  const auth = useContext(AuthContext)
+  const auth = useContext(AuthContext);
 
   return (
     <S.Login>
@@ -23,6 +23,6 @@ const Login: React.FC = () => {
       </S.Credit>
     </S.Login>
   );
-}
+};
 
 export default WithBackground(Login);

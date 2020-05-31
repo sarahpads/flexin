@@ -1,13 +1,13 @@
 export interface Challenge {
-  id: string,
-  expiresAt: string,
-  createdAt: string,
+  id: string;
+  expiresAt: string;
+  createdAt: string;
   exercise: {
     title: string;
     id: string;
-  },
-  user: { id: string, name: string }
-  responses: Response[]
+  };
+  user: { id: string; name: string };
+  responses: Response[];
 }
 
 export interface Response {
@@ -26,7 +26,7 @@ export interface Standing {
   user: {
     name: string;
     id: string;
-  }
+  };
   waffles: number;
   rank: number;
 }

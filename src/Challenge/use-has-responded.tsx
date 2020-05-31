@@ -1,8 +1,9 @@
 import { useState, useEffect, useContext } from "react";
+
 import { AuthContext } from "../Auth/AuthProvider";
 import { Response } from "./challenge.types";
 
-export default function useHasResponded(responses: Response[]) {
+export default function useHasResponded(responses: Response[]): boolean {
   const { profile } = useContext(AuthContext);
   const [ hasResponded, setHasResponded ] = useState(false);
 
@@ -11,12 +12,12 @@ export default function useHasResponded(responses: Response[]) {
       return;
     }
 
-    const hasResponded = responses.some((response: any) => {
+    const hasResponded = responses.some((response: Response) => {
       return response.user.id === profile.sub;
     });
 
     setHasResponded(hasResponded);
-  }, [responses])
+  }, [responses]);
 
   return hasResponded;
 }
