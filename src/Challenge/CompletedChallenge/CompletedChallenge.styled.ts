@@ -5,8 +5,9 @@ import { Circle as C, Button as B } from "../../Layout/Typography.styled";
 export { H1, P } from "../../Layout/Typography.styled";
 
 export const CompletedChallenge = styled.div`
-  height: 100%;
-  padding: 0 ${theme.dimensions.pagePadding};
+  box-sizing: border-box;
+  min-height: 100%;
+  padding: 0 ${theme.dimensions.pagePadding} 4rem;
   text-align: center;
 `;
 
@@ -20,7 +21,7 @@ export const Content = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 100%;
-  padding: 8rem 0 4rem;
+  padding-top: 8rem;
   position: relative;
   z-index: 3;
 `;
