@@ -14,3 +14,11 @@ export const Ranks = styled.div`
   position: relative;
   z-index: 2;
 `;
+
+export const PWA = styled.div`
+  bottom: 1rem;
+  left: 25%;
+  position: fixed;
+  transform: translateX(-50%);
+  z-index: 2;
+`

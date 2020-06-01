@@ -19,7 +19,9 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ standings }) => {
         })}
       </S.Ranks>
 
-      <PWA/>
+      <S.PWA>
+        <PWA/>
+      </S.PWA>
     </S.Leaderboard>
   );
 };

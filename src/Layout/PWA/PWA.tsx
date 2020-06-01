@@ -1,6 +1,6 @@
 import React from "react";
 
-import * as S from "./PWA.styled";
+import * as S from "../Typography.styled";
 import usePushNotification from "../../Auth/use-push-notification";
 import useHomeScreen from "../../Auth/use-home-screen";
 
