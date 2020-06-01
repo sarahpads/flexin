@@ -20,7 +20,7 @@ export const Content = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 100%;
-  padding-top: 8rem;
+  padding: 8rem 0 4rem;
   position: relative;
   z-index: 3;
 `;
@@ -70,5 +70,5 @@ export const Explanation = styled.p`
 `;
 
 export const Button = styled(B)`
-  margin: auto auto 4rem;
+  margin: auto auto 0;
 `;
