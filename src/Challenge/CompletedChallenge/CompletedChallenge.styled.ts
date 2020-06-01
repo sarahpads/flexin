@@ -11,14 +11,16 @@ export const CompletedChallenge = styled.div`
 `;
 
 export const Circle = styled(C)`
-  margin-bottom: 1rem;
+  margin: 0 auto;
 `;
 
 export const Content = styled.div`
   /* TODO: some of these styles are shared */
   box-sizing: border-box;
-  height: 100%;
-  padding: 8rem 0 10rem;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  padding-top: 8rem;
   position: relative;
   z-index: 3;
 `;
@@ -68,8 +70,5 @@ export const Explanation = styled.p`
 `;
 
 export const Button = styled(B)`
-  bottom: 4rem;
-  left: 50%;
-  position: absolute;
-  transform: translateX(-50%);
+  margin: auto auto 4rem;
 `;
