@@ -16,16 +16,23 @@ workbox.routing.registerNavigationRoute(
   workbox.precaching.getCacheKeyForURL("/index.html")
 )
 
-self.addEventListener('push', function(event) {
-  console.log('[Service Worker] Push Received.');
+self.addEventListener("push", function(event) {
+  console.log("[Service Worker] Push Received.");
   console.log(`[Service Worker] Push had this data: "${event.data.text()}"`);
   const { title, body } = event.data.json();
 
+  // Note: SVG images are not supported
   const options = {
     body,
-    icon: 'logo.svg',
-    badge: 'logo.svg'
+    icon: "/logo192.png",
+    badge: "/badge.png"
   };
 
   event.waitUntil(self.registration.showNotification(title, options));
+});
+
+self.addEventListener("notificationclick", function(event) {
+  const url = new URL("/?page=challenge", self.location.origin);
+  event.notification.close();
+  clients.openWindow(url.href);
 });
