@@ -6,7 +6,7 @@ import useRandomPalette from "../use-random-palette";
 const Spinner: React.FC = () => {
   return (
     <S.Spinner>
-      <S.Waffle src="/food.svg"/>
+      <S.Waffle src="/spinner.svg"/>
       <S.Message>Loading...</S.Message>
     </S.Spinner>
   );
