@@ -24,7 +24,7 @@ self.addEventListener("push", function(event) {
   // Note: SVG images are not supported
   const options = {
     body,
-    icon: "/logo192.png",
+    icon: "/android-chrome-192x192.png",
     badge: "/badge.png"
   };
 
